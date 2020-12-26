@@ -251,6 +251,9 @@ const create = (baseURL = apiURL) => {
       link = link + `&type=${type._id}`;
     }
 
+    if (sort) {
+      link = link + `&sort=${sort}`;
+    }
     return api.get(link);
   };
 

@@ -421,35 +421,20 @@ class HomePage extends React.Component {
     }
   }
 
-  handleFilterMethod = i => {
-    console.log('type', this.state.selecedFilter, 'method', i);
-    let arr = this.state.realEstateListData || [];
-
-    // if(i === 1){
-    //     arr.sort((a, b) => this.state.selecedFilter === 2? b.price - a.price:  b.space - a.space)
-    // }else if(i === 2){
-    //     arr.sort((a, b) => this.state.selecedFilter === 2? a.price - b.price:  a.space - b.space)
-    // }
-
-    switch (i) {
-      case 1:
-        arr.sort((a, b) => b.price - a.price);
-        break;
-
-      case 2:
-        arr.sort((a, b) => a.price - b.price);
-        break;
-
-      default:
-        arr.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        break;
-    }
-
-    console.log('arr', arr);
+  handleFilterMethod = filterType => {
     this.setState({
-      realEstateListData: arr,
       showFilterList: false,
-      selectedMethod: i,
+      selectedMethod: filterType,
+    });
+    this.props.getRealEstate({
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.smallIcon ? 120 : 50,
+      sort: filterType,
+      type:
+        this.state.selectedType &&
+        this.state.selectedType._id !== 1 &&
+        this.state.selectedType,
+      status: this.state.selectedStatus && this.state.selectedStatus,
     });
   };
 
