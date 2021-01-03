@@ -96,11 +96,13 @@ class RealEstateDetail extends React.Component {
 
   componentDidMount() {
     console.log('RealEstate', this.state.realEstateItem);
-    if (!this.state.toPreview)
+    if (!this.state.toPreview) {
       this.props.addShow(this.state.realEstateItem._id);
+    }
 
-    if (!this.state.toPreview)
+    if (!this.state.toPreview) {
       this.props.getRealEstateDetails(this.state.realEstateItem._id);
+    }
     // const scrollViewRef = React.createRef();
 
     if (this.state.toPreview) {
@@ -118,8 +120,9 @@ class RealEstateDetail extends React.Component {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        if (!this.state.toPreview)
+        if (!this.state.toPreview) {
           this.props.getRealEstateDetails(this.state.realEstateItem._id);
+        }
       },
     );
 
@@ -148,7 +151,7 @@ class RealEstateDetail extends React.Component {
     }
     if (nextProps.checkRealEstate !== this.props.checkRealEstate) {
       console.log('checker Request => ', nextProps.checkRealEstate);
-      if (nextProps.checkRealEstate !== null)
+      if (nextProps.checkRealEstate !== null) {
         return this.setState({
           like:
             nextProps.checkRealEstate.likes && nextProps.checkRealEstate.likes,
@@ -164,6 +167,7 @@ class RealEstateDetail extends React.Component {
             nextProps.checkRealEstate.request3 &&
             nextProps.checkRealEstate.request3,
         });
+      }
     }
     if (nextProps.likeRealEstateResult !== this.props.likeRealEstateResult) {
       // return this.setState({like: nextProps.checkLikeRating.likes})
@@ -226,7 +230,7 @@ class RealEstateDetail extends React.Component {
           this.setState({rate: false});
         }
         const {imagesSmall, images} = this.state.realEstateItem;
-        if (imagesSmall)
+        if (imagesSmall) {
           this.setState({
             images:
               (imagesSmall || []).length > 0
@@ -234,6 +238,7 @@ class RealEstateDetail extends React.Component {
                 : this.state.realEstateItem.images,
             compaond: this.state.realEstateItem.type.nameEn === 'compound',
           });
+        }
       } else {
         this.props.navigation.goBack();
       }
@@ -245,18 +250,22 @@ class RealEstateDetail extends React.Component {
     }
 
     if (nextProps.rateRealEstateError !== this.props.rateRealEstateError) {
-      if (nextProps.rateRealEstateError.error)
-        if (nextProps.rateRealEstateError.error)
+      if (nextProps.rateRealEstateError.error) {
+        if (nextProps.rateRealEstateError.error) {
           return alert(nextProps.rateRealEstateError.error);
+        }
+      }
     }
 
     if (nextProps.addRequestError !== this.props.addRequestError) {
       this.setState({requestLoading: null});
-      if (nextProps.addRequestError.message)
+      if (nextProps.addRequestError.message) {
         return alert(nextProps.addRequestError.message);
+      }
 
-      if (nextProps.addRequestError.error)
+      if (nextProps.addRequestError.error) {
         return alert(nextProps.addRequestError.error);
+      }
     }
 
     if (nextProps.addRequestResult !== this.props.addRequestResult) {
@@ -278,7 +287,9 @@ class RealEstateDetail extends React.Component {
   }
 
   handleShare = () => {
-    if (this.state.toPreview) return;
+    if (this.state.toPreview) {
+      return;
+    }
     Share.share({
       message:
         'لاعجابي الشديد بهذا العقار وددت مشاركته ' +
@@ -304,7 +315,9 @@ class RealEstateDetail extends React.Component {
   };
 
   goToDetail = () => {
-    if (this.state.toPreview) return;
+    if (this.state.toPreview) {
+      return;
+    }
 
     this.props.navigation.navigate('FirstStepAddAqar', {
       fromDetail: true,
@@ -318,12 +331,15 @@ class RealEstateDetail extends React.Component {
   };
 
   addLike = () => {
-    if (this.state.toPreview) return;
-    if (!this.props.user || !this.props.user.token)
+    if (this.state.toPreview) {
+      return;
+    }
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
         alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
+    }
 
     this.props.addLike(
       this.state.realEstateItem._id,
@@ -369,12 +385,15 @@ class RealEstateDetail extends React.Component {
   // },[props.addLike])
 
   favProccess = () => {
-    if (this.state.toPreview) return;
-    if (!this.props.user || !this.props.user.token)
+    if (this.state.toPreview) {
+      return;
+    }
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
         alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
+    }
     // return alert('الرجاء تسجيل الدخول للاستفادة')
     this.setState({fav: !this.state.fav});
     this.state.fav
@@ -542,8 +561,8 @@ class RealEstateDetail extends React.Component {
               {/* <LinearGradient colors={['rgba(0,0,0,0.0)', 'rgba(0,0,0,.2)','rgba(0,0,0,.5)']} style={[{
                             // position: 'absolute', opacity: opacity > 0 ? .3: 0, bottom: 0, width: '100%', height: 100, zIndex: 9999
                                 position: 'absolute',
-                                width: '100%', 
-                                height: 120, 
+                                width: '100%',
+                                height: 120,
                                 // backgroundColor: '#000',
                                 bottom: 0,
                                 zIndex: 9999099,
@@ -601,7 +620,7 @@ class RealEstateDetail extends React.Component {
                       {(realEstateItem &&
                         realEstateItem.price &&
                         this.kFormatter(realEstateItem.price)) ||
-                        ' السعر غير محدد '}
+                        'علي السوم'}
                     </Text>
                     {realEstateItem &&
                       realEstateItem.price &&
@@ -689,8 +708,8 @@ class RealEstateDetail extends React.Component {
                   {/* <Animated.Text style={[Fonts.style.normal, {marginTop: 7, color: headerBackgroundColorText}]} >{realEstateItem && realEstateItem.price && realEstateItem.price}</Animated.Text> */}
                   {/* <Animated.Text style={[Fonts.style.normal, {marginBottom: 9,  color: headerBackgroundColorText}]} s >
                                         <Text style={{...Fonts.style.boldText}} >
-                                            {realEstateItem && realEstateItem.price && this.kFormatter(realEstateItem.price) || ' السعر غير محدد '} 
-                                        </Text>  
+                                            {realEstateItem && realEstateItem.price && this.kFormatter(realEstateItem.price) || ' السعر غير محدد '}
+                                        </Text>
                                             { realEstateItem && realEstateItem.price && (realEstateItem && realEstateItem.payType == '0' ? ' ريال / سنوي': realEstateItem.payType === 1 ? ' ريال / شهري': realEstateItem.payType === 2 ? ' / يومي': ' ريال')}
                                 </Animated.Text> */}
 
@@ -936,12 +955,12 @@ class RealEstateDetail extends React.Component {
                   />
 
                   {/* <Text style={[ Fonts.style.normal, {
-                                    fontWeight: "normal", 
-                                    marginTop: 10, 
-                                    fontSize: 10, 
+                                    fontWeight: "normal",
+                                    marginTop: 10,
+                                    fontSize: 10,
                                     // position:'absolute',
                                     color: Colors.darkSlateBlue,
-                                    // bottom: -22, 
+                                    // bottom: -22,
                                     // left: 14
                                 }]}>
                                     تعديل
@@ -2022,7 +2041,7 @@ class RealEstateDetail extends React.Component {
                                 { realEstateItem.features && <AqarFeatures realEstateFeatures={realEstateItem.features} />}
 
 
-                                
+
                             {realEstateItem.bluePrint && <BluePrintList containerStyle={{marginTop: 20 }} doAnimation={true}   />} */}
 
                   {this.state.suggestionDate &&
@@ -2125,11 +2144,12 @@ class RealEstateDetail extends React.Component {
                     disabled={this.props.disabled}
                     style={styles.row}
                     onPress={() => {
-                      if (!this.props.user || !this.props.user.token)
+                      if (!this.props.user || !this.props.user.token) {
                         return this.setState({
                           showAlert: true,
                           alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
                         });
+                      }
                       this.setState({showRating: true});
                     }}>
                     {!this.props.loading ? (
@@ -2152,8 +2172,8 @@ class RealEstateDetail extends React.Component {
               </Animated.View>
             )}
 
-            {/* {this.state.owner && <Animated.View style={[styles.backgroundStyle, 
-                        // { transform: [{ translateY: navbarTranslate }] } 
+            {/* {this.state.owner && <Animated.View style={[styles.backgroundStyle,
+                        // { transform: [{ translateY: navbarTranslate }] }
                         ]} >
                         <Animated.View style={[styles.container, this.props.halfButton && {width: Metrics.screenWidth * 0.42933333, height: 46, }, {backgroundColor: this.props.doAnimation? this.state.animation.animtion3.interpolate({inputRange:[0,1], outputRange:['#fff',Colors.darkSeafoamGreen]}): this.props.backgroundColorT? this.props.backgroundColorT: Colors.darkSeafoamGreen, shadowColor: this.props.shadowColor || "rgba(61, 186, 126, 0.25)"}, this.props.containerStyle]}>
                             <TouchableOpacity disabled={this.props.disabled} style={styles.row} onPress={()=> {
@@ -2256,7 +2276,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0,
     },
-    elevation: 2,
     shadowRadius: 30,
     shadowOpacity: 1,
     justifyContent: 'center',
