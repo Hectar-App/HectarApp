@@ -57,7 +57,9 @@ const MarkerItem = props => {
           }}
           key={props.item._id}
           onPress={() => {
-            if (colorCheck) props.addToMarkers(props.item._id);
+            if (colorCheck) {
+              props.addToMarkers(props.item._id);
+            }
 
             colorCheck =
               (props.realEstates || []).findIndex(i => i === props.item._id) !==
@@ -81,7 +83,6 @@ const MarkerItem = props => {
               justifyContent: 'center',
               alignItems: 'center',
               // shadowColor: 'rgba(0,0,0,0.3)',
-              elevation: 1,
               paddingHorizontal: 8,
               paddingVertical: 8,
               shadowColor: theme === 'dark' ? '#2f2f31' : '#ccc',
@@ -97,7 +98,7 @@ const MarkerItem = props => {
             <Text
               style={[Fonts.style.normal, {color: Colors.white, fontSize: 11}]}>
               {(props.item.price && kFormatter(props.item.price) + ' ريال ') ||
-                'السعر غير محدد'}{' '}
+                'علي السوم'}{' '}
             </Text>
           </TouchableOpacity>
           <View
@@ -163,7 +164,9 @@ const MarkerItem = props => {
           }}
           key={props.item._id}
           onPress={() => {
-            if (colorCheck) props.addToMarkers(props.item._id);
+            if (colorCheck) {
+              props.addToMarkers(props.item._id);
+            }
 
             colorCheck =
               (props.realEstates || []).findIndex(i => i === props.item._id) !==
