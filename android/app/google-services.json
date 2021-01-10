@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "87894182996",
+    "firebase_url": "https://hectar-561a9.firebaseio.com",
+    "project_id": "hectar-561a9",
+    "storage_bucket": "hectar-561a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87894182996:android:dd3b1562746c87f0f5b1c1",
+        "android_client_info": {
+          "package_name": "com.hectarapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87894182996-4nm02hgjkl1ku9p9ub4qj5v9l6i706v2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRVRK_oeHqVdvIjr8AOAqzbfXTuVPtuYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87894182996-4nm02hgjkl1ku9p9ub4qj5v9l6i706v2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

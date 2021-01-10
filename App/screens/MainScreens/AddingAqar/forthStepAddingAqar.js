@@ -51,15 +51,9 @@ forthStepAddingAqar = props => {
     props.navigation.getParam('forEditing'),
   );
 
-  const [features, setFeatures] = useState([
-    {_id: 1, nameAr: 'انترنت', selected: false},
-    {_id: 2, nameAr: 'صالة جيم', selected: false},
-    {_id: 5, nameAr: 'بالقرب من مدرسة ', selected: false},
-    {_id: 4, nameAr: 'كراج', selected: false},
-    {_id: 3, nameAr: 'حوض سباحة', selected: false},
-    {_id: 6, nameAr: 'نوافذ مبطنة', selected: false},
-  ]);
+  const [mainImageIndex, setMainImageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+
 
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -98,6 +92,7 @@ forthStepAddingAqar = props => {
         images.length < 3
           ? parseInt(realEstate.completePercentage + 8.33333333 * images.length)
           : realEstate.completePercentage + 25,
+      mainImageIndex
     };
     // console.log('NewRealEstate', s)
     // console.log('images', images[0].uri)
@@ -208,6 +203,7 @@ forthStepAddingAqar = props => {
         images.length < 3
           ? realEstate.completePercentage + 8.33333333 * images.length
           : realEstate.completePercentage + 15,
+      mainImageIndex
     };
     setLoading(true);
     const res = await API.updateRealEstate(s, props.user.token);
@@ -222,6 +218,7 @@ forthStepAddingAqar = props => {
       // }))
     }
   };
+
 
   console.log('props', props);
 
@@ -245,32 +242,63 @@ forthStepAddingAqar = props => {
         <KeyboardAwareScrollView>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={{flex: 1, height: Metrics.screenHeight - 140}}>
-              {/* <Text style={[Fonts.style.normal,{fontSize: 18, alignSelf:'flex-end', marginTop: 58, marginEnd: 16, fontWeight: Platform.OS === 'android'?'400': "bold", color: Colors.black}]} >{'أضف صور للعقار'}</Text> */}
 
+              <Text style={[Fonts.style.normal,{fontSize: 13, marginTop: 14, alignSelf:'flex-end', marginEnd: 30, fontWeight: '300', color: Colors.grey}]} >{'* اضغط على الصورة لاختيارها صورة العرض الاولى'}</Text>
               <View
                 style={{
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  justifyContent: 'flex-end',
+                  justifyContent: 'flex-start',
                   marginTop: 14,
+                  direction: 'rtl'
                 }}>
+                <TouchableOpacity onPress={onAddingImagePress}>
+                  <View
+                    style={{
+                      width: 70,
+                      height: 70,
+                      alignSelf: 'flex-end',
+                      marginTop: 20,
+                      marginStart: 20,
+                      // marginEnd: 20,
+                      justifyContent: 'center',
+                    }}>
+                    <Image source={Images.addingImageCircle} />
+                    <Image
+                      source={Images.cameraIcon}
+                      style={{position: 'absolute', alignSelf: 'center'}}
+                    />
+                  </View>
+                </TouchableOpacity>
                 {selectedImage &&
                   images.map((item, index) => {
                     return (
-                      <View
-                        style={{
-                          width: 70,
-                          height: 70,
-                          marginEnd: 17,
+                      <TouchableOpacity
+                        onPress={()=> setMainImageIndex(index)}
+                        style={[{
+                          width: 80,
+                          height: 80,
+                          marginStart: 17,
                           marginTop: 20,
-                        }}>
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        },
+                        mainImageIndex === index && {
+                          borderWidth: 4,
+                          borderColor: Colors.primaryGreen,
+                          borderRadius: 40
+                        }
+                        ]}>
+
                         <Image
                           // source={{uri: `data:${item.mime};base64,${item.data}`}}
                           source={{uri: item.uri ? item.uri : item}}
                           style={{
                             width: 70,
                             height: 70,
-                            alignSelf: 'flex-end',
+
+                            alignSelf: 'center',
+
                             justifyContent: 'center',
                             borderRadius: 35,
                           }}
@@ -286,8 +314,10 @@ forthStepAddingAqar = props => {
                             alignItems: 'center',
                             height: 16,
                             borderRadius: 8,
-                            right: 1,
-                            top: 2,
+
+                            right: 3,
+                            top: 5,
+
                             backgroundColor: Colors.darkSlateBlue,
                             position: 'absolute',
                           }}>
@@ -296,26 +326,9 @@ forthStepAddingAqar = props => {
                             style={{width: 5.9, height: 5.9}}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </TouchableOpacity>
                     );
                   })}
-                <TouchableOpacity onPress={onAddingImagePress}>
-                  <View
-                    style={{
-                      width: 70,
-                      height: 70,
-                      alignSelf: 'flex-end',
-                      marginTop: 20,
-                      marginEnd: 20,
-                      justifyContent: 'center',
-                    }}>
-                    <Image source={Images.addingImageCircle} />
-                    <Image
-                      source={Images.cameraIcon}
-                      style={{position: 'absolute', alignSelf: 'center'}}
-                    />
-                  </View>
-                </TouchableOpacity>
               </View>
 
               <AlertModal

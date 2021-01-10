@@ -36,8 +36,10 @@ const realEstateItemSmall = (props) => {
         type: {
             nameAr
         },
-        _id
+        _id,
+        mainImageIndex
     }= props.item
+   
     // console.log('active', active)
 
     return (
@@ -108,7 +110,7 @@ const realEstateItemSmall = (props) => {
                     >
                         <FastImage
                             style={{width: '100%', height: '100%',}}
-                            source={(images && images[0])? {uri: images[0] }:Images.mapCardImage}
+                            source={(images && mainImageIndex && images[mainImageIndex])? {uri: images[mainImageIndex] }: (images && images[0])? {uri: images[0] }:Images.mapCardImage}
                         />
                     </View>
 

@@ -7,7 +7,7 @@ import { ifIphoneX } from 'react-native-iphone-x-helper'
 
 const sugestionComp = (props) => {
     const animtion = useAnimation({ doAnimation: props.doAnimation, duration:550})
-    const height = animtion.interpolate({inputRange: [0,1], outputRange: [ 30, (props.sugesstionData || []).length * 35 ]})
+    const height = animtion.interpolate({inputRange: [0,1], outputRange: [ 30, (props.sugesstionData || []).length * 135 ]})
     return (
         <Animated.View
             style={[styles.container, {height: props.doAnimation? height: Metrics.screenWidth * 0.73333333} ]}

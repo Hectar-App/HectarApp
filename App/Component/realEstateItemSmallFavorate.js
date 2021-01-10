@@ -246,7 +246,7 @@ const realEstateItemSmallFavorate = props => {
                     {fontSize: 16, alignSelf: 'center', color: '#464646'},
                   ]}>
                   {' '}
-                  {kFormatter(price) || 'السعر غير محدد'}{' '}
+                  {price && kFormatter(price) || 'السعر غير محدد'}{' '}
                 </Text>
               </View>
 

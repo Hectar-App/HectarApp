@@ -790,7 +790,8 @@ class HomePage extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {(sugesstionData || []).length > 0 && (
+          {(sugesstionData || []).length > 0  && (
+
             <SugestionComp
               itemPress={i => this.handleSugesstionPress(i)}
               sugesstionData={sugesstionData}
@@ -900,9 +901,7 @@ class HomePage extends React.Component {
             }
             selectedStatus={this.state.selectedStatus}
             statusPress={i => this.handleChangeStatus(i)}
-            sugesstionData={
-              searchValue.length < 4 ? shortSugesstionData : sugesstionData
-            }
+
             sugesstionLoading={this.state.sugesstionLoading}
             onChangeText={this.handleSearch}
             searchValue={searchValue}
@@ -1060,20 +1059,11 @@ class HomePage extends React.Component {
               ref={ref => (this.mapRef = ref)}
               style={[styles.map]}
               customMapStyle={theme === 'dark' ? MapStyleDark : MapStyle}
-              // initialRegion={{
-              //     latitude: 24.78825,
-              //     longitude: 46.622831,
-              //     latitudeDelta: 0.8,
-              //     longitudeDelta: 0.001,
-              // }}
               minZoomLevel={10}
               onMapReady={() => this.setState({mapReady: true})}
               followsUserLocation
-              // scrollEnabled={false}
-              // zoomEnabled={false}
               onRegionChangeComplete={v => this.mapUpdate(v)}
               moveOnMarkerPress={false}
-              // onPress={()=> this.setState({cardView: false})}
               showsUserLocation={true}>
               {this.state.mapReady &&
                 realestate &&

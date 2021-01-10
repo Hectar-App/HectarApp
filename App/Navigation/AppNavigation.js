@@ -341,7 +341,7 @@ const AuthScreensWithFade = createStackNavigator(
   {
     // initialRouteName:'bottomTab',
     headerMode: 'none',
-    transitionConfig: transConfig,
+    transitionConfig: transConfig
   },
 );
 
@@ -354,6 +354,7 @@ const AuthScreensWithFade = createStackNavigator(
 // })
 
 const Navigator = createAppContainer(AuthScreensWithFade);
+
 // const Navigator = createAppContainer(AuthScreensWithFade)
 
 export default Navigator;

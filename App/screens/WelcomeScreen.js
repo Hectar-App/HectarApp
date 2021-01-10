@@ -10,6 +10,9 @@ import {Metrics, Images} from '../Themes';
 import {connect} from 'react-redux';
 import UserAction from '../Redux/UserRedux';
 
+import analytics from '@react-native-firebase/analytics';
+import firebase from '@react-native-firebase/app'
+
 class App extends React.Component {
   constructor(properties) {
     super(properties);
@@ -48,9 +51,20 @@ class App extends React.Component {
     console.log('Device info: ', device);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     Linking.addEventListener('url', event => this.handleOpenURL(event));
     Linking.getInitialURL().then(url => url && this.handleOpenURL(url));
+
+    // await firebase.initializeApp()
+
+    // await analytics().logEvent('Welcome', {
+    //   item: 'work',
+    //   id: 252393119
+    // })
+    
+    // await analytics().logSelectContent({
+    //   content_type: 'lksdlk ',
+    // })
 
     setTimeout(() => {
       if (this.state.fromURL) return;

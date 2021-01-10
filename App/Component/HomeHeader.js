@@ -12,6 +12,12 @@ import _ from 'lodash'
 import SugestionComp from './sugestionComp'
 import { ActivityIndicator } from 'react-native-paper';
 
+
+import { copilot, walkthroughable, CopilotStep  } from "react-native-copilot";
+
+const CopilotTouchableOpacity = walkthroughable(TouchableOpacity);
+
+
 const HomeHeader = (props) => {
 
     const theme = useTheme()
@@ -25,6 +31,11 @@ const HomeHeader = (props) => {
     const [selectedType, setSelectedType]= useState(1)
     const keyboardStatus = useKeyboard()
     const inputRef = React.createRef()
+
+
+    // useEffect(() => {
+    //     props.start()
+    // },[])
 
 
     return (
@@ -82,7 +93,9 @@ const HomeHeader = (props) => {
                     {props.sugesstionLoading && <ActivityIndicator style={{position: 'absolute', left: 50, top: 7}} color={Colors.primaryGreen} />}
 
                     <Image source={Images.searchIcon} style={!doAnimation && false ? {alignSelf:'center', position:'absolute', top: 12}: { position:'absolute', right: 9, top: 12, alignSelf:'center' }} />
+
                     {/* {doAnimation && <Icon name={'close'} size={18} style={!doAnimation && false ? {alignSelf:'center', position:'absolute', top: 12}: { position:'absolute', left: 9, top: 12, alignSelf:'center' }} />} */}
+
                 </TouchableOpacity>
             </Animated.View>
             
@@ -178,22 +191,37 @@ const HomeHeader = (props) => {
 
 
                     <View style={{...styles.porpuseStyle, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center'}} >
-
-                        <TouchableOpacity
-                                            // key={item._id}
-                            style={[styles.itemContainer,{backgroundColor: props.selectedStatus && props.status && props.selectedStatus._id === props.status[1]._id ? Colors.darkSeafoamGreen: theme === 'dark'? '#25303e':  "#ffffff", borderTopStartRadius: 10, borderBottomStartRadius: 10, borderRightWidth: 1, borderRightColor: '#f9f9f9'}, Platform.OS === 'sdf' && {transform: [{rotate: '180deg'}]}]}
-                            onPress={() => props.selectedPurposePressed(props.status[1])}
+                        <CopilotStep
+                            text="من هنا تستطيع تغيير للبيع"
+                            order={1}
+                            name="التالي"
+                            active={true}
                         >
-                            <Text style={[Fonts.style.normal, styles.itemText, { color: props.selectedStatus && props.status && props.selectedStatus._id === props.status[1]._id ? Colors.white:theme === 'dark'? '#fff': Colors.black}]} >{"للبيع"}</Text>
-                        </TouchableOpacity>
+                            <CopilotTouchableOpacity
+                            // {/* <TouchableOpacity */}
+                                                // key={item._id}
+                                style={[styles.itemContainer,{backgroundColor: props.selectedStatus && props.status && props.selectedStatus._id === props.status[1]._id ? Colors.darkSeafoamGreen: theme === 'dark'? '#25303e':  "#ffffff", borderTopStartRadius: 10, borderBottomStartRadius: 10, borderRightWidth: 1, borderRightColor: '#f9f9f9'}, Platform.OS === 'sdf' && {transform: [{rotate: '180deg'}]}]}
+                                onPress={() => props.selectedPurposePressed(props.status[1])}
+                            >
+                                <Text style={[Fonts.style.normal, styles.itemText, { color: props.selectedStatus && props.status && props.selectedStatus._id === props.status[1]._id ? Colors.white:theme === 'dark'? '#fff': Colors.black}]} >{"للبيع"}</Text>
+                            {/* </TouchableOpacity> */}
+                            </CopilotTouchableOpacity>
+                        </CopilotStep>
 
-                        <TouchableOpacity
-                                            // key={item._id}
-                            style={[styles.itemContainer,{backgroundColor: props.selectedStatus && props.status && props.selectedStatus._id === props.status[0]._id ? Colors.darkSeafoamGreen:theme === 'dark'? '#25303e':  "#ffffff", borderRightWidth: 1, borderRightColor: '#f9f9f9'}, Platform.OS === 'sdf' && {transform: [{rotate: '180deg'}]}]}
-                            onPress={() => props.selectedPurposePressed(props.status[0])}
+                        <CopilotStep
+                            text="من هنا  للبيع"
+                            order={2}
+                            name="التالي"
                         >
-                            <Text style={[Fonts.style.normal, styles.itemText, { color: props.selectedStatus && props.status && props.selectedStatus._id === props.status[0]._id ? Colors.white:theme === 'dark'? '#fff':  Colors.black}]} >{"للايجار"}</Text>
-                        </TouchableOpacity>
+
+                            <CopilotTouchableOpacity
+                                                // key={item._id}
+                                style={[styles.itemContainer,{backgroundColor: props.selectedStatus && props.status && props.selectedStatus._id === props.status[0]._id ? Colors.darkSeafoamGreen:theme === 'dark'? '#25303e':  "#ffffff", borderRightWidth: 1, borderRightColor: '#f9f9f9'}, Platform.OS === 'sdf' && {transform: [{rotate: '180deg'}]}]}
+                                onPress={() => props.selectedPurposePressed(props.status[0])}
+                            >
+                                <Text style={[Fonts.style.normal, styles.itemText, { color: props.selectedStatus && props.status && props.selectedStatus._id === props.status[0]._id ? Colors.white:theme === 'dark'? '#fff':  Colors.black}]} >{"للايجار"}</Text>
+                            </CopilotTouchableOpacity>
+                        </CopilotStep>
 
                         <TouchableOpacity
                                             // key={item._id}
@@ -320,6 +348,7 @@ const HomeHeader = (props) => {
         </View>
 
         <Animated.View style={{position: 'absolute', bottom: typesPosition,zIndex: 9998848485151515151848, left: typesPositionHor, width: typesWidth, borderRadius: 10, backgroundColor: '#fff', height: typesHeight}} >
+
             <View style={{flex: 1, flexDirection: 'row-reverse', flexWrap: 'wrap', }} >
                 { doAnimation  &&
                     _.map( _.concat([{_id: 1, nameAr: 'كل العقارات'}]  ,(props.types || [])), (item, index)=>{
@@ -334,7 +363,9 @@ const HomeHeader = (props) => {
                         )})
                 }
             </View>
+
         </Animated.View>
+
 
         {/* {(props.sugesstionData || []).length > 0 && <SugestionComp itemPress={(i) => props.itemPress(i)} sugesstionData={props.sugesstionData} doAnimation={true} />} */}
     </Animated.View>
@@ -344,10 +375,11 @@ const styles = StyleSheet.create({
     container:{
         width: Metrics.screenWidth,
         height: ifIphoneX(164,98),
-        // backgroundColor: Colors.brownGrey,
-        position:'absolute',
+        // backgroundColor: Colors  .brownGrey,
+        // position:'absolute',
         zIndex: 99,
         top: 0,
+        // left: -207,
         shadowColor: "rgba(0, 0, 0, 0.08)",
         shadowOffset: {
           width: 0,
@@ -464,5 +496,12 @@ const styles = StyleSheet.create({
     }
 })
 
-export default (HomeHeader)
+export default copilot({
+    overlay: "svg", // or 'view'
+    animated: true, // or false
+    labels: {
+        next: "sdflkjd",
+        finish: "انتهاء"
+    }
+})(HomeHeader)
 

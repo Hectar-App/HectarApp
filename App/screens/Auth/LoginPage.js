@@ -6,7 +6,6 @@ import {
   Text,
   Alert,
   Image,
-  Keyboard as KeyboardReact,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -23,7 +22,8 @@ import Button from '../../Component/Button';
 import AlertModal from '../../Component/Alert';
 import ErroAlert from '../../Component/ErrorAlert';
 
-import Keyboard from '../../Component/KeyboardComponent';
+
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import {Metrics, ApplicationStyles, Colors, Fonts} from '../../Themes';
 
@@ -48,24 +48,13 @@ class LoginPage extends React.Component {
       phone: '',
       alertMessage: 'للاستخدام الافضل الرجاء اعادة تشغيل التطبيق',
     };
-    this.keyboardDidShowListener = KeyboardReact.addListener(
-      'keyboardDidShow',
-      () => this.setState({KeyboardStatus: true}),
-    );
-    this.keyboardDidHideListener = KeyboardReact.addListener(
-      'keyboardDidHide',
-      () => this.setState({KeyboardStatus: false}),
-    );
+   
   }
 
   componentDidMount = () => {
     this.startLogoAnimation();
   };
 
-  componentWillUnmount() {
-    this.keyboardDidHideListener.remove();
-    this.keyboardDidShowListener.remove();
-  }
 
   componentWillReceiveProps = nextProps => {
     console.log('NextProps', nextProps);
@@ -169,11 +158,9 @@ class LoginPage extends React.Component {
       outputRange: [-80, ifIphoneX(50, 30)],
     });
 
-    console.log('this', this.state.KeyboardStatus);
-    // <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} >
     return (
-      <Keyboard>
-        <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
+      <KeyboardAwareScrollView>
+        {/* <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}> */}
           <View
             style={{
               flex: 1,
@@ -181,7 +168,6 @@ class LoginPage extends React.Component {
               height: Metrics.screenHeight,
               marginBottom: 40,
             }}>
-            {!this.state.KeyboardStatus && (
               <Animated.View
                 style={{
                   width: 150,
@@ -202,7 +188,6 @@ class LoginPage extends React.Component {
                 />
                 {/* <NewHEctarIcon /> */}
               </Animated.View>
-            )}
 
             {/* <View
                         style={{
@@ -228,7 +213,7 @@ class LoginPage extends React.Component {
             {this.state.inputAnimation && (
               <View
                 style={{
-                  marginTop: !this.state.KeyboardStatus
+                  marginTop: true
                     ? 190
                     : ifIphoneX(190, 90),
                 }}>
@@ -357,8 +342,8 @@ class LoginPage extends React.Component {
               </Animated.View>
             )}
           </View>
-        </ScrollView>
-      </Keyboard>
+        {/* </ScrollView> */}
+      </KeyboardAwareScrollView>
     );
   }
 }

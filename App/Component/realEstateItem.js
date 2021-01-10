@@ -73,7 +73,7 @@ const realEstateItem = (props) => {
         return Math.floor(seconds) + " ثواني";
       }
 
-    // console.log('props', props)
+
     const [loading, setLoading]= useState(true)
     const [sliderActiveSlide, setSliderActiveSlide] = useState(0)
     

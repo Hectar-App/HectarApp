@@ -7,6 +7,7 @@ import {persistor, store} from './store';
 import CodePush from 'react-native-code-push';
 import {NavigationActions, StackActions} from 'react-navigation';
 import Navigator from './Navigation/Navigtor';
+import analytics from '@react-native-firebase/analytics';
 
 console.disableYellowBox = true;
 class App extends Component {
@@ -83,7 +84,13 @@ class App extends Component {
     return (
       <Provider store={store}>
         <PersistGate loading={false} persistor={persistor}>
-          <Navigator theme={'light'} />
+          <Navigator  theme={'light'}
+            onNavigationStateChange={async (prevState, currentState, action) => {
+                await analytics().logScreenView({
+                  screen_name: action.routeName,
+                })
+            }}
+          />
         </PersistGate>
       </Provider>
     );
