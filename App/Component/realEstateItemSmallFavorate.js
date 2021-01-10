@@ -49,9 +49,7 @@ const realEstateItemSmallFavorate = props => {
       : Math.sign(num) * Math.abs(num) + ' ريال';
   }
 
-  if (!type || !address) {
-    return <View />;
-  }
+  if (!type || !address) return <View />;
   return (
     <TouchableOpacity
       onPress={props.onItemPress}
@@ -248,7 +246,7 @@ const realEstateItemSmallFavorate = props => {
                     {fontSize: 16, alignSelf: 'center', color: '#464646'},
                   ]}>
                   {' '}
-                  {kFormatter(price) || 'علي السوم'}{' '}
+                  {price && kFormatter(price) || 'السعر غير محدد'}{' '}
                 </Text>
               </View>
 

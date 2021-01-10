@@ -65,24 +65,22 @@ class firstStepAddAqar extends React.Component {
     console.log('props', this.props.navigation.getParam('realEstate'));
     this.props.getInfo();
 
-    if (!this.props.user || !this.props.user.token) {
+    if (!this.props.user || !this.props.user.token)
       return this.setState({
         showAlert: true,
         alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
       });
-    }
 
     if (
       this.props.user &&
       this.props.user.userType &&
       this.props.user.userType.nameEn === 'normal'
-    ) {
+    )
       return this.setState({
         showAlert: true,
         alertMessage:
           'حتى تتمكن من اضافة عقار يجب ان لا يكون نوع الحساب باحث عن عقار',
       });
-    }
   }
 
   componentWillMount() {
@@ -94,13 +92,12 @@ class firstStepAddAqar extends React.Component {
           this.props.user &&
           this.props.user.userType &&
           this.props.user.userType.nameEn === 'normal'
-        ) {
+        )
           return this.setState({
             showAlert: true,
             alertMessage:
               'حتى تتمكن من اضافة عقار يجب ان لا يكون نوع الحساب باحث عن عقار',
           });
-        }
       },
     );
   }
@@ -156,12 +153,11 @@ class firstStepAddAqar extends React.Component {
             s.realEstate.type.nameEn === 'land' &&
             (!s.realEstate.price || s.realEstate.price === 0),
         }));
-        if (!this.props.user.token) {
+        if (!this.props.user.token)
           return this.setState({
             showAlert: true,
             alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
           });
-        }
         // return alert("يجب تسجيل الدخول لاضافة عقارك")
       }
       // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
@@ -187,9 +183,8 @@ class firstStepAddAqar extends React.Component {
 
   handleLogin = () => {
     this.setState({showAlert: false});
-    if (!this.props.user || !this.props.user.token) {
+    if (!this.props.user || !this.props.user.token)
       return this.props.navigation.navigate('LoginPage');
-    }
 
     this.props.navigation.navigate('Profile');
   };
@@ -236,59 +231,50 @@ class firstStepAddAqar extends React.Component {
       this.props.user.token,
     );
 
-    if (!this.props.user.token) {
-      return alert('يجب تسجيل الدخول لاضافة عقارك');
-    }
+    if (!this.props.user.token) return alert('يجب تسجيل الدخول لاضافة عقارك');
 
-    if (!selectedStatus) {
+    if (!selectedStatus)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار حالة العقار',
       });
-    }
-    if (!selectedType) {
+    if (!selectedType)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار نوع العقار',
       });
-    }
-    if (!porposeDismas && !selectedPurpose) {
+    if (!porposeDismas && !selectedPurpose)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار الغرض من العقار',
       });
-    }
 
-    if (populationFlag && !populationType) {
+    if (populationFlag && !populationType)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار نوع الساكنين',
       });
-    }
 
-    if (paymentFlag && !payType) {
+    if (paymentFlag && !payType)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار مدة الايجار  ',
       });
-    }
 
     if (
       (!price && selectedType.nameEn !== 'land') ||
       (!this.state.isSwitchOn && !price && selectedType.nameEn === 'land')
-    ) {
+    )
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء كتابة السعر',
       });
-    }
 
-    if (!selectedLocation) {
+    if (!selectedLocation)
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اضافة موقع العقار',
       });
-    }
 
     let s = {...this.state.realEstate};
     // selectedSides.length > 0 && _.merge(s, {selectedSides})
@@ -494,7 +480,7 @@ class firstStepAddAqar extends React.Component {
 
                     <Text style={[Fonts.style.normal, {marginEnd: 10}]}>
                       {' '}
-                      {'علي السوم'}{' '}
+                      {' السعر غير محدد'}{' '}
                     </Text>
                   </View>
                 )}
@@ -601,18 +587,18 @@ class firstStepAddAqar extends React.Component {
             />
           )}
 
-          {/* <Modal
+          {/* <Modal 
                         isVisible={showSucessModal}
                         style={{backgroundColor: '#fff', flex:1, backgroundColor:'#fff', justifyContent:'center', alignItems:'center'}}
                         backdropOpacity={1}
                         backdropColor={'#fff'}
                     >
-
+                    
                         <Image source={Images.registrationFinishImage}  />
-
+    
                         <Text style={[Fonts.style.boldText, {fontSize: 18, marginTop: 25}]}>تم إضافة العقار بنجاح</Text>
                         <Text style={[Fonts.style.normal, {fontSize: 14, marginTop: 19, marginBottom: 50, color: Colors.darkSlateBlue, textAlign: 'center' , fontWeight: 'normal' }]}>رائع ! يمكنك الاطلاع على قائمة العقارات الخاصة بك من خلال الذهاب الي قسم عقاراتي</Text>
-
+    
                         <Button  buttonText={'قائمة عقاراتي'} onPress={()=>this.nav('myRealEstate')} />
                         <Button textPropsStyle={{color:'#000'}} containerStyle={{backgroundColor: '#fff', marginTop: 29}} buttonText={'الرئيسية'} onPress={()=>this.nav('home')} />
                     </Modal> */}

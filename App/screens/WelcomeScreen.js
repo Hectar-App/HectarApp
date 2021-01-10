@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Image, Animated, Linking} from 'react-native';
+import {View, Image, Animated, NativeModules, Linking} from 'react-native';
+import HectarIcon from '../assets/imgs/svgImagesComponents/NewHectarIcon.1';
+import NewHectarIcon from '../assets/imgs/svgImagesComponents/newHectarIcon';
 
 import OneSignal from 'react-native-onesignal';
 import {StackActions, NavigationActions} from 'react-navigation';

@@ -1,206 +1,233 @@
-import {call, put} from 'redux-saga/effects';
-import RealEstatACtion from '../Redux/RealEstateRedux';
-import {path} from 'ramda';
+import { call, put } from 'redux-saga/effects'
+import RealEstatACtion from '../Redux/RealEstateRedux'
+import { path } from 'ramda'
 
-export function* getAddingRealEstateInfo(api, action) {
-  let response = yield call(api.getRealEstateAddingInfo);
+export function * getAddingRealEstateInfo (api, action) {
+  let response = yield call(api.getRealEstateAddingInfo)
 
-  console.log(response);
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
+    const respo = path(["data"], response);
 
     // do data conversion here if needed
-    yield put(RealEstatACtion.getAddingAqarInfoSucess(respo));
+    yield put(RealEstatACtion.getAddingAqarInfoSucess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getAddingAqarInfoFailed(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getAddingAqarInfoFailed(error))
   }
 }
 
-export function* addRealEstate(api, action) {
-  const {realEstateToAdd, token} = action;
 
-  console.log('hello adding real estate');
-  let response = yield call(api.addRealEstate, realEstateToAdd, token);
+export function * addRealEstate (api, action) {
 
-  console.log('hello adding real estate', response);
+  const {realEstateToAdd, token} = action
+
+  console.log('hello adding real estate')
+  let response = yield call(api.addRealEstate, realEstateToAdd, token )
+
+  console.log('hello adding real estate',response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
+    const respo = path(["data"], response);
 
     // do data conversion here if needed
-    yield put(RealEstatACtion.addRealEstateSuccess(respo));
+    yield put(RealEstatACtion.addRealEstateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.addRealEstateFaild(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.addRealEstateFaild(error))
   }
 }
 
-export function* getRealEstate(api, action) {
-  const {data} = action;
 
-  let response = yield call(api.getRealEstate, data);
+export function * getRealEstate (api, action) {
 
-  console.log(response);
+  const {data} = action
+
+  let response = yield call(api.getRealEstate, data)
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
+    const respo = path(["data"], response);
     // do data conversion here if needed
-    yield put(RealEstatACtion.getRealEstateSuccess(respo));
+    yield put(RealEstatACtion.getRealEstateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getRealEstateFaild(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getRealEstateFaild(error))
   }
 }
 
-export function* getUserRealEstate(api, action) {
-  const {_id, pageNumber} = action;
-  console.log(_id, pageNumber);
 
-  let response = yield call(api.getUserRealEstate, _id, pageNumber);
+export function * getUserRealEstate (api, action) {
 
-  console.log(response);
+  const {_id, pageNumber} = action
+  console.log(_id, pageNumber)
+
+  let response = yield call(api.getUserRealEstate, _id, pageNumber )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-
-    // do data conversion here if needed
-    yield put(RealEstatACtion.getUserRealEstateSuccess(respo));
-  } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getUserRealEstateFaild(error));
-  }
-}
-
-export function* checkRealEstate(api, action) {
-  const {realEstateId, token} = action;
-
-  let response = yield call(api.checkRealEstateLike, realEstateId, token);
-
-  console.log(response);
-  const res = path(['data'], response);
-  yield put(RealEstatACtion.checkRealEstateResult(res));
-}
-
-export function* likeRealEstate(api, action) {
-  const {realEstateId, state, token} = action;
-
-  let response = yield call(api.addToLike, realEstateId, state, token);
-
-  console.log(response);
-  // handle response
-  if (response && response.ok) {
-    const respo = path(['data'], response);
+    const respo = path(["data"], response);
 
     // do data conversion here if needed
-    yield put(RealEstatACtion.likeRealEstateSuccess(respo));
+    yield put(RealEstatACtion.getUserRealEstateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.likeRealEstateError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getUserRealEstateFaild(error))
   }
 }
 
-export function* addShow(api, action) {
-  const {realEstateId} = action;
+export function * checkRealEstate (api, action) {
 
-  let response = yield call(api.addShow, realEstateId);
+  const {realEstateId, token } = action
 
-  console.log(response);
+  let response = yield call(api.checkRealEstateLike, realEstateId, token )
+
+  console.log(response)
+  const res = path(["data"], response);
+  yield put(RealEstatACtion.checkRealEstateResult(res))
 }
 
-export function* rateRealEstate(api, action) {
-  const {realEstateId, stars, reason, token} = action;
 
-  let response = yield call(api.addRating, realEstateId, stars, reason, token);
 
-  console.log(response);
+export function * likeRealEstate (api, action) {
+
+  const {realEstateId, state, token} = action
+
+  let response = yield call(api.addToLike, realEstateId, state, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.rateRealEstateSuccess(respo));
+    const respo = path(["data"], response);
+
+    // do data conversion here if needed
+    yield put(RealEstatACtion.likeRealEstateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.rateRealEstateError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.likeRealEstateError(error))
   }
 }
 
-export function* addRequest(api, action) {
-  const {realEstateId, request, token} = action;
 
-  let response = yield call(api.addRequest, realEstateId, request, token);
+export function * addShow (api, action) {
 
-  console.log(response);
+  const {realEstateId} = action
+
+  let response = yield call(api.addShow, realEstateId )
+
+  console.log(response)
+
+}
+
+
+export function * rateRealEstate (api, action) {
+
+  const {realEstateId, stars, reason, token} = action
+
+  let response = yield call(api.addRating, realEstateId, stars, reason, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.addRequestSuccess(respo));
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.rateRealEstateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.addRequestError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.rateRealEstateError(error))
   }
 }
 
-export function* changeRequestState(api, action) {
-  const {_id, status, token} = action;
 
-  let response = yield call(api.changeRequestState, _id, status, token);
 
-  console.log(response);
+export function * addRequest (api, action) {
+
+  const {realEstateId, request, token} = action
+
+  let response = yield call(api.addRequest, realEstateId, request, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.changeRequestStateSuccess(respo));
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.addRequestSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.changeRequestStateError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.addRequestError(error))
   }
 }
 
-export function* getUserRequests(api, action) {
-  const {token} = action;
 
-  let response = yield call(api.getUserRequests, token);
 
-  console.log(response);
+export function * changeRequestState (api, action) {
+
+  const {_id, status, token} = action
+
+  let response = yield call(api.changeRequestState, _id, status, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.getUserRequestsSuccess(respo));
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.changeRequestStateSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getUserRequestsError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.changeRequestStateError(error))
   }
 }
 
-export function* getUserNotifications(api, action) {
-  const {token} = action;
 
-  let response = yield call(api.getUserNotification, token);
+export function * getUserRequests (api, action) {
 
-  console.log(response);
+  const {token} = action
+
+  let response = yield call(api.getUserRequests, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.getUserNotificationSuccess(respo));
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.getUserRequestsSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getUserNotificationError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getUserRequestsError(error))
   }
 }
 
-export function* getRealEstateDetails(api, action) {
-  const {_id} = action;
 
-  let response = yield call(api.getRealEstateDetails, _id);
+export function * getUserNotifications (api, action) {
 
-  console.log(response);
+  const {token} = action
+
+  let response = yield call(api.getUserNotification, token )
+
+  console.log(response)
   // handle response
   if (response && response.ok) {
-    const respo = path(['data'], response);
-    yield put(RealEstatACtion.getRealEstateDetailsSuccess(respo));
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.getUserNotificationSuccess(respo))
   } else {
-    const error = path(['data'], response);
-    yield put(RealEstatACtion.getRealEstateDetailsError(error));
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getUserNotificationError(error))
+  }
+}
+
+
+export function * getRealEstateDetails (api, action) {
+
+  const {_id} = action
+
+  let response = yield call(api.getRealEstateDetails, _id )
+
+  console.log(response)
+  // handle response
+  if (response && response.ok) {
+    const respo = path(["data"], response);
+    yield put(RealEstatACtion.getRealEstateDetailsSuccess(respo))
+  } else {
+    const error = path(["data"], response);
+    yield put(RealEstatACtion.getRealEstateDetailsError(error))
   }
 }

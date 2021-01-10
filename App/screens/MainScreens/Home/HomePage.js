@@ -52,7 +52,7 @@ import _ from 'lodash';
 import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
 
-import ListFilter from '../../../Component/filters/listFilter';
+import ListFilter from '../../../Component/listFilter';
 
 import {DotIndicator} from 'react-native-indicators';
 
@@ -223,8 +223,16 @@ class HomePage extends React.Component {
     this.setState({realEstateListData: this.state.realestate});
 
     this.startTestAnimatio();
+    // this.setState( s => ({mapView: !s.mapView}))
     this.startMoveButton();
+    // setStartAnimation(true)
   };
+
+  // componentWillMount(){
+  //     this.setState({loading: true })
+  //     console.log('This user position', this.state.position)
+  //     this.props.getRealEstate(1)
+  // }
 
   async checkNet() {
     return NetInfo.fetch();
@@ -256,7 +264,7 @@ class HomePage extends React.Component {
         //     this.startTestAnimatio()
         //     this.startMoveButton()
         // }
-        if (this.props.filterData && this.props.filterData.type) {
+        if (this.props.filterData && this.props.filterData.type)
           this.setState({
             selectedType:
               this.props.filterData && this.props.filterData.type
@@ -267,7 +275,6 @@ class HomePage extends React.Component {
                 ? this.props.filterData.status
                 : null,
           });
-        }
         // this.mapRef.animateToRegion
         this.doReq();
 
@@ -339,6 +346,7 @@ class HomePage extends React.Component {
             latitudeDelta: 0.1,
             longitudeDelta: 0.001,
           });
+          // this.props.getRealEstate(1, res.coords.latitude, res.coords.longitude)
         },
         err => {
           Linking.openSettings();
@@ -357,13 +365,12 @@ class HomePage extends React.Component {
   };
 
   handleFavPress = () => {
-    if (!this.props.user || !this.props.user.token) {
+    if (!this.props.user || !this.props.user.token)
       return this.setState({
         showErrorMessage: true,
         green: false,
         errorMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
-    }
 
     // return alert('الرجاء تسجيل الدخول للاستفادة')
     this.props.checker
@@ -421,20 +428,35 @@ class HomePage extends React.Component {
     }
   }
 
-  handleFilterMethod = filterType => {
+  handleFilterMethod = i => {
+    console.log('type', this.state.selecedFilter, 'method', i);
+    let arr = this.state.realEstateListData || [];
+
+    // if(i === 1){
+    //     arr.sort((a, b) => this.state.selecedFilter === 2? b.price - a.price:  b.space - a.space)
+    // }else if(i === 2){
+    //     arr.sort((a, b) => this.state.selecedFilter === 2? a.price - b.price:  a.space - b.space)
+    // }
+
+    switch (i) {
+      case 1:
+        arr.sort((a, b) => b.price - a.price);
+        break;
+
+      case 2:
+        arr.sort((a, b) => a.price - b.price);
+        break;
+
+      default:
+        arr.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        break;
+    }
+
+    console.log('arr', arr);
     this.setState({
+      realEstateListData: arr,
       showFilterList: false,
-      selectedMethod: filterType,
-    });
-    this.props.getRealEstate({
-      pageNumber: this.state.pageNumber,
-      pageSize: this.state.smallIcon ? 120 : 50,
-      sort: filterType,
-      type:
-        this.state.selectedType &&
-        this.state.selectedType._id !== 1 &&
-        this.state.selectedType,
-      status: this.state.selectedStatus && this.state.selectedStatus,
+      selectedMethod: i,
     });
   };
 
@@ -443,6 +465,7 @@ class HomePage extends React.Component {
   };
 
   handleCardPress = v => {
+    // console.log('Item', v)
     this.props.navigation.navigate('RealEstateDetail', {realEstate: v});
   };
 
@@ -651,7 +674,7 @@ class HomePage extends React.Component {
     // }else{
     this.setState({selectedStatus: item._id === 1 ? null : item});
     // }
-    if (!this.state.mapView) {
+    if (!this.state.mapView)
       return this.checkNet().then(res => {
         if (!res.isConnected) {
           this.setState({
@@ -683,7 +706,6 @@ class HomePage extends React.Component {
           console.log(item, 'hello shit');
         }
       });
-    }
     // return
 
     this.doReq();
@@ -749,6 +771,10 @@ class HomePage extends React.Component {
     const typesWidth = this.state.Animation.typesList.interpolate({
       inputRange: [0, 1],
       outputRange: [0, Metrics.screenWidth - 5],
+    });
+    const typesPosition = this.state.Animation.typesList.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, Platform.OS === 'android' ? 60 : 170],
     });
     const typesPositionHor = this.state.Animation.typesList.interpolate({
       inputRange: [0, 1],
@@ -908,8 +934,7 @@ class HomePage extends React.Component {
                 backgroundColor: '#fff',
                 borderRadius: 20,
                 transform: [{scale: filterScale}],
-              }}
-            />
+              }}></Animated.View>
           )}
 
           {this.state.loading && (
@@ -1043,7 +1068,7 @@ class HomePage extends React.Component {
               {this.state.mapReady &&
                 realestate &&
                 (realestate || []).map(item => {
-                  if (this.state.smallIcon) {
+                  if (this.state.smallIcon)
                     return (
                       <MarkerSmall
                         smallIcon={true}
@@ -1059,7 +1084,6 @@ class HomePage extends React.Component {
                         showDetailForSmallIcon={false}
                       />
                     );
-                  }
                   return (
                     <Marker
                       smallIcon={false && this.state.smallIcon}
@@ -1104,6 +1128,7 @@ class HomePage extends React.Component {
                       backgroundColor: Colors.darkSlateBlue,
                       alignItems: 'center',
                       justifyContent: 'center',
+                      alignSelf: 'center',
                       alignSelf: 'flex-end',
                       marginTop: 50,
                       marginEnd: 16,
@@ -1133,6 +1158,7 @@ class HomePage extends React.Component {
                       backgroundColor: Colors.darkSeafoamGreen,
                       alignItems: 'center',
                       justifyContent: 'center',
+                      alignSelf: 'center',
                       alignSelf: 'flex-end',
                       marginTop: 50,
                       marginEnd: 16,
@@ -1183,16 +1209,9 @@ class HomePage extends React.Component {
 // export default HomePage
 
 const mapDispatchToProps = dispatch => ({
-  getRealEstate: (pageNumber, lat, long, maxPrice, minPrice, sort) =>
+  getRealEstate: (pageNumber, lat, long, maxPrice, minPrice) =>
     dispatch(
-      RealEstateAction.getRealEstate(
-        pageNumber,
-        lat,
-        long,
-        maxPrice,
-        minPrice,
-        sort,
-      ),
+      RealEstateAction.getRealEstate(pageNumber, lat, long, maxPrice, minPrice),
     ),
   checkRealEstateInFav: realEstateId =>
     dispatch(FavoriteAction.checkFavourte(realEstateId)),
@@ -1239,6 +1258,16 @@ const styles = StyleSheet.create({
   circleButton:
     // ApplicationStyles.mapButton,
     {
+      // top: startAnimation? Animation.interpolate({inputRange: [0, 1], outputRange: [201, Metrics.screenHeight - 160 ]}): 445,
+      // top: Metrics.screenHeight - 160,
+      // top: 259,
+      shadowColor: 'rgba(0, 0, 0, 0.16)',
+      shadowOffset: {
+        width: -6,
+        height: 0,
+      },
+      shadowRadius: 6,
+      shadowOpacity: 1,
       width: 44,
       height: 44,
       backgroundColor: Colors.darkSeafoamGreen,
