@@ -1,7 +1,5 @@
 import React from 'react';
 import {View, Image, Animated, NativeModules, Linking} from 'react-native';
-import HectarIcon from '../assets/imgs/svgImagesComponents/NewHectarIcon.1';
-import NewHectarIcon from '../assets/imgs/svgImagesComponents/newHectarIcon';
 
 import OneSignal from 'react-native-onesignal';
 import {StackActions, NavigationActions} from 'react-navigation';
@@ -9,9 +7,6 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import {Metrics, Images} from '../Themes';
 import {connect} from 'react-redux';
 import UserAction from '../Redux/UserRedux';
-
-import analytics from '@react-native-firebase/analytics';
-import firebase from '@react-native-firebase/app'
 
 class App extends React.Component {
   constructor(properties) {
@@ -61,13 +56,15 @@ class App extends React.Component {
     //   item: 'work',
     //   id: 252393119
     // })
-    
+
     // await analytics().logSelectContent({
     //   content_type: 'lksdlk ',
     // })
 
     setTimeout(() => {
-      if (this.state.fromURL) return;
+      if (this.state.fromURL) {
+        return;
+      }
 
       if (this.props.user) {
         return this.props.navigation.dispatch(
