@@ -45,12 +45,13 @@ class RegisterMobileStep extends React.Component {
 
   handleNextStep = () => {
     if (
-      this.state.phoneNumber.length < 9 ||
-      this.state.phoneNumber.replace(/\s/g, '').length < 9
-    )
-      return alert('الرجاء ادخال رقم الجوال');
+      this.state.phoneNumber.length !== 9 ||
+      this.state.phoneNumber.replace(/\s/g, '').length !== 9
+    ) {
+      return alert('الرجاء ادخال رقم الجوال بدون صفر في البداية');
+    }
     // console.log('HHH', this.state.phoneNumber)
-    this.props.checkNumber(this.parseArabic(this.state.phoneNumber));
+    this.props.checkNumber(`+996${this.parseArabic(this.state.phoneNumber)}`);
     this.setState({loading: true});
     // props.navigation.navigate('RegistrationConfirmationPhone')
   };
@@ -60,7 +61,7 @@ class RegisterMobileStep extends React.Component {
       console.log('Hello Sucess', nextProps.checkNuberSucess);
       this.setState({loading: false});
       this.props.navigation.navigate('RegistrationConfirmationPhone', {
-        phoneNumber: this.state.phoneNumber,
+        phoneNumber: `+996${this.parseArabic(this.state.phoneNumber)}`,
         code: nextProps.checkNuberSucess.confirmationCode,
       });
     }

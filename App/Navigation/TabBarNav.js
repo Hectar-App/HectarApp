@@ -117,7 +117,7 @@ TabBarNav = props => {
           }}
         >
 
-          <View 
+          <View
           style={[styles.circleStyle]}
         />
           <View style={[styles.circleStyle, {bottom:0, right:0}]} />
@@ -165,7 +165,14 @@ TabBarNav = props => {
               pose={isRouteActive ? 'active' : 'inactive'}>
               {renderIcon({route, focused: isRouteActive, tintColor})}
             </Scaler>
-            {/* <Text>{getLabelText({ route })}</Text> */}
+            <Text
+              style={{
+                marginTop: 5,
+                fontFamily: 'TheMixArabic',
+                color: tintColor,
+              }}>
+              {getLabelText({route})}
+            </Text>
           </TouchableOpacity>
         );
       })}

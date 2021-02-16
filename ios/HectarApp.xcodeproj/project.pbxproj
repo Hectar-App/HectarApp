@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* HectarAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HectarAppTests.m */; };
-		028E853459784857B1153C98 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDACD122625E4A4790390492 /* Entypo.ttf */; };
-		0DC53574E30B424AB397BF67 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F385095C6B004D98B58B1849 /* Foundation.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -22,27 +20,12 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* HectarAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HectarAppTests.m */; };
-		4D261100BCD6437DBE13EF0F /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E25605FD5544D5DAE2EFA2B /* Octicons.ttf */; };
-		56184FB17EF24CFBB4D9598E /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F057B401F3E94FC69AA88EB2 /* FontAwesome.ttf */; };
-		5DB4A6DEE3634641B5C38F55 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 69BF53F78D1D4214B64D9BF3 /* AntDesign.ttf */; };
-		63A7A016CC474293A15516B6 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49D2DDB2E7394DFDB984342F /* FontAwesome5_Brands.ttf */; };
-		66A7DCA6362C4896A9EB41DE /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE0A28999B9A4134A2595E70 /* Zocial.ttf */; };
-		6B706AB9EC5744D488AA26A3 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB90D588B5EE419EA099D55C /* Fontisto.ttf */; };
-		8CD676AA6123498180D403DC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D8F62D0D7014AA7942DAEF2 /* EvilIcons.ttf */; };
-		922269A465EE483E8C10FAE1 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 452DB6B9E4A64C54B0F8BB1B /* SimpleLineIcons.ttf */; };
-		995910F0C50D4189B8C913BF /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94198D9B0E4C4EA2A6228C6E /* FontAwesome5_Regular.ttf */; };
 		999323669F06FD3B383B07CE /* libPods-HectarApp-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B703D35938676A35EB0CDC0 /* libPods-HectarApp-OneSignalNotificationServiceExtension.a */; };
-		ABACFBDDFFB14BD8B0B828E1 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91430677BC3148209AA9C193 /* FontAwesome5_Solid.ttf */; };
 		ACD9BB1BB0D94ED38F1FC8AA /* hectar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6BF1F7AC86F4407F9D4812BD /* hectar.ttf */; };
 		B82FD1A9255C1C5B001D72AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B82FD1A8255C1C5B001D72AE /* GoogleService-Info.plist */; };
-		B8450A9A2434F1A600D99844 /* hectar.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8450A992434F1A200D99844 /* hectar.ttf */; };
 		B85A2A4D240EBE7A00AF5B09 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = B85A2A4C240EBE7A00AF5B09 /* NotificationService.m */; };
 		B85A2A51240EBE7A00AF5B09 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B85A2A49240EBE7A00AF5B09 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CDF783400E1D48F380C5D75F /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25AEBF6C5DBC4DE1AB690666 /* Feather.ttf */; };
-		D6320F029092475BA04806EA /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A13D46B5F0044F16AC25520F /* Ionicons.ttf */; };
-		D89E62D1CDED4CA19E943C01 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59F671320FE045B0838866EF /* MaterialCommunityIcons.ttf */; };
 		DBC0BFC59AC90877271324C9 /* libPods-HectarAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8CB98E4E3250F9A4A84449 /* libPods-HectarAppTests.a */; };
-		DFB1C602F564413A8B3F7B7F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D2A98A84CE649A293CF911D /* MaterialIcons.ttf */; };
 		FE8D34DDAB49B965C4E8DAD3 /* libPods-HectarApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C911F57DBB77EE7A191F9 /* libPods-HectarApp-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -514,23 +497,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				5DB4A6DEE3634641B5C38F55 /* AntDesign.ttf in Resources */,
-				028E853459784857B1153C98 /* Entypo.ttf in Resources */,
-				8CD676AA6123498180D403DC /* EvilIcons.ttf in Resources */,
-				CDF783400E1D48F380C5D75F /* Feather.ttf in Resources */,
-				56184FB17EF24CFBB4D9598E /* FontAwesome.ttf in Resources */,
-				63A7A016CC474293A15516B6 /* FontAwesome5_Brands.ttf in Resources */,
-				995910F0C50D4189B8C913BF /* FontAwesome5_Regular.ttf in Resources */,
-				ABACFBDDFFB14BD8B0B828E1 /* FontAwesome5_Solid.ttf in Resources */,
-				6B706AB9EC5744D488AA26A3 /* Fontisto.ttf in Resources */,
-				0DC53574E30B424AB397BF67 /* Foundation.ttf in Resources */,
-				D6320F029092475BA04806EA /* Ionicons.ttf in Resources */,
-				D89E62D1CDED4CA19E943C01 /* MaterialCommunityIcons.ttf in Resources */,
-				DFB1C602F564413A8B3F7B7F /* MaterialIcons.ttf in Resources */,
-				B8450A9A2434F1A600D99844 /* hectar.ttf in Resources */,
-				4D261100BCD6437DBE13EF0F /* Octicons.ttf in Resources */,
-				922269A465EE483E8C10FAE1 /* SimpleLineIcons.ttf in Resources */,
-				66A7DCA6362C4896A9EB41DE /* Zocial.ttf in Resources */,
 				1CA16790DB1148FBB7BAA5D5 /* TheMixArabic-Bold.otf in Resources */,
 				25F79983625A4AF084D139FD /* TheMixArabic-Plain.otf in Resources */,
 				ACD9BB1BB0D94ED38F1FC8AA /* hectar.ttf in Resources */,

@@ -1,7 +1,8 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce';
 
-const apiURL = 'http://167.172.149.158:8080/api';
+const apiURL = 'https://devbackend.devstagging.online:9090/api';
+// const apiURL = 'http://167.172.149.158:8080/api';
 // const apiURL = 'https://dev.hectar.io/api/'
 
 const create = (baseURL = apiURL) => {
@@ -25,10 +26,10 @@ const create = (baseURL = apiURL) => {
   });
 
   const login = (phone, pass, uuid) =>
-    api.post(`loginUser`, {phoneNumber: phone, password: pass, uuid});
-  const checkPhone = phoneNumber => api.post(`checkUser`, {phoneNumber});
+    api.post('loginUser', {phoneNumber: phone, password: pass, uuid});
+  const checkPhone = phoneNumber => api.post('checkUser', {phoneNumber});
   const verifyPhone = (phoneNumber, confirmationCode) =>
-    api.post(`confirmRegister`, {phoneNumber, confirmationCode});
+    api.post('confirmRegister', {phoneNumber, confirmationCode});
   const registerUser = (name, phone, password, userType, email) =>
     api.post(
       'addUser',
@@ -36,7 +37,7 @@ const create = (baseURL = apiURL) => {
         ? {name, phoneNumber: phone, password, userType, email}
         : {name, phoneNumber: phone, password, userType},
     );
-  const userTypes = () => api.get(`userTypes/getUserTypes`);
+  const userTypes = () => api.get('userTypes/getUserTypes');
   const editUser = user => {
     // name, phone, prevPassword, password, userType, email, token
     api.setHeaders({
@@ -63,14 +64,14 @@ const create = (baseURL = apiURL) => {
             password,
           };
 
-    return api.post(`updateUser`, ar);
+    return api.post('updateUser', ar);
   };
   const forgetPassword = phoneNumber =>
-    api.post(`forgetPassword`, {phoneNumber});
+    api.post('forgetPassword', {phoneNumber});
   const forgetPasswordVerifyPhone = (phoneNumber, confirmationCode) =>
-    api.post(`confirmForgetCode`, {phoneNumber, confirmationCode});
+    api.post('confirmForgetCode', {phoneNumber, confirmationCode});
   const resetPassword = (phoneNumber, confirmationCode, password) =>
-    api.post(`resetPassword`, {phoneNumber, confirmationCode, password});
+    api.post('resetPassword', {phoneNumber, confirmationCode, password});
 
   const getRealEstateAddingInfo = () => api.get('realEstate/AddAqarInfo');
   const addRealEstate = (realEstateToAdd, token) => {
@@ -208,34 +209,49 @@ const create = (baseURL = apiURL) => {
 
     console.log('data before sened=> ', data);
     let link = `realEstate/getRealEstateFull?pageSize=${pageSize || 50}`;
-    if (pageNumber) link = link + `&pageNumber=${pageNumber}`;
+    if (pageNumber) {
+      link = link + `&pageNumber=${pageNumber}`;
+    }
 
-    if (lat1 && long1 && lat2 && long2)
+    if (lat1 && long1 && lat2 && long2) {
       link = link + `&lat1=${lat1}&long1=${long1}&lat2=${lat2}&long2=${long2}`;
+    }
 
-    if (numberOfRooms && numberOfRooms > 0)
+    if (numberOfRooms && numberOfRooms > 0) {
       link = link + `&numberOfRooms=${numberOfRooms}`;
+    }
 
-    if (numberOfLivingRoom && numberOfLivingRoom > 0)
+    if (numberOfLivingRoom && numberOfLivingRoom > 0) {
       link = link + `&numberOfLivingRoom=${numberOfLivingRoom}`;
+    }
 
-    if (numberOfBathRoom && numberOfBathRoom > 0)
+    if (numberOfBathRoom && numberOfBathRoom > 0) {
       link = link + `&numberOfBathRoom=${numberOfBathRoom}`;
+    }
 
-    if (numberOfUnit && numberOfUnit > 0)
+    if (numberOfUnit && numberOfUnit > 0) {
       link = link + `&numberOfUnit=${numberOfUnit}`;
+    }
 
-    if (payType && payType._id) link = link + `&payType=${payType._id}`;
+    if (payType && payType._id) {
+      link = link + `&payType=${payType._id}`;
+    }
 
-    if (maxPrice && minPrice)
+    if (maxPrice && minPrice) {
       link = link + `&maxPrice=${maxPrice}&minPrice=${minPrice}`;
+    }
 
-    if (maxSpace && minSpace)
+    if (maxSpace && minSpace) {
       link = link + `&maxSpace=${maxSpace}&minSpace=${minSpace}`;
+    }
 
-    if (status && status._id) link = link + `&status=${status._id}`;
+    if (status && status._id) {
+      link = link + `&status=${status._id}`;
+    }
 
-    if (type && type._id) link = link + `&type=${type._id}`;
+    if (type && type._id) {
+      link = link + `&type=${type._id}`;
+    }
 
     return api.get(link);
   };
@@ -403,14 +419,14 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`addToFav`, {realEstate: realEstate});
+    return api.post('addToFav', {realEstate: realEstate});
   };
   const removeFromFav = (realEstate, token) => {
     api.setHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`deleteFromFav`, {id: realEstate});
+    return api.post('deleteFromFav', {id: realEstate});
   };
 
   const getUserFav = token => {
@@ -418,7 +434,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.get(`getUserFav`);
+    return api.get('getUserFav');
   };
 
   const getFAQs = () => api.get('getFAQs');
@@ -430,7 +446,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`addUserQuestion`, content);
+    return api.post('addUserQuestion', content);
   };
 
   const checkRealEstateLike = (realEstateId, token) => {
@@ -438,7 +454,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/checkLike`, {_id: realEstateId});
+    return api.post('realEstate/checkLike', {_id: realEstateId});
   };
 
   const addToLike = (realEstateId, state, token) => {
@@ -446,7 +462,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/addLike`, {_id: realEstateId, state});
+    return api.post('realEstate/addLike', {_id: realEstateId, state});
   };
 
   const addShow = (realEstateId, token) => {
@@ -454,7 +470,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/show`, {_id: realEstateId});
+    return api.post('realEstate/show', {_id: realEstateId});
   };
 
   const addRating = (realEstateId, stars, reason, token) => {
@@ -462,7 +478,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/rateRealEstate`, {
+    return api.post('realEstate/rateRealEstate', {
       _id: realEstateId,
       stars,
       reason,
@@ -474,7 +490,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/addRequest`, {_id: realEstateId, request});
+    return api.post('realEstate/addRequest', {_id: realEstateId, request});
   };
 
   const changeRequestState = (_id, status, token) => {
@@ -482,7 +498,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/changeState`, {_id, status});
+    return api.post('realEstate/changeState', {_id, status});
   };
 
   const getUserRequests = token => {
@@ -490,7 +506,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.get(`realEstate/userRequests`);
+    return api.get('realEstate/userRequests');
   };
 
   const getUserNotificationStatus = token => {
@@ -498,7 +514,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.get(`realEstate/userNotificationsState`);
+    return api.get('realEstate/userNotificationsState');
   };
 
   const getUserNotification = token => {
@@ -506,7 +522,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.get(`realEstate/userNotifications`);
+    return api.get('realEstate/userNotifications');
   };
 
   const setUserNotificationStatus = token => {
@@ -514,7 +530,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.get(`realEstate/setNotificationsState`);
+    return api.get('realEstate/setNotificationsState');
   };
 
   const setOneNotification = (_id, deleteFlag, token) => {
@@ -522,7 +538,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post(`realEstate/setNotificationState`, {
+    return api.post('realEstate/setNotificationState', {
       _id,
       delete: deleteFlag,
     });
@@ -536,6 +552,14 @@ const create = (baseURL = apiURL) => {
     return api.get(`realEstate?id=${_id}`);
   };
 
+  const getOffices = (lat, lng, radius) => {
+    api.setHeaders({
+      'Content-Type': 'application/json',
+    });
+    return api.get(
+      `get-realestate-agents?lat=${lat}&lng=${lng}&radius=${radius}`,
+    );
+  };
   return {
     // a list of the API functions from step 2
     login,
@@ -578,6 +602,7 @@ const create = (baseURL = apiURL) => {
     suggestionRealEstate,
     getRealEstateDetails,
     setOneNotification,
+    getOffices,
   };
 };
 

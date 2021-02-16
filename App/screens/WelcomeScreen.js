@@ -8,6 +8,9 @@ import {Metrics, Images} from '../Themes';
 import {connect} from 'react-redux';
 import UserAction from '../Redux/UserRedux';
 
+import analytics from '@react-native-firebase/analytics';
+import firebase from '@react-native-firebase/app';
+
 class App extends React.Component {
   constructor(properties) {
     super(properties);

@@ -1,16 +1,9 @@
 import React from 'react';
 import {Image} from 'react-native';
-import {
-  createSwitchNavigator,
-  createDrawerNavigator,
-  createAppContainer,
-} from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
 
 import {createStackNavigator} from 'react-navigation-stack';
-import {
-  createBottomTabNavigator,
-  createMaterialTopTabNavigator,
-} from 'react-navigation-tabs';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {
   createMaterialBottomTabNavigator,
   NavigationMaterialBottomTabConfig,
@@ -41,8 +34,11 @@ import FilterPage from '../screens/MainScreens/Home/FilterPage';
 import RealEstateDetail from '../screens/MainScreens/Home/realestateDetail.1';
 import OwnerRealEstates from '../screens/MainScreens/Home/ownerRealEstate';
 
+// Offices
+import OfficesPage from '../screens/MainScreens/Offices/OfficesPage';
+
 // Favorate
-import FavoratePage from '../screens/MainScreens/Favorate/FavoratePage';
+import FavoratePage from '../screens/MainScreens/Profile/Favorate';
 
 // AddAqar
 import FirstStepAddAqar from '../screens/MainScreens/AddingAqar/firstStepAddAqar';
@@ -53,7 +49,7 @@ import ForthStepAddAqar from '../screens/MainScreens/AddingAqar/forthStepAddingA
 import FifthStepAddAqar from '../screens/MainScreens/AddingAqar/fifthStepAddingAqar';
 
 //Notification
-import NotificationPage from '../screens/MainScreens/Notification/NotificationPage';
+import NotificationPage from '../screens/MainScreens/Profile/Notification';
 
 //Profile
 import Profile from '../screens/MainScreens/Profile/ProfilePage';
@@ -141,22 +137,25 @@ HomeStackNav.navigationOptions = ({navigation}) => {
   return navigationOptions;
 };
 
-const FavorateStackNav = createStackNavigator(
+const OfficesStackNav = createStackNavigator(
   {
-    FavoratePage: {screen: FavoratePage},
-    RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
-    OwnerRealEstates: {screen: OwnerRealEstates},
+    OfficesPage: {screen: OfficesPage},
     ...x,
   },
   {
     headerMode: 'none',
+    transitionConfig: transConfig,
   },
 );
 
-FavorateStackNav.navigationOptions = ({navigation}) => {
+HomeStackNav.navigationOptions = ({navigation}) => {
   let {routeName} = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
-  if (routeName === 'RealEstateDetail' || routeName === 'OwnerRealEstates') {
+  if (
+    routeName === 'FilterPage' ||
+    routeName === 'RealEstateDetail' ||
+    routeName === 'OwnerRealEstates'
+  ) {
     navigationOptions.tabBarVisible = false;
   }
   return navigationOptions;
@@ -220,6 +219,7 @@ const ProfileStackNav = createStackNavigator(
     RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
     OwnerRealEstates: {screen: OwnerRealEstates},
     Request: {screen: Request},
+    FavoratePage: {screen: FavoratePage},
     ...x,
   },
   {
@@ -249,6 +249,9 @@ const bottomTab = createBottomTabNavigator(
     HomeStackNav: {
       screen: HomeStackNav,
       navigationOptions: {
+        tabBarLabel: 'العقارات',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({focused}) => (
           <Image
             source={
@@ -260,14 +263,19 @@ const bottomTab = createBottomTabNavigator(
         ),
       },
     },
-    FavorateStackNav: {
-      screen: FavorateStackNav,
+    OfficesStackNav: {
+      screen: OfficesStackNav,
       navigationOptions: {
+        tabBarLabel: 'المكاتب',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({focused}) => (
-          <CustomIcon
-            name={focused ? 'bookmark2' : 'bookmark2-o'}
-            size={22}
-            color={focused ? Colors.darkSeafoamGreen : Colors.lightBlueGrey}
+          <Image
+            source={
+              focused
+                ? require('../assets/imgs/office-building-active.png')
+                : require('../assets/imgs/office-building.png')
+            }
           />
         ),
       },
@@ -275,6 +283,9 @@ const bottomTab = createBottomTabNavigator(
     AddAqarStackNav: {
       screen: AddAqarStackNav,
       navigationOptions: {
+        tabBarLabel: 'إضافة عقار',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({focused}) => (
           <Image
             source={
@@ -286,8 +297,8 @@ const bottomTab = createBottomTabNavigator(
         ),
       },
     },
-    NotificationStackNav: {
-      screen: NotificationStackNav,
+    /* BarCodeStackNav: {
+      screen: BarCodeStackNav,
       navigationOptions: {
         tabBarIcon: ({focused}) => (
           <Image
@@ -299,10 +310,13 @@ const bottomTab = createBottomTabNavigator(
           />
         ),
       },
-    },
+    },*/
     ProfileStackNav: {
       screen: ProfileStackNav,
       navigationOptions: {
+        tabBarLabel: 'الإعدادات',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({focused}) => (
           <Image
             source={
@@ -341,7 +355,7 @@ const AuthScreensWithFade = createStackNavigator(
   {
     // initialRouteName:'bottomTab',
     headerMode: 'none',
-    transitionConfig: transConfig
+    transitionConfig: transConfig,
   },
 );
 

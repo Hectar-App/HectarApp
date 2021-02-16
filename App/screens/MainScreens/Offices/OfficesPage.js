@@ -8,18 +8,15 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   Image,
-  Linking,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
-import MapView, {PROVIDER_GOOGLE, Polygon, Circle} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
 
-import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
+import NetInfo from '@react-native-community/netinfo';
 import SugestionComp from '../../../Component/sugestionComp';
 
-import HomeHeader from '../../../Component/HomeHeader';
+import OfficesHeader from '../../../Component/OfficesHeader';
 import CardItem from '../../../Component/itemCard';
 import {
   Colors,
@@ -28,22 +25,19 @@ import {
   Images,
   Metrics,
 } from '../../../Themes';
-import Marker from '../../../Component/Marker';
+import Marker from '../../../Component/MarkerOffice';
 import MarkerSmall from '../../../Component/Marker.1';
 import RealEstatList from '../../../Component/realEstateList';
-import {useAnimation} from '../../../assets/Animation/animation';
 import {ifIphoneX} from 'react-native-iphone-x-helper';
 import MapStyle from '../../../Themes/mapStyle.json';
 import MapStyleDark from '../../../Themes/mapStyleDark.json';
-import CodePush from 'react-native-code-push';
 
 import {ThemeContext} from 'react-navigation';
 
 import UserAction from '../../../Redux/UserRedux';
 
 import {connect} from 'react-redux';
-import RealEstateAction from '../../../Redux/RealEstateRedux';
-import FavoriteAction from '../../../Redux/FavourteRedux';
+import OfficesActions from '../../../Redux/OfficesRedux';
 
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -56,9 +50,9 @@ import ListFilter from '../../../Component/listFilter';
 
 import {DotIndicator} from 'react-native-indicators';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-class HomePage extends React.Component {
+class OfficesPage extends React.Component {
   static contextType = ThemeContext;
 
   constructor(props) {
@@ -68,7 +62,7 @@ class HomePage extends React.Component {
 
     this.state = {
       realestateTypes: [],
-      realEstateListData: [],
+      offices: [],
       searchValue: '',
       showFilterList: false,
       mapView: true,
@@ -90,14 +84,6 @@ class HomePage extends React.Component {
       showErrorMessage: false,
       pageNumber: 1,
       numberOfRealEstateShow: false,
-      selectedType:
-        this.props.filterData && this.props.filterData.type
-          ? this.props.filterData.type
-          : {_id: 1, nameAr: 'كل العقارات'},
-      selectedStatus:
-        this.props.filterData && this.props.filterData.status
-          ? this.props.filterData.status
-          : null,
     };
   }
 
@@ -135,7 +121,7 @@ class HomePage extends React.Component {
   };
 
   handleSearch = val => {
-    console.log('hh');
+    console.log('hh', val);
     this.setState({searchValue: val});
     //  _.debounce(() => {
     this.setState({sugesstionLoading: true});
@@ -165,7 +151,7 @@ class HomePage extends React.Component {
   };
 
   handleMarkerPress = item => {
-    this.props.checkRealEstateInFav(item._id);
+    // this.props.checkRealEstateInFav(item._id);
     this.setState({
       cardView: true,
       selectedRealEstate: item,
@@ -220,7 +206,7 @@ class HomePage extends React.Component {
   };
 
   handleViewPress = () => {
-    this.setState({realEstateListData: this.state.realestate});
+    this.setState({offices: this.state.realestate});
 
     this.startTestAnimatio();
     // this.setState( s => ({mapView: !s.mapView}))
@@ -286,28 +272,6 @@ class HomePage extends React.Component {
 
   componentDidMount() {
     this.goToUserLocation();
-    this.props.getInfo();
-
-    if (this.props.firstTime) {
-      this.setState({
-        showErrorMessage: true,
-        moreSecond: true,
-        green: true,
-        errorMessage:
-          ' شكرا لزيارتك تطبيق هكتار ونتمنى لك تجربة مميزة في هذا الإطلاق التجريبي',
-      });
-
-      setTimeout(() => {
-        this.setState({
-          showErrorMessage: false,
-          moreSecond: false,
-          green: false,
-          errorMessage:
-            ' شكرا لزيارتك تطبيق هكتار ونتمنى لك تجربة مميزة في هذا الإطلاق التجريبي',
-        });
-        this.props.firstTimeDone();
-      }, 6000);
-    }
   }
 
   componentWillUnmount() {
@@ -330,7 +294,7 @@ class HomePage extends React.Component {
     });
 
     if (i !== 3) {
-      this.setState({realEstateListData: this.state.realestate});
+      this.setState({offices: this.state.realestate});
     }
   };
 
@@ -388,51 +352,9 @@ class HomePage extends React.Component {
     this.props.checkRealEstateInFav(this.state.selectedRealEstate._id);
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.realEstateList !== this.props.realEstateList) {
-      console.log('realEstate', nextProps.realEstateList);
-      this.setState({
-        loading: false,
-        tracksViewChanges: true,
-        numberOfRealEstate:
-          nextProps.realEstateList &&
-          nextProps.realEstateList.numbetOfReaEstate &&
-          nextProps.realEstateList.numbetOfReaEstate,
-      });
-      if (this.state.pageNumber === 1) {
-        this.setState({
-          realestate:
-            nextProps.realEstateList &&
-            nextProps.realEstateList.realEstate &&
-            nextProps.realEstateList.realEstate,
-          realEstateListData: nextProps.realEstateList.realEstate,
-        });
-      } else {
-        if ((nextProps.realEstateList.realEstate || []).length > 0) {
-          let arr2 = _.concat(
-            this.state.realEstateListData,
-            nextProps.realEstateList.realEstate,
-          );
-          this.setState({realEstateListData: arr2});
-        }
-      }
-    }
-
-    if (nextProps.checker !== this.props.checker) {
-      console.log('checker', nextProps.checker);
-      this.setState({fav: nextProps.checker, tracksViewChanges: true});
-    }
-
-    if (nextProps.info !== this.props.info) {
-      // console.log('Hellop Info', nextProps.info)
-      this.setState({loading: false, info: nextProps.info});
-      // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
-    }
-  }
-
   handleFilterMethod = i => {
     console.log('type', this.state.selecedFilter, 'method', i);
-    let arr = this.state.realEstateListData || [];
+    let arr = this.state.offices || [];
 
     // if(i === 1){
     //     arr.sort((a, b) => this.state.selecedFilter === 2? b.price - a.price:  b.space - a.space)
@@ -456,7 +378,7 @@ class HomePage extends React.Component {
 
     console.log('arr', arr);
     this.setState({
-      realEstateListData: arr,
+      offices: arr,
       showFilterList: false,
       selectedMethod: i,
     });
@@ -487,8 +409,7 @@ class HomePage extends React.Component {
     this.doReq(v);
   };
 
-  doReq() {
-    console.log('this/s', this.state.selectedStatus);
+  doReq(v) {
     this.checkNet().then(res => {
       console.log('isConnected', res);
       if (!res.isConnected) {
@@ -499,28 +420,17 @@ class HomePage extends React.Component {
         });
         // alert('لا يوجد اتصال في الانترنت الرجاء المحاولة مرة اخرى')
       } else {
-        console.log('filterData', this.props.filterData);
-        this.mapRef.getMapBoundaries().then(res => {
-          this.setState({
-            cardView: false,
-            loading: true,
-            currentLocation: res,
-            pageNumber: 1,
-          });
-          this.props.getRealEstate({
-            pageNumber: this.state.pageNumber,
-            pageSize: this.state.smallIcon ? 120 : 50,
-            lat2: res.northEast.latitude,
-            long2: res.northEast.longitude,
-            lat1: res.southWest.latitude,
-            long1: res.southWest.longitude,
-            ...this.props.filterData,
-            type:
-              this.state.selectedType &&
-              this.state.selectedType._id !== 1 &&
-              this.state.selectedType,
-            status: this.state.selectedStatus && this.state.selectedStatus,
-          });
+        this.setState({
+          cardView: false,
+          loading: true,
+          currentLocation: res,
+          pageNumber: 1,
+        });
+        this.props.getOffices({
+          lat: v.latitude,
+          lng: v.longitude,
+          radius: 10000,
+          pageNumber: 1,
         });
       }
     });
@@ -576,7 +486,7 @@ class HomePage extends React.Component {
     //       this.setState({
     //         cardView: false,
     //         loading: true,
-    //         realEstateListData: [],
+    //         offices: [],
     //         pageNumber: 1,
     //       });
     //       this.props.getRealEstate({
@@ -626,7 +536,7 @@ class HomePage extends React.Component {
     this.setState({
       cardView: false,
       loading: true,
-      realEstateListData: [],
+      offices: [],
       pageNumber: 1,
     });
     this.props.getRealEstate({
@@ -688,7 +598,7 @@ class HomePage extends React.Component {
           this.setState({
             cardView: false,
             loading: true,
-            realEstateListData: [],
+            offices: [],
             pageNumber: 1,
           });
           this.props.getRealEstate({
@@ -735,7 +645,7 @@ class HomePage extends React.Component {
     const {
       sugesstionData,
       searchValue,
-      realEstateListData,
+      offices,
       shortSugesstionData,
       mapView,
       realestate,
@@ -793,6 +703,19 @@ class HomePage extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
+          {(sugesstionData || []).length > 0 && (
+            <SugestionComp
+              itemPress={i => this.handleSugesstionPress(i)}
+              sugesstionData={sugesstionData}
+              doAnimation={true}
+              office
+            />
+          )}
+          <OfficesHeader
+            onSearch={this.handleSearch}
+            searchValue={searchValue}
+            sugesstionLoading={this.state.sugesstionLoading}
+          />
           {(sugesstionData || []).length > 0 && (
             <SugestionComp
               itemPress={i => this.handleSugesstionPress(i)}
@@ -879,47 +802,6 @@ class HomePage extends React.Component {
                 )}
             </View>
           </Animated.View>
-
-          <HomeHeader
-            info={this.props.info}
-            filterSelected={this.handleFilterList}
-            selectedTypeFilter={this.state.selecedFilter}
-            mapView={true}
-            showTypesList={() => this.setState({showTypesList: true})}
-            filterData={this.props.filterData}
-            selectedType={this.state.selectedType && this.state.selectedType}
-            selectedTypePressed={item => this.handleTypeFilter(item)}
-            selectedPurposePressed={item => this.handleChangeStatus(item)}
-            // selectedPurpose={this.state.selectedStatus}
-            types={
-              this.state.info &&
-              this.state.info.realEstateTypes &&
-              this.state.info.realEstateTypes
-            }
-            status={
-              this.state.info &&
-              this.state.info.realEstateStatus &&
-              this.state.info.realEstateStatus
-            }
-            selectedStatus={this.state.selectedStatus}
-            statusPress={i => this.handleChangeStatus(i)}
-            sugesstionLoading={this.state.sugesstionLoading}
-            onChangeText={this.handleSearch}
-            searchValue={searchValue}
-            onFilterPress={this.onFilterPress}
-            itemPress={i => this.handleSugesstionPress(i)}
-            typeListPress={this.typeListPress}
-            onSortPress={() =>
-              this.state.mapView
-                ? this.setState({
-                    showErrorMessage: true,
-                    green: true,
-                    errorMessage:
-                      'للاستفادة الكبرى من ترتيب القائمة الرجاء الانتقال للقائمة',
-                  })
-                : this.setState({showFilterList: true})
-            }
-          />
 
           {this.state.filterActive && (
             <Animated.View
@@ -1068,19 +950,18 @@ class HomePage extends React.Component {
               moveOnMarkerPress={false}
               showsUserLocation={true}>
               {this.state.mapReady &&
-                realestate &&
-                (realestate || []).map(item => {
+                this.props.offices.map(item => {
                   if (this.state.smallIcon) {
                     return (
                       <MarkerSmall
                         smallIcon={true}
                         focusMarker={
                           this.state.cardView
-                            ? this.state.selectedRealEstate._id
+                            ? this.state.selectedRealEstate.place_id
                             : null
                         }
                         tracksViewChanges={this.state.tracksViewChanges}
-                        key={item._id}
+                        key={item.place_id}
                         item={item}
                         onPress={() => this.handleMarkerPress(item)}
                         showDetailForSmallIcon={false}
@@ -1092,11 +973,11 @@ class HomePage extends React.Component {
                       smallIcon={false && this.state.smallIcon}
                       focusMarker={
                         this.state.cardView
-                          ? this.state.selectedRealEstate._id
+                          ? this.state.selectedRealEstate.place_id
                           : null
                       }
                       tracksViewChanges={this.state.tracksViewChanges}
-                      key={item._id}
+                      key={item.place_id}
                       item={item}
                       onPress={() => this.handleMarkerPress(item)}
                       showDetailForSmallIcon={false}
@@ -1147,11 +1028,11 @@ class HomePage extends React.Component {
                           fontWeight: 'normal',
                         },
                       ]}>
-                      {(realEstateListData || []).length > 0
+                      {(offices || []).length > 0
                         ? `${this.state.numberOfRealEstate} /  ${
-                            (realEstateListData || []).length
+                            (offices || []).length
                           } `
-                        : 'لا يوجد عقارات في هذه المنطقة'}
+                        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
                     </Text>
                   </Animated.View>
                 ) : (
@@ -1177,7 +1058,9 @@ class HomePage extends React.Component {
                           fontWeight: 'normal',
                         },
                       ]}>
-                      {'عرض العقارات بناءا علي حدود الخريطة الظاهرة في الخريطة'}
+                      {
+                        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'
+                      }
                     </Text>
                   </Animated.View>
                 )}
@@ -1186,7 +1069,7 @@ class HomePage extends React.Component {
                 handleGetMoreDatat={this.handleGetMoreDatat}
                 numberOfRealEstate={this.state.numberOfRealEstate}
                 onItemPress={v => this.handleCardPress(v)}
-                realestateData={realEstateListData}
+                realestateData={this.props.offices}
                 onMapButtonPress={this.handleViewPress}
               />
             </Animated.View>
@@ -1209,40 +1092,24 @@ class HomePage extends React.Component {
   }
 }
 
-// export default HomePage
+// export default OfficesPage
 
 const mapDispatchToProps = dispatch => ({
-  getRealEstate: (pageNumber, lat, long, maxPrice, minPrice) =>
-    dispatch(
-      RealEstateAction.getRealEstate(pageNumber, lat, long, maxPrice, minPrice),
-    ),
-  checkRealEstateInFav: realEstateId =>
-    dispatch(FavoriteAction.checkFavourte(realEstateId)),
-  addRealEstateTFav: (realEstate, token) =>
-    dispatch(FavoriteAction.addToFavourte(realEstate, token)),
-  deleteRealEstateFromFav: (realEstate, token) =>
-    dispatch(FavoriteAction.removeFromFavourte(realEstate, token)),
-  getInfo: () => dispatch(RealEstateAction.getAddingAqarInfo()),
-  changeFilterData: data => dispatch(UserAction.changeFilter(data)),
-  firstTimeDone: () => dispatch(UserAction.firstTimeDone()),
+  getOffices: ({lat, lng, radius, pageNumber}) =>
+    dispatch(OfficesActions.getOffices(lat, lng, radius, pageNumber)),
 });
 
 const mapStateToProps = state => {
   console.log('state', state);
   return {
-    user: state.user.user && state.user.user.user && state.user.user.user,
-    realEstateList: state.realEstate.realEstateList,
-    checker: state.Favourte.checker && state.Favourte.checker,
-    info: state.realEstate.AddingAqarInfo,
-    filterData: state.user.filterData,
-    firstTime: state.user.firstTime,
+    offices: state.realEstateOffices.offices,
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(HomePage);
+)(OfficesPage);
 
 const styles = StyleSheet.create({
   container: {
@@ -1255,7 +1122,7 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-    marginTop: ifIphoneX(130, 98),
+    marginTop: ifIphoneX(160, 110),
     zIndex: -1,
   },
   circleButton:

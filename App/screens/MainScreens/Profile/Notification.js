@@ -172,7 +172,9 @@ class NotificationPage extends React.Component {
       this.props.user.token,
     );
     console.log('res', res, _id);
-    if (res.ok) this.loadRequests(true);
+    if (res.ok) {
+      this.loadRequests(true);
+    }
 
     return res;
   }
@@ -183,7 +185,9 @@ class NotificationPage extends React.Component {
 
   loadRequests(i) {
     if (this.props.user && this.props.user.token) {
-      if (!i) this.setState({loading: true});
+      if (!i) {
+        this.setState({loading: true});
+      }
       this.props.getUserNotification(this.props.user.token);
     } else {
       this.setState({noUser: true});
@@ -191,11 +195,12 @@ class NotificationPage extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.user || !this.props.user.token)
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
-        alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
+        alertMessage: 'يجب تسجيل الدخول لمشاهدة التنبيهات',
       });
+    }
   }
 
   handleBackPress = () => {

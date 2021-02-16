@@ -11,7 +11,8 @@
     "codePushIOSM": "appcenter codepush release-react -a admin-hectarapp.com/hectar-1 -d Production -m",
     "codePushIOS": "appcenter codepush release-react -a admin-hectarapp.com/hectar-1 -d Production",
     "codePushAd": "appcenter codepush release-react -a admin-hectarapp.com/hectar -d Production",
-    "codePushAdM": "appcenter codepush release-react -a admin-hectarapp.com/hectar -d Production -m"
+    "codePushAdM": "appcenter codepush release-react -a admin-hectarapp.com/hectar -d Production -m",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-community/art": "^1.1.2",
@@ -25,9 +26,12 @@
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "ramda": "^0.26.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-animatable": "^1.3.3",
     "react-native-code-push": "^6.1.0",
     "react-native-copilot": "^2.5.1",
     "react-native-fast-image": "^8.1.3",
@@ -62,6 +66,7 @@
     "react-redux": "^7.1.3",
     "react-three-fiber": "^4.0.22",
     "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-immutable": "^5.0.0",
     "redux-saga": "^1.1.3",

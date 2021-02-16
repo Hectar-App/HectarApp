@@ -145,7 +145,7 @@ android {
         applicationId "com.hectarapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 6
         versionName "1.1.1"
         multiDexEnabled true 
         manifestPlaceholders = [onesignal_app_id: "1d4a0bb7-b3b7-4c7c-92de-bcc0dc7de1ea",

@@ -77,6 +77,13 @@ const Header = props => {
           <CustomIcon name={'QRcode'} size={20} />
         </TouchableOpacity>
       )}
+      {props.withSearch && (
+        <TouchableOpacity
+          onPress={props.openSearch}
+          style={{position: 'absolute', bottom: 12, left: 20}}>
+          <CustomIcon name={'QRcode'} size={20} />
+        </TouchableOpacity>
+      )}
     </Animated.View>
   );
 };
