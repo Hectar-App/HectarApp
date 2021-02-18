@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Text, View, StyleSheet } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation';
 import Input from '../../Component/Input';
 import LinkButton from '../../Component/linkButton';
@@ -17,7 +17,8 @@ import { connect } from 'react-redux';
 import UserAction from '../../Redux/UserRedux';
 import FavoriteAction from '../../Redux/FavourteRedux';
 
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import SkipButton from '../../Component/login/SkipButton';
+import { perfectFont, perfectHeight } from '../../utils/commonFunctions';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -32,6 +33,10 @@ class LoginPage extends React.Component {
       showAlert: false,
       phone: '',
       alertMessage: 'للاستخدام الافضل الرجاء اعادة تشغيل التطبيق',
+      inputFocused: {
+        email: false,
+        password: false,
+      },
     };
   }
 
@@ -111,32 +116,30 @@ class LoginPage extends React.Component {
   };
 
   render() {
+    const shouldShowImage = !(
+      this.state.inputFocused.email | this.state.inputFocused.password
+    );
+
     const logoTop = this.state.logoAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [Metrics.screenHeight * 0.3, 100],
+      outputRange: [Metrics.screenHeight * 0.3, 50],
     });
-
-    const footerBottom = this.state.footerAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-80, ifIphoneX(50, 30)],
-    });
-
     return (
-      <KeyboardAwareScrollView>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#fff',
-            height: Metrics.screenHeight,
-            marginBottom: 40,
-          }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          height: Metrics.screenHeight,
+        }}>
+        <View style={styles.skipBtnContainer}>
+          <SkipButton navigation={this.props.navigation} />
+        </View>
+        {shouldShowImage && (
           <Animated.View
             style={{
-              width: 150,
               alignSelf: 'center',
               top: logoTop,
               opacity: 1,
-              height: 150,
             }}>
             <Image
               source={Images.HectarBetIcon}
@@ -148,114 +151,100 @@ class LoginPage extends React.Component {
               }}
             />
           </Animated.View>
-          {this.state.inputAnimation && (
+        )}
+        {this.state.inputAnimation && (
+          <View
+            style={{
+              marginTop: perfectHeight(90),
+            }}>
+            <View style={styles.headerContainer}>
+              <Text style={styles.header}>تسجيل الدخول</Text>
+            </View>
+            <Input
+              onSubmitEditing={() => this.setState({ passFocus: true })}
+              number={true}
+              onChangeText={val => this.setState({ phone: val })}
+              value={this.state.phone}
+              width={150}
+              doAnimation={this.state.inputAnimation}
+              InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
+              onFocus={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    email: true,
+                  },
+                })
+              }
+              onBlur={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    email: false,
+                  },
+                })
+              }
+            />
+
+            <Input
+              autoFocus={true}
+              onChangeText={val => this.setState({ password: val })}
+              value={this.state.password}
+              width={150}
+              doAnimation={true}
+              InputPlaceHolder={'كلمة المرور'}
+              containerStyle={{ marginTop: 15 }}
+              passView={true}
+              passShow={this.state.showPass}
+              onShowPassPress={() =>
+                this.setState(s => ({ showPass: !s.showPass }))
+              }
+              onFocus={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    password: true,
+                  },
+                })
+              }
+              onBlur={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    password: false,
+                  },
+                })
+              }
+            />
+          </View>
+        )}
+
+        {this.state.inputAnimation && (
+          <View>
             <View
               style={{
-                marginTop: true ? 190 : ifIphoneX(190, 90),
-              }}>
-              <Input
-                onSubmitEditing={() => this.setState({ passFocus: true })}
-                number={true}
-                onChangeText={val => this.setState({ phone: val })}
-                value={this.state.phone}
-                width={150}
-                doAnimation={this.state.inputAnimation}
-                InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
-              />
-
-              <Input
-                autoFocus={true}
-                onChangeText={val => this.setState({ password: val })}
-                value={this.state.password}
-                width={150}
-                doAnimation={true}
-                InputPlaceHolder={'كلمة المرور'}
-                containerStyle={{ marginTop: 15 }}
-                passView={true}
-                passShow={this.state.showPass}
-                onShowPassPress={() =>
-                  this.setState(s => ({ showPass: !s.showPass }))
-                }
-              />
-            </View>
-          )}
-
-          {this.state.inputAnimation && (
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingStart: 35,
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.dispatch(
-                      StackActions.reset({
-                        index: 0,
-                        actions: [
-                          NavigationActions.navigate({
-                            routeName: 'bottomTab',
-                          }),
-                        ],
-                      }),
-                    );
-                  }}
-                  style={{ zIndex: 990 }}>
-                  <Text
-                    style={[
-                      Fonts.style.normal,
-                      {
-                        color: Colors.darkSeafoamGreen,
-                        fontSize: 18,
-                        alignSelf: 'center',
-                      },
-                    ]}>
-                    تخطي >
-                  </Text>
-                </TouchableOpacity>
-                <LinkButton
-                  containerStyle={{ alignSelf: 'flex-end', paddingEnd: 35 }}
-                  buttonText={'نسيت كلمة المرور ؟'}
-                  onPress={() => this.nav('ForgetPassword')}
-                />
-              </View>
-              <Button
-                disabled={this.state.loading}
-                containerStyle={{ marginTop: 30 }}
-                doAnimation={true}
-                buttonText={'تسجيل دخول '}
-                doAnimation2={this.state.loading}
-                loading={this.state.loading}
-                onPress={() => this.handleLogIn()}
-              />
-            </View>
-          )}
-
-          <AlertModal
-            contentMessage={this.state.alertMessage}
-            isVisible={this.state.showAlert}
-          />
-
-          {this.state.showErrorMessage && (
-            <ErrorAlert
-              errorMessage={this.state.errorMessage}
-              setAnimation={() => this.setState({ showErrorMessage: false })}
-              doAnimation={this.state.showErrorMessage}
-            />
-          )}
-
-          {!this.state.KeyboardStatus && (
-            <Animated.View
-              style={{
-                position: 'absolute',
-                width: Metrics.screenWidth,
-                bottom: footerBottom,
-                height: 60,
                 flexDirection: 'row',
-                justifyContent: 'center',
+                paddingStart: 35,
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}>
+              <LinkButton
+                containerStyle={{ alignSelf: 'flex-end', paddingEnd: 35 }}
+                textStyle={styles.linkBtn}
+                buttonText={'نسيت كلمة المرور ؟'}
+                onPress={() => this.nav('ForgetPassword')}
+              />
+            </View>
+            <Button
+              disabled={this.state.loading}
+              containerStyle={{ marginTop: perfectHeight(15) }}
+              doAnimation={true}
+              buttonText={'تسجيل دخول '}
+              doAnimation2={this.state.loading}
+              loading={this.state.loading}
+              onPress={() => this.handleLogIn()}
+            />
+            <View style={styles.noAccount}>
               <LinkButton
                 containerStyle={{
                   paddingEnd: 0,
@@ -268,14 +257,31 @@ class LoginPage extends React.Component {
               <Text
                 style={[
                   Fonts.style.normal,
-                  { color: Colors.black, fontSize: 13, alignSelf: 'center' },
+                  {
+                    color: Colors.black,
+                    fontSize: 13,
+                    alignSelf: 'center',
+                  },
                 ]}>
                 ليس لديك حساب ؟
               </Text>
-            </Animated.View>
-          )}
-        </View>
-      </KeyboardAwareScrollView>
+            </View>
+          </View>
+        )}
+
+        <AlertModal
+          contentMessage={this.state.alertMessage}
+          isVisible={this.state.showAlert}
+        />
+
+        {this.state.showErrorMessage && (
+          <ErrorAlert
+            errorMessage={this.state.errorMessage}
+            setAnimation={() => this.setState({ showErrorMessage: false })}
+            doAnimation={this.state.showErrorMessage}
+          />
+        )}
+      </View>
     );
   }
 }
@@ -300,3 +306,32 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginPage);
+
+const styles = StyleSheet.create({
+  skipBtnContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: perfectHeight(15),
+  },
+  linkBtn: {
+    fontFamily: 'TheMixArab',
+    fontSize: perfectFont(14),
+    color: Colors.darkSeafoamGreen,
+    textDecorationLine: 'underline',
+  },
+  noAccount: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: perfectHeight(24),
+  },
+  headerContainer: {
+    width: '83%',
+    alignSelf: 'center',
+    marginBottom: perfectHeight(18),
+  },
+  header: {
+    fontFamily: 'TheMixArab',
+    fontSize: perfectFont(18),
+    fontWeight: '700',
+  },
+});
