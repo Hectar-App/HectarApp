@@ -845,67 +845,65 @@ class OfficesPage extends React.Component {
                   flexDirection: 'row-reverse',
                   justifyContent: 'flex-start',
                   alignItems: 'center',
-                  // backgroundColor: 'yellow',
                   flex: 1,
-                  // marginTop: perfectHeight(50),
                 }}>
-                {this.state.numberOfOfficesShow ? (
-                  <Animated.View
-                    style={{
-                      borderRadius: 12,
-                      backgroundColor: Colors.darkSlateBlue,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf: 'flex-end',
-                      marginTop: 50,
-                      marginEnd: 16,
-                      padding: 10,
-                      transform: [{ rotateX: rotateListLabel2 }],
-                    }}>
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 10,
-                          color: '#fff',
-                          fontWeight: 'normal',
-                        },
-                      ]}>
-                      {(this.props.offices || []).length > 0
-                        ? `${this.props.offices.length} /////  ${
-                            (this.props.offices || []).length
-                          } `
-                        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
-                    </Text>
-                  </Animated.View>
-                ) : (
-                  <Animated.View
-                    style={{
-                      borderRadius: 12,
-                      backgroundColor: Colors.darkSeafoamGreen,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf: 'flex-end',
-                      marginTop: 50,
-                      marginEnd: 16,
-                      padding: 10,
-                      transform: [{ rotateX: rotateListLabel }],
-                    }}>
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 10,
-                          color: '#fff',
-                          fontWeight: 'normal',
-                        },
-                      ]}>
-                      {
-                        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'
-                      }
-                    </Text>
-                  </Animated.View>
-                )}
+                {/*{this.state.numberOfOfficesShow ? (*/}
+                {/*  <Animated.View*/}
+                {/*    style={{*/}
+                {/*      borderRadius: 12,*/}
+                {/*      backgroundColor: Colors.darkSlateBlue,*/}
+                {/*      alignItems: 'center',*/}
+                {/*      justifyContent: 'center',*/}
+                {/*      alignSelf: 'flex-end',*/}
+                {/*      marginTop: 50,*/}
+                {/*      marginEnd: 16,*/}
+                {/*      padding: 10,*/}
+                {/*      transform: [{ rotateX: rotateListLabel2 }],*/}
+                {/*    }}>*/}
+                {/*    <Text*/}
+                {/*      style={[*/}
+                {/*        Fonts.style.normal,*/}
+                {/*        {*/}
+                {/*          fontSize: 10,*/}
+                {/*          color: '#fff',*/}
+                {/*          fontWeight: 'normal',*/}
+                {/*        },*/}
+                {/*      ]}>*/}
+                {/*      {(this.props.offices || []).length > 0*/}
+                {/*        ? `${this.props.offices.length} /////  ${*/}
+                {/*            (this.props.offices || []).length*/}
+                {/*          } `*/}
+                {/*        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}*/}
+                {/*    </Text>*/}
+                {/*  </Animated.View>*/}
+                {/*) : (*/}
+                {/*  <Animated.View*/}
+                {/*    style={{*/}
+                {/*      borderRadius: 12,*/}
+                {/*      backgroundColor: Colors.darkSeafoamGreen,*/}
+                {/*      alignItems: 'center',*/}
+                {/*      justifyContent: 'center',*/}
+                {/*      alignSelf: 'flex-end',*/}
+                {/*      marginTop: 50,*/}
+                {/*      marginEnd: 16,*/}
+                {/*      padding: 10,*/}
+                {/*      transform: [{ rotateX: rotateListLabel }],*/}
+                {/*    }}>*/}
+                {/*    <Text*/}
+                {/*      style={[*/}
+                {/*        Fonts.style.normal,*/}
+                {/*        {*/}
+                {/*          fontSize: 10,*/}
+                {/*          color: '#fff',*/}
+                {/*          fontWeight: 'normal',*/}
+                {/*        },*/}
+                {/*      ]}>*/}
+                {/*      {*/}
+                {/*        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'*/}
+                {/*      }*/}
+                {/*    </Text>*/}
+                {/*  </Animated.View>*/}
+                {/*)}*/}
                 <OfficeList
                   handleGetMoreDatat={this.handleGetMoreDatat}
                   numberOfOffices={this.state.numberOfOffices}
