@@ -1,38 +1,24 @@
 import React from 'react';
-import {
-  View,
-  Animated,
-  DevSettings,
-  Text,
-  Alert,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
-import RNRestart from 'react-native-restart';
-
-import HectarIcon from '../../assets/imgs/svgImagesComponents/HectarIcon';
-import NewHEctarIcon from '../../assets/imgs/svgImagesComponents/newHectarIcon';
+import { Animated, Image, Text, View, StyleSheet } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation';
 import Input from '../../Component/Input';
 import LinkButton from '../../Component/linkButton';
 
 import Button from '../../Component/Button';
 
 import AlertModal from '../../Component/Alert';
-import ErroAlert from '../../Component/ErrorAlert';
+import ErrorAlert from '../../Component/ErrorAlert';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import { Colors, Fonts, Images, Metrics } from '../../Themes';
 
-import {Metrics, ApplicationStyles, Colors, Fonts} from '../../Themes';
-
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import UserAction from '../../Redux/UserRedux';
 import FavoriteAction from '../../Redux/FavourteRedux';
 
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import {Images} from '../../Themes';
+import SkipButton from '../../Component/login/SkipButton';
+import { perfectFont, perfectHeight } from '../../utils/commonFunctions';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -47,36 +33,36 @@ class LoginPage extends React.Component {
       showAlert: false,
       phone: '',
       alertMessage: 'للاستخدام الافضل الرجاء اعادة تشغيل التطبيق',
+      inputFocused: {
+        email: false,
+        password: false,
+      },
     };
-   
   }
 
   componentDidMount = () => {
     this.startLogoAnimation();
   };
 
-
   componentWillReceiveProps = nextProps => {
-    console.log('NextProps', nextProps);
     if (this.props.user !== nextProps.user && nextProps.user.user.token) {
-      console.log('Hello User', nextProps.user, nextProps.user.user.token);
       this.props.getUserFav(nextProps.user.user.token);
       this.props.navigation.dispatch(
         StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({routeName: 'bottomTab'})],
+          actions: [NavigationActions.navigate({ routeName: 'bottomTab' })],
         }),
       );
     }
     if (this.props.userError !== nextProps.userError) {
-      if (nextProps.userError.error)
+      if (nextProps.userError.error) {
         this.setState({
           showErrorMessage: true,
           errorMessage: nextProps.userError.error.toString(),
         });
-      // alert(nextProps.userError.error)
+      }
 
-      this.setState({loading: false});
+      this.setState({ loading: false });
     }
   };
 
@@ -85,28 +71,15 @@ class LoginPage extends React.Component {
       toValue: 1,
       duration: 550,
     }).start(() => {
-      this.setState({inputAnimation: true});
+      this.setState({ inputAnimation: true });
       Animated.timing(this.state.footerAnimation, {
         toValue: 1,
         duration: 550,
-      }).start(() => {
-        // if(this.props.firstTime){
-        //     this.setState({firstTime: true})
-        // }
-      });
+      }).start(() => {});
     });
   };
 
-  restartApp = () => {
-    // this.props.firstTimeDone()
-    // setTimeout(() => {
-    // //   NativeModules.DevSettings.reload();
-    //     DevSettings.reload()
-    // }, 900);
-  };
-
   nav = (route, params) => {
-    console.log('param', params);
     this.props.navigation.navigate(route, params);
   };
 
@@ -133,216 +106,182 @@ class LoginPage extends React.Component {
           ? this.props.deviceInfo.userId
           : null,
       );
-      this.setState({loading: true});
+      this.setState({ loading: true });
     } else {
       this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء ادخال رقم الجوال وكلمة المرور لتسجيل الدخول',
       });
     }
-    // alert(1)
-    // this.props.navigation.dispatch(StackActions.reset({
-    //     index: 0,
-    //     actions: [NavigationActions.navigate({ routeName: 'bottomTab' })],
-    // }))
   };
 
   render() {
+    const shouldShowImage = !(
+      this.state.inputFocused.email | this.state.inputFocused.password
+    );
+
     const logoTop = this.state.logoAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [Metrics.screenHeight * 0.3, 100],
+      outputRange: [Metrics.screenHeight * 0.3, 50],
     });
-
-    const footerBottom = this.state.footerAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-80, ifIphoneX(50, 30)],
-    });
-
     return (
-      <KeyboardAwareScrollView>
-        {/* <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}> */}
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          height: Metrics.screenHeight,
+        }}>
+        <View style={styles.skipBtnContainer}>
+          <SkipButton navigation={this.props.navigation} />
+        </View>
+        {shouldShowImage && (
+          <Animated.View
+            style={{
+              alignSelf: 'center',
+              top: logoTop,
+              opacity: 1,
+            }}>
+            <Image
+              source={Images.HectarBetIcon}
+              resizeMode={'contain'}
+              style={{
+                alignSelf: 'center',
+                width: Metrics.screenWidth * 0.4,
+                height: Metrics.screenWidth * 0.4,
+              }}
+            />
+          </Animated.View>
+        )}
+        {this.state.inputAnimation && (
           <View
             style={{
-              flex: 1,
-              backgroundColor: '#fff',
-              height: Metrics.screenHeight,
-              marginBottom: 40,
+              marginTop: perfectHeight(90),
             }}>
-              <Animated.View
-                style={{
-                  width: 150,
-                  alignSelf: 'center',
-                  top: logoTop,
-                  opacity: 1,
-                  height: 150,
-                }}>
-                {/* <HectarIcon  fillOpacity={1}/> */}
-                <Image
-                  source={Images.HectarBetIcon}
-                  resizeMode={'contain'}
-                  style={{
-                    alignSelf: 'center',
-                    width: Metrics.screenWidth * 0.4,
-                    height: Metrics.screenWidth * 0.4,
-                  }}
-                />
-                {/* <NewHEctarIcon /> */}
-              </Animated.View>
-
-            {/* <View
-                        style={{
-                            position: 'absolute',
-                            top: ifIphoneX(70, 30),
-                            right: 30, 
-                            zIndex: 99999999
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={()=> {
-                                this.props.navigation.dispatch(StackActions.reset({
-                                    index: 0,
-                                    actions: [NavigationActions.navigate({ routeName: 'bottomTab' })],
-                                }))
-                            }}
-                        >
-                            <Text style={[Fonts.style.normal, {color: Colors.black, fontSize:14, alignSelf:'center', }]}> تخطي </Text>
-                        </TouchableOpacity>
-
-                    </View> */}
-
-            {this.state.inputAnimation && (
-              <View
-                style={{
-                  marginTop: true
-                    ? 190
-                    : ifIphoneX(190, 90),
-                }}>
-                <Input
-                  onSubmitEditing={() => this.setState({passFocus: true})}
-                  number={true}
-                  onChangeText={val => this.setState({phone: val})}
-                  value={this.state.phone}
-                  width={150}
-                  doAnimation={this.state.inputAnimation}
-                  InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
-                />
-                <Input
-                  autoFocus={true}
-                  onChangeText={val => this.setState({password: val})}
-                  value={this.state.password}
-                  width={150}
-                  doAnimation={true}
-                  InputPlaceHolder={'كلمة المرور'}
-                  containerStyle={{marginTop: 15}}
-                  passView={true}
-                  passShow={this.state.showPass}
-                  onShowPassPress={() =>
-                    this.setState(s => ({showPass: !s.showPass}))
-                  }
-                />
-              </View>
-            )}
-
-            {this.state.inputAnimation && (
-              <View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingStart: 35,
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.navigation.dispatch(
-                        StackActions.reset({
-                          index: 0,
-                          actions: [
-                            NavigationActions.navigate({
-                              routeName: 'bottomTab',
-                            }),
-                          ],
-                        }),
-                      );
-                    }}
-                    style={{zIndex: 990}}>
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          color: Colors.darkSeafoamGreen,
-                          fontSize: 18,
-                          alignSelf: 'center',
-                        },
-                      ]}>
-                      {' '}
-                      تخطي >{' '}
-                    </Text>
-                  </TouchableOpacity>
-                  <LinkButton
-                    containerStyle={{alignSelf: 'flex-end', paddingEnd: 35}}
-                    buttonText={'نسيت كلمة المرور ؟'}
-                    onPress={() => this.nav('ForgetPassword')}
-                  />
-                </View>
-                <Button
-                  disabled={this.state.loading}
-                  containerStyle={{marginTop: 30}}
-                  doAnimation={true}
-                  buttonText={'تسجيل دخول '}
-                  doAnimation2={this.state.loading}
-                  loading={this.state.loading}
-                  onPress={() => this.handleLogIn()}
-                />
-              </View>
-            )}
-
-            <AlertModal
-              contentMessage={this.state.alertMessage}
-              isVisible={this.state.showAlert}
+            <View style={styles.headerContainer}>
+              <Text style={styles.header}>تسجيل الدخول</Text>
+            </View>
+            <Input
+              onSubmitEditing={() => this.setState({ passFocus: true })}
+              number={true}
+              onChangeText={val => this.setState({ phone: val })}
+              value={this.state.phone}
+              width={150}
+              doAnimation={this.state.inputAnimation}
+              InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
+              onFocus={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    email: true,
+                  },
+                })
+              }
+              onBlur={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    email: false,
+                  },
+                })
+              }
             />
 
-            {this.state.showErrorMessage && (
-              <ErroAlert
-                errorMessage={this.state.errorMessage}
-                setAnimation={() => this.setState({showErrorMessage: false})}
-                doAnimation={this.state.showErrorMessage}
-              />
-            )}
-
-            {!this.state.KeyboardStatus && (
-              <Animated.View
-                style={{
-                  position: 'absolute',
-                  width: Metrics.screenWidth,
-                  bottom: footerBottom,
-                  height: 60,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
-                <LinkButton
-                  containerStyle={{
-                    alignSelf: 'flex-end',
-                    paddingEnd: 0,
-                    alignSelf: 'center',
-                  }}
-                  buttonText={' إنشاء حساب جديد '}
-                  textStyle={{color: Colors.darkSeafoamGreen, fontSize: 13}}
-                  onPress={() => this.nav('RegisterMobileStep')}
-                />
-                <Text
-                  style={[
-                    Fonts.style.normal,
-                    {color: Colors.black, fontSize: 13, alignSelf: 'center'},
-                  ]}>
-                  {' '}
-                  ليس لديك حساب ؟{' '}
-                </Text>
-              </Animated.View>
-            )}
+            <Input
+              autoFocus={true}
+              onChangeText={val => this.setState({ password: val })}
+              value={this.state.password}
+              width={150}
+              doAnimation={true}
+              InputPlaceHolder={'كلمة المرور'}
+              containerStyle={{ marginTop: 15 }}
+              passView={true}
+              passShow={this.state.showPass}
+              onShowPassPress={() =>
+                this.setState(s => ({ showPass: !s.showPass }))
+              }
+              onFocus={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    password: true,
+                  },
+                })
+              }
+              onBlur={() =>
+                this.setState({
+                  inputFocused: {
+                    ...this.state.inputFocused,
+                    password: false,
+                  },
+                })
+              }
+            />
           </View>
-        {/* </ScrollView> */}
-      </KeyboardAwareScrollView>
+        )}
+
+        {this.state.inputAnimation && (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingStart: 35,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <LinkButton
+                containerStyle={{ alignSelf: 'flex-end', paddingEnd: 35 }}
+                textStyle={styles.linkBtn}
+                buttonText={'نسيت كلمة المرور ؟'}
+                onPress={() => this.nav('ForgetPassword')}
+              />
+            </View>
+            <Button
+              disabled={this.state.loading}
+              containerStyle={{ marginTop: perfectHeight(15) }}
+              doAnimation={true}
+              buttonText={'تسجيل دخول '}
+              doAnimation2={this.state.loading}
+              loading={this.state.loading}
+              onPress={() => this.handleLogIn()}
+            />
+            <View style={styles.noAccount}>
+              <LinkButton
+                containerStyle={{
+                  paddingEnd: 0,
+                  alignSelf: 'center',
+                }}
+                buttonText={' إنشاء حساب جديد '}
+                textStyle={{ color: Colors.darkSeafoamGreen, fontSize: 13 }}
+                onPress={() => this.nav('RegisterMobileStep')}
+              />
+              <Text
+                style={[
+                  Fonts.style.normal,
+                  {
+                    color: Colors.black,
+                    fontSize: 13,
+                    alignSelf: 'center',
+                  },
+                ]}>
+                ليس لديك حساب ؟
+              </Text>
+            </View>
+          </View>
+        )}
+
+        <AlertModal
+          contentMessage={this.state.alertMessage}
+          isVisible={this.state.showAlert}
+        />
+
+        {this.state.showErrorMessage && (
+          <ErrorAlert
+            errorMessage={this.state.errorMessage}
+            setAnimation={() => this.setState({ showErrorMessage: false })}
+            doAnimation={this.state.showErrorMessage}
+          />
+        )}
+      </View>
     );
   }
 }
@@ -355,7 +294,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  console.log('State', state);
   return {
     user: state.user.user,
     deviceInfo: state.user.deviceInfo,
@@ -368,3 +306,32 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(LoginPage);
+
+const styles = StyleSheet.create({
+  skipBtnContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: perfectHeight(15),
+  },
+  linkBtn: {
+    fontFamily: 'TheMixArab',
+    fontSize: perfectFont(14),
+    color: Colors.darkSeafoamGreen,
+    textDecorationLine: 'underline',
+  },
+  noAccount: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: perfectHeight(24),
+  },
+  headerContainer: {
+    width: '83%',
+    alignSelf: 'center',
+    marginBottom: perfectHeight(18),
+  },
+  header: {
+    fontFamily: 'TheMixArab',
+    fontSize: perfectFont(18),
+    fontWeight: '700',
+  },
+});
