@@ -19,6 +19,7 @@
     "@react-native-community/async-storage": "^1.6.3",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/netinfo": "^5.6.2",
+    "@react-native-community/toolbar-android": "^0.1.0-rc.2",
     "@react-native-firebase/analytics": "^8.0.1",
     "@react-native-firebase/app": "^9.0.0",
     "apisauce": "^1.1.1",

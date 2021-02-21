@@ -1,7 +1,8 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce';
+const apiURL = 'http://192.168.1.37:9000/api';
 
-const apiURL = 'https://devbackend.devstagging.online:9090/api';
+//const apiURL = 'https://devbackend.devstagging.online:9090/api';
 // const apiURL = 'http://167.172.149.158:8080/api';
 // const apiURL = 'https://dev.hectar.io/api/'
 

@@ -226,7 +226,6 @@ class LoginPage extends React.Component {
                   doAnimation={this.state.inputAnimation}
                   InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
                 />
-
                 <Input
                   autoFocus={true}
                   onChangeText={val => this.setState({password: val})}

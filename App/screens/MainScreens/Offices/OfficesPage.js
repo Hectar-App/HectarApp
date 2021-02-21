@@ -27,7 +27,8 @@ import {
 } from '../../../Themes';
 import Marker from '../../../Component/MarkerOffice';
 import MarkerSmall from '../../../Component/Marker.1';
-import RealEstatList from '../../../Component/realEstateList';
+//import RealEstatList from '../../../Component/realEstateList';
+import OfficeList from '../../../Component/OfficeList';
 import {ifIphoneX} from 'react-native-iphone-x-helper';
 import MapStyle from '../../../Themes/mapStyle.json';
 import MapStyleDark from '../../../Themes/mapStyleDark.json';
@@ -61,7 +62,6 @@ class OfficesPage extends React.Component {
     this.mapRef = null;
 
     this.state = {
-      realestateTypes: [],
       offices: [],
       searchValue: '',
       showFilterList: false,
@@ -83,7 +83,8 @@ class OfficesPage extends React.Component {
       showAlert: false,
       showErrorMessage: false,
       pageNumber: 1,
-      numberOfRealEstateShow: false,
+      numberOfOfficesShow: false,
+      
     };
   }
 
@@ -121,7 +122,6 @@ class OfficesPage extends React.Component {
   };
 
   handleSearch = val => {
-    console.log('hh', val);
     this.setState({searchValue: val});
     //  _.debounce(() => {
     this.setState({sugesstionLoading: true});
@@ -139,7 +139,6 @@ class OfficesPage extends React.Component {
         // console.log('response GOOGLE => ', responseJson)
         //     setLoading(false)
         if ((responseJson.results || []).length > 0) {
-          console.log('response of google maps => ', responseJson.results);
           this.setState({sugesstionData: responseJson.results});
         }
       })
@@ -154,7 +153,7 @@ class OfficesPage extends React.Component {
     // this.props.checkRealEstateInFav(item._id);
     this.setState({
       cardView: true,
-      selectedRealEstate: item,
+      selectedOffice: item,
       tracksViewChanges: true,
     });
   };
@@ -178,7 +177,7 @@ class OfficesPage extends React.Component {
               toValue: 1,
               useNativeDriver: true,
             }).start(() => {
-              this.setState({numberOfRealEstateShow: true});
+              this.setState({numberOfOfficesShow: true});
               Animated.timing(this.state.Animation.listLabel2, {
                 duration: 600,
                 toValue: 1,
@@ -195,7 +194,7 @@ class OfficesPage extends React.Component {
       toValue: 0,
       useNativeDriver: true,
     }).start(() => {
-      this.setState({mapView: true, numberOfRealEstateShow: false});
+      this.setState({mapView: true, numberOfOfficesShow: false});
       this.goToUserLocation();
       Animated.timing(this.state.Animation.test, {
         toValue: 0,
@@ -206,7 +205,7 @@ class OfficesPage extends React.Component {
   };
 
   handleViewPress = () => {
-    this.setState({offices: this.state.realestate});
+    this.setState({offices: this.state.office});
 
     this.startTestAnimatio();
     // this.setState( s => ({mapView: !s.mapView}))
@@ -238,14 +237,13 @@ class OfficesPage extends React.Component {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        console.log('did didFocus');
         // setTimeout(() => {
-        console.log(
-          'this.statAnimation ',
-          this.props.filterData && this.props.filterData.status
-            ? this.props.filterData.status
-            : null,
-        );
+        // console.log(
+        //   'this.statAnimation ',
+        //   this.props.filterData && this.props.filterData.status
+        //     ? this.props.filterData.status
+        //     : null,
+        // );
         // if(!this.state.mapView){
         //     this.startTestAnimatio()
         //     this.startMoveButton()
@@ -285,6 +283,48 @@ class OfficesPage extends React.Component {
     // );
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({loading:false})
+    if (nextProps.OfficeList !== this.props.OfficeList) {
+      console.log('offices', nextProps.OfficeList);
+      this.setState({
+        loading: false,
+        tracksViewChanges: true,
+        numberOfOfficesShow:
+          nextProps.OfficeList &&
+          nextProps.OfficeList.numberOfOffices
+        });
+      if (this.state.pageNumber === 1) {
+        this.setState({
+          office:
+            nextProps.OfficeList &&
+            nextProps.OfficeList.office &&
+            nextProps.OfficeList.office,
+          officesData: nextProps.OfficeList.office,
+        });
+      } else {
+        if ((nextProps.OfficeList.office || []).length > 0) {
+          let arr2 = _.concat(
+            this.state.officesData,
+            nextProps.OfficeList.office,
+          );
+          this.setState({officesData: arr2});
+        }
+      }
+    }
+
+    if (nextProps.checker !== this.props.checker) {
+      console.log('checker', nextProps.checker);
+      this.setState({fav: nextProps.checker, tracksViewChanges: true});
+    }
+
+    if (nextProps.info !== this.props.info) {
+      // console.log('Hellop Info', nextProps.info)
+      this.setState({loading: false, info: nextProps.info});
+      // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
+    }
+  }
+
   handleFilterList = i => {
     this.setState({
       selectedMethod:
@@ -294,7 +334,7 @@ class OfficesPage extends React.Component {
     });
 
     if (i !== 3) {
-      this.setState({offices: this.state.realestate});
+      this.setState({offices: this.state.office});
     }
   };
 
@@ -302,7 +342,6 @@ class OfficesPage extends React.Component {
     try {
       Geolocation.getCurrentPosition(
         res => {
-          console.log('res', res);
           this.setState({userLocation: res.coords});
           this.setState({loading: true});
           this.mapRef.animateToRegion({
@@ -341,19 +380,18 @@ class OfficesPage extends React.Component {
     // return alert('الرجاء تسجيل الدخول للاستفادة')
     this.props.checker
       ? this.props.deleteRealEstateFromFav(
-          this.state.selectedRealEstate._id,
+          this.state.selectedOffice._id,
           this.props.user.token,
         )
       : this.props.addRealEstateTFav(
-          this.state.selectedRealEstate,
+          this.state.selectedOffice,
           this.props.user.token,
         );
 
-    this.props.checkRealEstateInFav(this.state.selectedRealEstate._id);
+    this.props.checkRealEstateInFav(this.state.selectedOffice._id);
   };
 
   handleFilterMethod = i => {
-    console.log('type', this.state.selecedFilter, 'method', i);
     let arr = this.state.offices || [];
 
     // if(i === 1){
@@ -376,7 +414,6 @@ class OfficesPage extends React.Component {
         break;
     }
 
-    console.log('arr', arr);
     this.setState({
       offices: arr,
       showFilterList: false,
@@ -390,7 +427,7 @@ class OfficesPage extends React.Component {
 
   handleCardPress = v => {
     // console.log('Item', v)
-    this.props.navigation.navigate('RealEstateDetail', {realEstate: v});
+    this.props.navigation.navigate('OfficeDetail', {office: v});
   };
 
   mapUpdate = v => {
@@ -400,10 +437,10 @@ class OfficesPage extends React.Component {
     } else {
       this.setState({smallIcon: false});
     }
-    console.log(
-      'this.map',
-      Math.log2(360 * (width / 256 / v.longitudeDelta)) + 1,
-    );
+    // console.log(
+    //   'this.map',
+    //   Math.log2(360 * (width / 256 / v.longitudeDelta)) + 1,
+    // );
     // this.setState({cardView: false, loading: true})
     // console.log('Hello123')
     this.doReq(v);
@@ -450,20 +487,20 @@ class OfficesPage extends React.Component {
           loading: true,
           pageNumber: ++this.state.pageNumber,
         });
-        this.props.getRealEstate({
-          pageNumber: this.state.pageNumber,
-          pageSize: this.state.smallIcon ? 120 : 10,
-          lat2: this.state.currentLocation.northEast.latitude,
-          long2: this.state.currentLocation.northEast.longitude,
-          lat1: this.state.currentLocation.southWest.latitude,
-          long1: this.state.currentLocation.southWest.longitude,
-          ...this.props.filterData,
-          type:
-            this.state.selectedType &&
-            this.state.selectedType._id !== 1 &&
-            this.state.selectedType,
-          status: this.state.selectedStatus && this.state.selectedStatus,
-        });
+        // this.props.getRealEstate({
+        //   pageNumber: this.state.pageNumber,
+        //   pageSize: this.state.smallIcon ? 120 : 10,
+        //   lat2: this.state.currentLocation.northEast.latitude,
+        //   long2: this.state.currentLocation.northEast.longitude,
+        //   lat1: this.state.currentLocation.southWest.latitude,
+        //   long1: this.state.currentLocation.southWest.longitude,
+        //   ...this.props.filterData,
+        //   type:
+        //     this.state.selectedType &&
+        //     this.state.selectedType._id !== 1 &&
+        //     this.state.selectedType,
+        //   status: this.state.selectedStatus && this.state.selectedStatus,
+        // });
       }
     });
   };
@@ -512,7 +549,6 @@ class OfficesPage extends React.Component {
   }
 
   handlePurposeFilter(item) {
-    console.log(item);
     this.setState({selectedPurpose: item});
 
     // if(!this.state.mapView)
@@ -539,21 +575,20 @@ class OfficesPage extends React.Component {
       offices: [],
       pageNumber: 1,
     });
-    this.props.getRealEstate({
-      pageNumber: 1,
-      pageSize: this.state.smallIcon ? 200 : 10,
-      lat2: this.state.currentLocation.northEast.latitude,
-      long2: this.state.currentLocation.northEast.longitude,
-      lat1: this.state.currentLocation.southWest.latitude,
-      long1: this.state.currentLocation.southWest.longitude,
-      ...this.props.filterData,
-      type:
-        this.state.selectedType &&
-        this.state.selectedType._id !== 1 &&
-        this.state.selectedType,
-      status: item._id === 1 && item._id,
-    });
-    console.log(item, 'hello shit');
+    // this.props.getRealEstate({
+    //   pageNumber: 1,
+    //   pageSize: this.state.smallIcon ? 200 : 10,
+    //   lat2: this.state.currentLocation.northEast.latitude,
+    //   long2: this.state.currentLocation.northEast.longitude,
+    //   lat1: this.state.currentLocation.southWest.latitude,
+    //   long1: this.state.currentLocation.southWest.longitude,
+    //   ...this.props.filterData,
+    //   type:
+    //     this.state.selectedType &&
+    //     this.state.selectedType._id !== 1 &&
+    //     this.state.selectedType,
+    //   status: item._id === 1 && item._id,
+    // });
     //         }
     //     })
     //     // return
@@ -601,21 +636,20 @@ class OfficesPage extends React.Component {
             offices: [],
             pageNumber: 1,
           });
-          this.props.getRealEstate({
-            pageNumber: this.state.pageNumber,
-            pageSize: this.state.smallIcon ? 200 : 10,
-            lat2: this.state.currentLocation.northEast.latitude,
-            long2: this.state.currentLocation.northEast.longitude,
-            lat1: this.state.currentLocation.southWest.latitude,
-            long1: this.state.currentLocation.southWest.longitude,
-            ...this.props.filterData,
-            type:
-              this.state.selectedType &&
-              this.state.selectedType._id !== 1 &&
-              this.state.selectedType,
-            status: this.state.selectedStatus && this.state.selectedStatus,
-          });
-          console.log(item, 'hello shit');
+          // this.props.getRealEstate({
+          //   pageNumber: this.state.pageNumber,
+          //   pageSize: this.state.smallIcon ? 200 : 10,
+          //   lat2: this.state.currentLocation.northEast.latitude,
+          //   long2: this.state.currentLocation.northEast.longitude,
+          //   lat1: this.state.currentLocation.southWest.latitude,
+          //   long1: this.state.currentLocation.southWest.longitude,
+          //   ...this.props.filterData,
+          //   type:
+          //     this.state.selectedType &&
+          //     this.state.selectedType._id !== 1 &&
+          //     this.state.selectedType,
+          //   status: this.state.selectedStatus && this.state.selectedStatus,
+          // });
         }
       });
     }
@@ -648,7 +682,7 @@ class OfficesPage extends React.Component {
       offices,
       shortSugesstionData,
       mapView,
-      realestate,
+      office,
       realestateTypes,
     } = this.state;
 
@@ -957,7 +991,7 @@ class OfficesPage extends React.Component {
                         smallIcon={true}
                         focusMarker={
                           this.state.cardView
-                            ? this.state.selectedRealEstate.place_id
+                            ? this.state.selectedOffice.place_id
                             : null
                         }
                         tracksViewChanges={this.state.tracksViewChanges}
@@ -973,7 +1007,7 @@ class OfficesPage extends React.Component {
                       smallIcon={false && this.state.smallIcon}
                       focusMarker={
                         this.state.cardView
-                          ? this.state.selectedRealEstate.place_id
+                          ? this.state.selectedOffice.place_id
                           : null
                       }
                       tracksViewChanges={this.state.tracksViewChanges}
@@ -1005,7 +1039,7 @@ class OfficesPage extends React.Component {
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                 }}>
-                {this.state.numberOfRealEstateShow ? (
+                {this.state.numberOfOfficesShow ? (
                   <Animated.View
                     style={{
                       borderRadius: 12,
@@ -1028,9 +1062,9 @@ class OfficesPage extends React.Component {
                           fontWeight: 'normal',
                         },
                       ]}>
-                      {(offices || []).length > 0
-                        ? `${this.state.numberOfRealEstate} /  ${
-                            (offices || []).length
+                      {(this.props.offices || []).length > 0
+                        ? `${this.props.offices.length} /  ${
+                            (this.props.offices || []).length
                           } `
                         : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
                     </Text>
@@ -1065,11 +1099,13 @@ class OfficesPage extends React.Component {
                   </Animated.View>
                 )}
               </View>
-              <RealEstatList
+              <OfficeList
                 handleGetMoreDatat={this.handleGetMoreDatat}
-                numberOfRealEstate={this.state.numberOfRealEstate}
+                numberOfOffices={this.state.numberOfOffices}
                 onItemPress={v => this.handleCardPress(v)}
-                realestateData={this.props.offices}
+                officesData={this.props.offices}
+                loading = {false}
+                doAnimation={true}
                 onMapButtonPress={this.handleViewPress}
               />
             </Animated.View>
@@ -1077,9 +1113,9 @@ class OfficesPage extends React.Component {
 
           {this.state.cardView && (
             <CardItem
-              selectedRealEstate={this.state.selectedRealEstate}
+              selectedOffice={this.state.selectedOffice}
               onCardPress={() =>
-                this.handleCardPress(this.state.selectedRealEstate)
+                this.handleCardPress(this.state.selectedOffice)
               }
               doAnimation={true}
               onFavPress={this.handleFavPress}
@@ -1095,12 +1131,13 @@ class OfficesPage extends React.Component {
 // export default OfficesPage
 
 const mapDispatchToProps = dispatch => ({
-  getOffices: ({lat, lng, radius, pageNumber}) =>
-    dispatch(OfficesActions.getOffices(lat, lng, radius, pageNumber)),
+  getOffices: ({lat, lng, radius, pageNumber}) =>{
+    dispatch(OfficesActions.getOffices(lat, lng, radius, pageNumber))
+
+  }
 });
 
 const mapStateToProps = state => {
-  console.log('state', state);
   return {
     offices: state.realEstateOffices.offices,
   };
