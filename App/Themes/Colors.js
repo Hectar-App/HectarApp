@@ -1,21 +1,16 @@
 const colors = {
-  darkSeafoamGreen: "#3dba7e",
-  watermelon: "#f8444f",
-  darkSlateBlue: "#113351",
-  black: "#000000",
-  lightBlueGrey: "#ccccd0",
-  brownGrey: "#8d8d8d",
-  dusk: "#455d78",
-  cloudyBlue: "#b3c5db",
-  slate: "#454f63",
-  white: "#ffffff",
+  darkSeafoamGreen: '#3dba7e',
+  watermelon: '#f8444f',
+  darkSlateBlue: '#113351',
+  lightBlueGrey: '#ccccd0',
+  brownGrey: '#8d8d8d',
+  dusk: '#455d78',
+  cloudyBlue: '#b3c5db',
+  slate: '#454f63',
   grayWhite: 'rgb(255,255,255)',
   yellow: '#ffbf0c',
   whiteRed: '#ec91a3',
   redWhite: '#BF4C58',
-  backdrop: 'rgba(255, 255, 255, 0.8)',
-  
-
   background: '#f1f1f1',
   lightBackground: '#fefefe',
   clear: 'rgba(0,0,0,0)',
@@ -60,9 +55,8 @@ const colors = {
     entertainment: '#97679c',
     sport: '#ff6c2b',
     education: '#0784c8',
-    other: '#fdd948'
-  }
-  
-}
+    other: '#fdd948',
+  },
+};
 
-export default colors
+export default colors;
