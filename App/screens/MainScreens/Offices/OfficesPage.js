@@ -1,16 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React from 'react';
 import {
-  View,
   Animated,
-  Text,
-  Keyboard,
   Dimensions,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  TouchableOpacity,
   Image,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  Platform,
 } from 'react-native';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
 
 import NetInfo from '@react-native-community/netinfo';
@@ -19,25 +20,22 @@ import SugestionComp from '../../../Component/sugestionComp';
 import OfficesHeader from '../../../Component/OfficesHeader';
 import CardItem from '../../../Component/itemCard';
 import {
+  ApplicationStyles,
   Colors,
   Fonts,
-  ApplicationStyles,
   Images,
   Metrics,
 } from '../../../Themes';
 import Marker from '../../../Component/MarkerOffice';
 import MarkerSmall from '../../../Component/Marker.1';
-//import RealEstatList from '../../../Component/realEstateList';
 import OfficeList from '../../../Component/OfficeList';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import MapStyle from '../../../Themes/mapStyle.json';
 import MapStyleDark from '../../../Themes/mapStyleDark.json';
 
-import {ThemeContext} from 'react-navigation';
+import { ThemeContext } from 'react-navigation';
 
-import UserAction from '../../../Redux/UserRedux';
-
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import OfficesActions from '../../../Redux/OfficesRedux';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -1099,15 +1097,6 @@ class OfficesPage extends React.Component {
                   </Animated.View>
                 )}
               </View>
-              <OfficeList
-                handleGetMoreDatat={this.handleGetMoreDatat}
-                numberOfOffices={this.state.numberOfOffices}
-                onItemPress={v => this.handleCardPress(v)}
-                officesData={this.props.offices}
-                loading = {false}
-                doAnimation={true}
-                onMapButtonPress={this.handleViewPress}
-              />
             </Animated.View>
           )}
 
@@ -1131,10 +1120,9 @@ class OfficesPage extends React.Component {
 // export default OfficesPage
 
 const mapDispatchToProps = dispatch => ({
-  getOffices: ({lat, lng, radius, pageNumber}) =>{
-    dispatch(OfficesActions.getOffices(lat, lng, radius, pageNumber))
-
-  }
+  getOffices: ({ lat, lng, radius, pageNumber }) => {
+    dispatch(OfficesActions.getOffices(lat, lng, radius, pageNumber));
+  },
 });
 
 const mapStateToProps = state => {
@@ -1150,12 +1138,9 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
-    //   ...StyleSheet.absoluteFillObject,
     height: 100,
     width: 400,
     borderWidth: 1,
-    //   justifyContent: 'flex-end',
-    //   alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -1165,16 +1150,6 @@ const styles = StyleSheet.create({
   circleButton:
     // ApplicationStyles.mapButton,
     {
-      // top: startAnimation? Animation.interpolate({inputRange: [0, 1], outputRange: [201, Metrics.screenHeight - 160 ]}): 445,
-      // top: Metrics.screenHeight - 160,
-      // top: 259,
-      shadowColor: 'rgba(0, 0, 0, 0.16)',
-      shadowOffset: {
-        width: -6,
-        height: 0,
-      },
-      shadowRadius: 6,
-      shadowOpacity: 1,
       width: 44,
       height: 44,
       backgroundColor: Colors.darkSeafoamGreen,
@@ -1193,7 +1168,6 @@ const styles = StyleSheet.create({
     },
   itemContainer1: {
     marginHorizontal: 10,
-    // flex:1,
     height: 33,
     width: '25%',
     borderRadius: 100,
