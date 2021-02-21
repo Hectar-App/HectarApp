@@ -47,9 +47,9 @@ import ErroAlert from '../../../Component/ErrorAlert';
 
 import ListFilter from '../../../Component/listFilter';
 
-import {DotIndicator} from 'react-native-indicators';
+import { DotIndicator } from 'react-native-indicators';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class OfficesPage extends React.Component {
   static contextType = ThemeContext;
@@ -65,8 +65,6 @@ class OfficesPage extends React.Component {
       showFilterList: false,
       mapView: true,
       tracksViewChanges: true,
-      // sugesstionData: [{name: 'غرناطة المراحمية', id: 1}, {name: 'غرناطة المراحمية', id: 2}, {name: 'غرناطة المراحمية', id: 3}, {name: 'غرناطة المراحمية', id: 4}, {name: 'غرناطة المراحمية', id: 5}, {name: 'غرناطة المراحمية', id: 6}, {name: 'غرناطة المراحمية', id: 7}],
-      // shortSugesstionData: [{name: 'غرناطة المراحمية', id: 1}, {name: 'غرناطة المراحمية', id: 2}, {name: 'غرناطة المراحمية', id: 3}, {name: 'غرناطة المراحمية', id: 4}],
       Animation: {
         mapButtonAnimation: new Animated.Value(0),
         filterAnimation: new Animated.Value(0),
@@ -82,7 +80,6 @@ class OfficesPage extends React.Component {
       showErrorMessage: false,
       pageNumber: 1,
       numberOfOfficesShow: false,
-      
     };
   }
 
@@ -90,7 +87,6 @@ class OfficesPage extends React.Component {
     Animated.timing(this.state.Animation.mapButtonAnimation, {
       duration: 900,
       toValue: !this.state.mapView ? 0 : 1,
-      // useNativeDriver: true
     }).start();
   };
 
@@ -103,26 +99,24 @@ class OfficesPage extends React.Component {
   }
 
   startFilterAnimation = () => {
-    this.setState({filterActive: true});
+    this.setState({ filterActive: true });
     this.state.Animation.filterAnimation.setValue(0);
     Animated.timing(this.state.Animation.filterAnimation, {
       duration: 950,
       toValue: 1,
-      // useNativeDriver: true
     }).start(() => {
       this.props.navigation.navigate('FilterPage', {
         selectedType: this.state.selectedType,
       });
       setTimeout(() => {
-        this.setState({filterActive: false});
+        this.setState({ filterActive: false });
       }, 750);
     });
   };
 
   handleSearch = val => {
-    this.setState({searchValue: val});
-    //  _.debounce(() => {
-    this.setState({sugesstionLoading: true});
+    this.setState({ searchValue: val });
+    this.setState({ sugesstionLoading: true });
     fetch(
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
         'query=' +
@@ -133,22 +127,15 @@ class OfficesPage extends React.Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        this.setState({sugesstionLoading: false});
-        // console.log('response GOOGLE => ', responseJson)
-        //     setLoading(false)
+        this.setState({ sugesstionLoading: false });
         if ((responseJson.results || []).length > 0) {
-          this.setState({sugesstionData: responseJson.results});
+          this.setState({ sugesstionData: responseJson.results });
         }
       })
       .catch(err => console.log('err GOOGLE => ', err));
-    // }, 350).bind()
-    // if(this.state.searchValue.length > 3){
-
-    // }
   };
 
   handleMarkerPress = item => {
-    // this.props.checkRealEstateInFav(item._id);
     this.setState({
       cardView: true,
       selectedOffice: item,
@@ -163,7 +150,7 @@ class OfficesPage extends React.Component {
         toValue: 1,
         useNativeDriver: true,
       }).start(() => {
-        this.setState({mapView: false, cardView: false});
+        this.setState({ mapView: false, cardView: false });
         Animated.timing(this.state.Animation.test2, {
           toValue: 1,
           duration: 600,
@@ -175,7 +162,7 @@ class OfficesPage extends React.Component {
               toValue: 1,
               useNativeDriver: true,
             }).start(() => {
-              this.setState({numberOfOfficesShow: true});
+              this.setState({ numberOfOfficesShow: true });
               Animated.timing(this.state.Animation.listLabel2, {
                 duration: 600,
                 toValue: 1,
@@ -192,7 +179,7 @@ class OfficesPage extends React.Component {
       toValue: 0,
       useNativeDriver: true,
     }).start(() => {
-      this.setState({mapView: true, numberOfOfficesShow: false});
+      this.setState({ mapView: true, numberOfOfficesShow: false });
       this.goToUserLocation();
       Animated.timing(this.state.Animation.test, {
         toValue: 0,
@@ -203,23 +190,17 @@ class OfficesPage extends React.Component {
   };
 
   handleViewPress = () => {
-    this.setState({offices: this.state.office});
-
+    this.setState({ offices: this.state.office || this.props.offices });
+    console.log({ badawey: this.state.office });
+    console.log({ badawey2: this.state });
+    console.log({ badawey3: this.props });
     this.startTestAnimatio();
-    // this.setState( s => ({mapView: !s.mapView}))
     this.startMoveButton();
-    // setStartAnimation(true)
   };
-
-  // componentWillMount(){
-  //     this.setState({loading: true })
-  //     console.log('This user position', this.state.position)
-  //     this.props.getRealEstate(1)
-  // }
-
   async checkNet() {
     return NetInfo.fetch();
   }
+
   componentWillMount() {
     this.checkNet().then(res => {
       console.log('isConnected', res);
@@ -235,33 +216,19 @@ class OfficesPage extends React.Component {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        // setTimeout(() => {
-        // console.log(
-        //   'this.statAnimation ',
-        //   this.props.filterData && this.props.filterData.status
-        //     ? this.props.filterData.status
-        //     : null,
-        // );
-        // if(!this.state.mapView){
-        //     this.startTestAnimatio()
-        //     this.startMoveButton()
-        // }
         if (this.props.filterData && this.props.filterData.type) {
           this.setState({
             selectedType:
               this.props.filterData && this.props.filterData.type
                 ? this.props.filterData.type
-                : {_id: 1},
+                : { _id: 1 },
             status:
               this.props.filterData && this.props.filterData.status
                 ? this.props.filterData.status
                 : null,
           });
         }
-        // this.mapRef.animateToRegion
         this.doReq();
-
-        // }, 1000);
       },
     );
   }
@@ -272,26 +239,19 @@ class OfficesPage extends React.Component {
 
   componentWillUnmount() {
     this.didFocusListener.remove();
-    // this.keyboardDidShowListener.remove();
-    // this.keyboardDidHideListener.remove();
-
-    // NetInfo.isConnected.removeEventListener(
-    //   "connectionChange",
-    //   this.handleConnectionActivity
-    // );
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({loading:false})
+    this.setState({ loading: false });
     if (nextProps.OfficeList !== this.props.OfficeList) {
       console.log('offices', nextProps.OfficeList);
+      console.log('badawey500', nextProps.OfficeList);
       this.setState({
         loading: false,
         tracksViewChanges: true,
         numberOfOfficesShow:
-          nextProps.OfficeList &&
-          nextProps.OfficeList.numberOfOffices
-        });
+          nextProps.OfficeList && nextProps.OfficeList.numberOfOffices,
+      });
       if (this.state.pageNumber === 1) {
         this.setState({
           office:
@@ -306,20 +266,18 @@ class OfficesPage extends React.Component {
             this.state.officesData,
             nextProps.OfficeList.office,
           );
-          this.setState({officesData: arr2});
+          this.setState({ officesData: arr2 });
         }
       }
     }
 
     if (nextProps.checker !== this.props.checker) {
       console.log('checker', nextProps.checker);
-      this.setState({fav: nextProps.checker, tracksViewChanges: true});
+      this.setState({ fav: nextProps.checker, tracksViewChanges: true });
     }
 
     if (nextProps.info !== this.props.info) {
-      // console.log('Hellop Info', nextProps.info)
-      this.setState({loading: false, info: nextProps.info});
-      // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
+      this.setState({ loading: false, info: nextProps.info });
     }
   }
 
@@ -332,7 +290,7 @@ class OfficesPage extends React.Component {
     });
 
     if (i !== 3) {
-      this.setState({offices: this.state.office});
+      this.setState({ offices: this.state.office });
     }
   };
 
@@ -340,18 +298,16 @@ class OfficesPage extends React.Component {
     try {
       Geolocation.getCurrentPosition(
         res => {
-          this.setState({userLocation: res.coords});
-          this.setState({loading: true});
+          this.setState({ userLocation: res.coords });
+          this.setState({ loading: true });
           this.mapRef.animateToRegion({
             latitude: res.coords.latitude,
             longitude: res.coords.longitude,
             latitudeDelta: 0.1,
             longitudeDelta: 0.001,
           });
-          // this.props.getRealEstate(1, res.coords.latitude, res.coords.longitude)
         },
         err => {
-          // Linking.openSettings();
           this.mapRef.animateToRegion({
             latitude: 24.810133,
             longitude: 46.620784,
@@ -375,7 +331,6 @@ class OfficesPage extends React.Component {
       });
     }
 
-    // return alert('الرجاء تسجيل الدخول للاستفادة')
     this.props.checker
       ? this.props.deleteRealEstateFromFav(
           this.state.selectedOffice._id,
@@ -391,12 +346,6 @@ class OfficesPage extends React.Component {
 
   handleFilterMethod = i => {
     let arr = this.state.offices || [];
-
-    // if(i === 1){
-    //     arr.sort((a, b) => this.state.selecedFilter === 2? b.price - a.price:  b.space - a.space)
-    // }else if(i === 2){
-    //     arr.sort((a, b) => this.state.selecedFilter === 2? a.price - b.price:  a.space - b.space)
-    // }
 
     switch (i) {
       case 1:
@@ -424,23 +373,16 @@ class OfficesPage extends React.Component {
   };
 
   handleCardPress = v => {
-    // console.log('Item', v)
-    this.props.navigation.navigate('OfficeDetail', {office: v});
+    this.props.navigation.navigate('OfficeDetail', { office: v });
   };
 
   mapUpdate = v => {
-    this.setState({sugesstionData: null});
+    this.setState({ sugesstionData: null });
     if (Math.log2(360 * (width / 256 / v.longitudeDelta)) + 1 < 11.5) {
-      this.setState({smallIcon: true});
+      this.setState({ smallIcon: true });
     } else {
-      this.setState({smallIcon: false});
+      this.setState({ smallIcon: false });
     }
-    // console.log(
-    //   'this.map',
-    //   Math.log2(360 * (width / 256 / v.longitudeDelta)) + 1,
-    // );
-    // this.setState({cardView: false, loading: true})
-    // console.log('Hello123')
     this.doReq(v);
   };
 
@@ -485,87 +427,18 @@ class OfficesPage extends React.Component {
           loading: true,
           pageNumber: ++this.state.pageNumber,
         });
-        // this.props.getRealEstate({
-        //   pageNumber: this.state.pageNumber,
-        //   pageSize: this.state.smallIcon ? 120 : 10,
-        //   lat2: this.state.currentLocation.northEast.latitude,
-        //   long2: this.state.currentLocation.northEast.longitude,
-        //   lat1: this.state.currentLocation.southWest.latitude,
-        //   long1: this.state.currentLocation.southWest.longitude,
-        //   ...this.props.filterData,
-        //   type:
-        //     this.state.selectedType &&
-        //     this.state.selectedType._id !== 1 &&
-        //     this.state.selectedType,
-        //   status: this.state.selectedStatus && this.state.selectedStatus,
-        // });
       }
     });
   };
 
   handleTypeFilter(item) {
-    // console.log(item)
-    this.setState({selectedType: item});
-    // if (!this.state.mapView)
-    //   return this.checkNet().then(res => {
-    //     if (!res.isConnected) {
-    //       this.setState({
-    //         showAlert: true,
-    //         loading: false,
-    //         alertMessage: 'لا يوجد اتصال في الانترنت الرجاء المحاولة مرة اخرى',
-    //       });
-    //     } else {
-    //       this.props.changeFilterData(null);
-    //       this.props.changeFilterData({type: selectedType});
-
-    //       this.setState({
-    //         cardView: false,
-    //         loading: true,
-    //         offices: [],
-    //         pageNumber: 1,
-    //       });
-    //       this.props.getRealEstate({
-    //         pageNumber: this.state.pageNumber,
-    //         pageSize: this.state.smallIcon ? 200 : 10,
-    //         lat2: this.state.currentLocation.northEast.latitude,
-    //         long2: this.state.currentLocation.northEast.longitude,
-    //         lat1: this.state.currentLocation.southWest.latitude,
-    //         long1: this.state.currentLocation.southWest.longitude,
-    //         ...this.props.filterData,
-    //         type:
-    //           this.state.selectedType &&
-    //           this.state.selectedType._id !== 1 &&
-    //           this.state.selectedType,
-    //         status: this.state.selectedStatus && this.state.selectedStatus,
-    //       });
-    //       console.log(item, 'hello shit');
-    //     }
-    //   });
-    // return
-
+    this.setState({ selectedType: item });
     this.doReq();
   }
 
   handlePurposeFilter(item) {
-    this.setState({selectedPurpose: item});
-
-    // if(!this.state.mapView)
-    //     return this.checkNet().then(res => {
-    //         if(!res.isConnected){
-    //             this.setState({showAlert: true, loading: false, alertMessage: 'لا يوجد اتصال في الانترنت الرجاء المحاولة مرة اخرى' })
-    //         }else {
-
-    //             let s = null
-
-    //             switch (item._id) {
-    //                 case 1:
-    this.setState({selectedStatus: item._id === 1 ? null : item._id});
-    //                     break;
-
-    //                 default:
-    //                     this.setState({selectedStatus: item._id})
-    //                     break;
-    //             }
+    this.setState({ selectedPurpose: item });
+    this.setState({ selectedStatus: item._id === 1 ? null : item._id });
 
     this.setState({
       cardView: false,
@@ -573,30 +446,12 @@ class OfficesPage extends React.Component {
       offices: [],
       pageNumber: 1,
     });
-    // this.props.getRealEstate({
-    //   pageNumber: 1,
-    //   pageSize: this.state.smallIcon ? 200 : 10,
-    //   lat2: this.state.currentLocation.northEast.latitude,
-    //   long2: this.state.currentLocation.northEast.longitude,
-    //   lat1: this.state.currentLocation.southWest.latitude,
-    //   long1: this.state.currentLocation.southWest.longitude,
-    //   ...this.props.filterData,
-    //   type:
-    //     this.state.selectedType &&
-    //     this.state.selectedType._id !== 1 &&
-    //     this.state.selectedType,
-    //   status: item._id === 1 && item._id,
-    // });
-    //         }
-    //     })
-    //     // return
-
     this.doReq();
   }
 
   typeListPress = () => {
     if (this.state.showTypesList) {
-      this.setState({showTypesList: false});
+      this.setState({ showTypesList: false });
       Animated.timing(this.state.Animation.typesList, {
         toValue: 0,
         duration: 550,
@@ -606,19 +461,13 @@ class OfficesPage extends React.Component {
         toValue: 1,
         duration: 550,
       }).start(() => {
-        this.setState({showTypesList: true});
+        this.setState({ showTypesList: true });
       });
     }
   };
 
   handleChangeStatus = item => {
-    // if (this.state.selectedStatus && this.state.selectedStatus._id === item._id){
-    //     this.setState({selectedStatus: null})
-    //     // this.doReq();
-    //     // return
-    // }else{
-    this.setState({selectedStatus: item._id === 1 ? null : item});
-    // }
+    this.setState({ selectedStatus: item._id === 1 ? null : item });
     if (!this.state.mapView) {
       return this.checkNet().then(res => {
         if (!res.isConnected) {
@@ -634,30 +483,15 @@ class OfficesPage extends React.Component {
             offices: [],
             pageNumber: 1,
           });
-          // this.props.getRealEstate({
-          //   pageNumber: this.state.pageNumber,
-          //   pageSize: this.state.smallIcon ? 200 : 10,
-          //   lat2: this.state.currentLocation.northEast.latitude,
-          //   long2: this.state.currentLocation.northEast.longitude,
-          //   lat1: this.state.currentLocation.southWest.latitude,
-          //   long1: this.state.currentLocation.southWest.longitude,
-          //   ...this.props.filterData,
-          //   type:
-          //     this.state.selectedType &&
-          //     this.state.selectedType._id !== 1 &&
-          //     this.state.selectedType,
-          //   status: this.state.selectedStatus && this.state.selectedStatus,
-          // });
         }
       });
     }
-    // return
 
     this.doReq();
   };
 
   handleSugesstionPress = i => {
-    this.setState({sugesstionData: null, searchValue: ''});
+    this.setState({ sugesstionData: null, searchValue: '' });
     this.mapRef.animateToRegion({
       latitude: i.geometry.location.lat,
       longitude: i.geometry.location.lng,
@@ -668,21 +502,13 @@ class OfficesPage extends React.Component {
 
   render() {
     const theme = this.context;
-
+    console.log({ badawey101: this.state });
     const testStyle = this.state.Animation.mapButtonAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [201, Metrics.screenHeight - 160],
     });
 
-    const {
-      sugesstionData,
-      searchValue,
-      offices,
-      shortSugesstionData,
-      mapView,
-      office,
-      realestateTypes,
-    } = this.state;
+    const { sugesstionData, searchValue, mapView } = this.state;
 
     const testRotate = this.state.Animation.test.interpolate({
       inputRange: [0, 1],
@@ -716,10 +542,6 @@ class OfficesPage extends React.Component {
     const typesWidth = this.state.Animation.typesList.interpolate({
       inputRange: [0, 1],
       outputRange: [0, Metrics.screenWidth - 5],
-    });
-    const typesPosition = this.state.Animation.typesList.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, Platform.OS === 'android' ? 60 : 170],
     });
     const typesPositionHor = this.state.Animation.typesList.interpolate({
       inputRange: [0, 1],
@@ -786,7 +608,7 @@ class OfficesPage extends React.Component {
               {this.state.showTypesList &&
                 _.map(
                   _.concat(
-                    [{_id: 1, nameAr: 'كل العقارات'}],
+                    [{ _id: 1, nameAr: 'كل العقارات' }],
                     (this.state.info &&
                       this.state.info.realEstateTypes &&
                       this.state.info.realEstateTypes) ||
@@ -806,10 +628,9 @@ class OfficesPage extends React.Component {
                                 : '#ffffff',
                           },
                           Platform.OS === 'sdfsdf' && {
-                            transform: [{rotate: '180deg'}],
+                            transform: [{ rotate: '180deg' }],
                           },
                         ]}
-                        // onPress={() => {props.selectedTypePressed(item); setDoAnimation(false)}}
                         onPress={() => {
                           this.handleTypeFilter(item);
                           this.typeListPress();
@@ -838,8 +659,6 @@ class OfficesPage extends React.Component {
           {this.state.filterActive && (
             <Animated.View
               style={{
-                // width: filterPageWidth,
-                // height: filterPageHeight,
                 width: 40,
                 height: 40,
                 position: 'absolute',
@@ -848,7 +667,7 @@ class OfficesPage extends React.Component {
                 left: 10,
                 backgroundColor: '#fff',
                 borderRadius: 20,
-                transform: [{scale: filterScale}],
+                transform: [{ scale: filterScale }],
               }}
             />
           )}
@@ -864,7 +683,7 @@ class OfficesPage extends React.Component {
                 bottom: 85,
                 borderRadius: 5,
                 shadowColor: '#ccc',
-                shadowOffset: {width: 0, height: 0},
+                shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 2,
                 shadowRadius: 4,
                 elevation: 2,
@@ -877,7 +696,7 @@ class OfficesPage extends React.Component {
             selectMethod={this.handleFilterMethod}
             selectedTypeFilter={this.state.selecedFilter}
             isVisible={this.state.showFilterList}
-            onSwipe={() => this.setState({showFilterList: false})}
+            onSwipe={() => this.setState({ showFilterList: false })}
             filterType={'الاسعار'}
             selectMethodValue={this.state.selectedMethod}
           />
@@ -887,8 +706,6 @@ class OfficesPage extends React.Component {
               style={[
                 ApplicationStyles.mapButton,
                 {
-                  // top: startAnimation? Animation.interpolate({inputRange: [0, 1], outputRange: [201, Metrics.screenHeight - 160 ]}): 445,
-                  // top: Metrics.screenHeight - 160,
                   top: testStyle,
                   shadowColor: 'rgba(0, 0, 0, 0.16)',
                   shadowOffset: {
@@ -921,7 +738,7 @@ class OfficesPage extends React.Component {
 
           <AlertModal
             contentMessage={this.state.alertMessage}
-            closeErrorModel={() => this.setState({showAlert: false})}
+            closeErrorModel={() => this.setState({ showAlert: false })}
             isVisible={this.state.showAlert}
           />
 
@@ -929,7 +746,7 @@ class OfficesPage extends React.Component {
             <ErroAlert
               green={this.state.green}
               moreSecond={this.state.moreSecond}
-              setAnimation={() => this.setState({showErrorMessage: false})}
+              setAnimation={() => this.setState({ showErrorMessage: false })}
               errorMessage={this.state.errorMessage}
               doAnimation={this.state.showErrorMessage}
             />
@@ -940,22 +757,14 @@ class OfficesPage extends React.Component {
               style={[
                 {
                   width: 40,
-                  //    borderWidth: 1,
                   top: 251,
                   right: 25,
                   position: 'absolute',
                   height: 90,
                 },
               ]}>
-              {/* <TouchableOpacity
-                                style={[styles.circleButton]}
-                                onPress={()=> alert('yet')}
-                            >
-                                <Image source={Images.penIcon} />
-                            </TouchableOpacity> */}
-
               <TouchableOpacity
-                style={[styles.circleButton, {marginTop: 5}]}
+                style={[styles.circleButton, { marginTop: 5 }]}
                 onPress={() => this.goToUserLocation()}>
                 <Image source={Images.gbsIcon} />
               </TouchableOpacity>
@@ -967,7 +776,7 @@ class OfficesPage extends React.Component {
               {
                 ...StyleSheet.absoluteFillObject,
                 zIndex: -1,
-                transform: [{rotateY: testRotate}],
+                transform: [{ rotateY: testRotate }],
               },
             ]}>
             <MapView
@@ -976,7 +785,7 @@ class OfficesPage extends React.Component {
               style={[styles.map]}
               customMapStyle={theme === 'dark' ? MapStyleDark : MapStyle}
               minZoomLevel={10}
-              onMapReady={() => this.setState({mapReady: true})}
+              onMapReady={() => this.setState({ mapReady: true })}
               followsUserLocation
               onRegionChangeComplete={v => this.mapUpdate(v)}
               moveOnMarkerPress={false}
@@ -1026,7 +835,7 @@ class OfficesPage extends React.Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: ifIphoneX(120, 92),
-                  transform: [{rotateY: testRotate2}],
+                  transform: [{ rotateY: testRotate2 }],
                 },
               ]}>
               <View
@@ -1036,6 +845,9 @@ class OfficesPage extends React.Component {
                   flexDirection: 'row-reverse',
                   justifyContent: 'flex-start',
                   alignItems: 'center',
+                  // backgroundColor: 'yellow',
+                  flex: 1,
+                  // marginTop: perfectHeight(50),
                 }}>
                 {this.state.numberOfOfficesShow ? (
                   <Animated.View
@@ -1044,12 +856,11 @@ class OfficesPage extends React.Component {
                       backgroundColor: Colors.darkSlateBlue,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      alignSelf: 'center',
                       alignSelf: 'flex-end',
                       marginTop: 50,
                       marginEnd: 16,
                       padding: 10,
-                      transform: [{rotateX: rotateListLabel2}],
+                      transform: [{ rotateX: rotateListLabel2 }],
                     }}>
                     <Text
                       style={[
@@ -1061,7 +872,7 @@ class OfficesPage extends React.Component {
                         },
                       ]}>
                       {(this.props.offices || []).length > 0
-                        ? `${this.props.offices.length} /  ${
+                        ? `${this.props.offices.length} /////  ${
                             (this.props.offices || []).length
                           } `
                         : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
@@ -1074,12 +885,11 @@ class OfficesPage extends React.Component {
                       backgroundColor: Colors.darkSeafoamGreen,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      alignSelf: 'center',
                       alignSelf: 'flex-end',
                       marginTop: 50,
                       marginEnd: 16,
                       padding: 10,
-                      transform: [{rotateX: rotateListLabel}],
+                      transform: [{ rotateX: rotateListLabel }],
                     }}>
                     <Text
                       style={[
@@ -1096,6 +906,15 @@ class OfficesPage extends React.Component {
                     </Text>
                   </Animated.View>
                 )}
+                <OfficeList
+                  handleGetMoreDatat={this.handleGetMoreDatat}
+                  numberOfOffices={this.state.numberOfOffices}
+                  onItemPress={v => this.handleCardPress(v)}
+                  officesData={this.props.offices}
+                  loading={false}
+                  doAnimation={true}
+                  onMapButtonPress={this.handleViewPress}
+                />
               </View>
             </Animated.View>
           )}
