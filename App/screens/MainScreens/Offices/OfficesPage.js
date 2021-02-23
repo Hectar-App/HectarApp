@@ -58,7 +58,6 @@ class OfficesPage extends React.Component {
     super(props);
     // Refs
     this.mapRef = null;
-
     this.state = {
       offices: [],
       searchValue: '',
@@ -191,9 +190,6 @@ class OfficesPage extends React.Component {
 
   handleViewPress = () => {
     this.setState({ offices: this.state.office || this.props.offices });
-    console.log({ badawey: this.state.office });
-    console.log({ badawey2: this.state });
-    console.log({ badawey3: this.props });
     this.startTestAnimatio();
     this.startMoveButton();
   };
@@ -372,9 +368,12 @@ class OfficesPage extends React.Component {
     this.startFilterAnimation();
   };
 
-  handleCardPress = v => {
-    console.log(this.props)
-    this.props.navigation.push('OfficeDetails', { officeDetails: v });
+  handleCardPress = selectedOffice => {
+    console.log('BADAWEY CLICKED: ', selectedOffice);
+    console.log('BADAWEY: ', this.props);
+    this.props.navigation.push('officeDetails', {
+      officeDetails: selectedOffice,
+    });
   };
 
   mapUpdate = v => {
@@ -917,8 +916,6 @@ class OfficesPage extends React.Component {
               </View>
             </Animated.View>
           )}
-
-         
         </View>
       </TouchableWithoutFeedback>
     );

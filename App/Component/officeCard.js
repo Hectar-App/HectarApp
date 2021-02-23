@@ -1,15 +1,13 @@
 import React from 'react';
 import {
   Animated,
-  Platform,
+  Image,
   StyleSheet,
   Text,
-  Image,
-  Button,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Colors, CustomIcon, Fonts, Metrics } from '../Themes';
+import { Colors, Fonts, Metrics } from '../Themes';
 
 const officeCard = props => {
   const {
@@ -18,15 +16,16 @@ const officeCard = props => {
     },
     name,
     for_rent,
-    for_sale
+    for_sale,
   } = props.selectedOffice;
 
   return (
-    <TouchableOpacity style={[styles.container]} onPress={props.onCardPress}>
+    <TouchableOpacity
+      style={[styles.container]}
+      onPress={() => props.onItemPress(props.selectedOffice)}>
       <Animated.View style={[props.containerStyle]}>
         <View style={styles.conView}>
-          <View
-            style={[styles.textCardContainer]}>
+          <View style={[styles.textCardContainer]}>
             <Text
               style={[
                 Fonts.style.normal,
@@ -43,59 +42,86 @@ const officeCard = props => {
                     fontSize: 10,
                     width: '90%',
                     textAlign: 'right',
-                    color: '#7c7c7c'
+                    color: '#7c7c7c',
                   },
                 ]}>
                 {name}
               </Text>
               <Image
-              style={{
-                marginStart: 5
-              }}
+                style={{
+                  marginStart: 5,
+                }}
                 source={require('../assets/imgs/001-location1.png')}
               />
             </View>
             <Text
-              style={[Fonts.style.normal, styles.textCard, { fonrSize: 10,marginTop: 4,color: Colors.darkSeafoamGreen }]}
-            >
+              style={[
+                Fonts.style.normal,
+                styles.textCard,
+                { fonrSize: 10, marginTop: 4, color: Colors.darkSeafoamGreen },
+              ]}>
               مناطق الخدمة
             </Text>
-            {props.showContactButtons && 
-            <View style={{flexDirection:'row-reverse',padding: 10}}>
-              <TouchableOpacity style={[styles.contactBtn]}>
-                <Text style={{color: Colors.white,marginHorizontal:5}}>اتصال</Text>
-                <Image source={require('../assets/imgs/call2.png')}></Image>
-
-              </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal: 10}}>
-              <Image source={require('../assets/imgs/whatsapp-outline.png')}></Image>
-
-
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.socialBtn]}>
-              <Image source={require('../assets/imgs/telegram-outlined.png')}></Image>
-
-
-              </TouchableOpacity>              
-            </View>
-            }
+            {props.showContactButtons && (
+              <View style={{ flexDirection: 'row-reverse', padding: 10 }}>
+                <TouchableOpacity style={[styles.contactBtn]}>
+                  <Text style={{ color: Colors.white, marginHorizontal: 5 }}>
+                    اتصال
+                  </Text>
+                  <Image source={require('../assets/imgs/call2.png')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginHorizontal: 10 }}>
+                  <Image
+                    source={require('../assets/imgs/whatsapp-outline.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.socialBtn]}>
+                  <Image
+                    source={require('../assets/imgs/telegram-outlined.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-          {props.showCounts&&
-           <View style={[styles.counterViewContainer]} > 
-            <View style={[styles.counterView]}>
-              <Text style={[styles.counterViewText]}>للايجار</Text>
-              <Text style={{fontWeight: 'bold'}}>{for_rent} <Text style={[Fonts.style.normal,styles.textCard,{fontWeight: '100',}]}>عقار</Text></Text>
-
+          {props.showCounts && (
+            <View style={[styles.counterViewContainer]}>
+              <View style={[styles.counterView]}>
+                <Text style={[styles.counterViewText]}>للايجار</Text>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {for_rent}{' '}
+                  <Text
+                    style={[
+                      Fonts.style.normal,
+                      styles.textCard,
+                      { fontWeight: '100' },
+                    ]}>
+                    عقار
+                  </Text>
+                </Text>
+              </View>
+              <View
+                style={{
+                  borderBottomWidth: 0.6,
+                  borderBottomColor: Colors.lightGrey,
+                  width: '100%',
+                }}
+              />
+              <View style={[styles.counterView, { paddingBottom: 5 }]}>
+                <Text style={[styles.counterViewText]}>للبيع</Text>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {for_sale}{' '}
+                  <Text
+                    style={[
+                      Fonts.style.normal,
+                      styles.textCard,
+                      { fontWeight: '100' },
+                    ]}>
+                    عقار
+                  </Text>
+                </Text>
+              </View>
             </View>
-            <View style={{borderBottomWidth: 0.6,borderBottomColor: Colors.lightGrey, width: '100%'}}/>
-            <View style={[styles.counterView,{paddingBottom:5}]}>
-              <Text style={[styles.counterViewText]}>للبيع</Text>
-              <Text style={{fontWeight: 'bold'}}>{for_sale} <Text style={[Fonts.style.normal,styles.textCard,{fontWeight: '100',}]}>عقار</Text></Text>
-
-            </View>
-
-           </View>
-          }
+          )}
 
           {/* <TouchableOpacity
             style={{
@@ -126,7 +152,7 @@ const officeCard = props => {
 const styles = StyleSheet.create({
   container: {
     width: Metrics.screenWidth,
-    marginBottom:15,
+    marginBottom: 15,
     //height: 100,
     shadowColor: 'rgba(0, 0, 0, 0.08)',
     shadowOffset: {
@@ -138,14 +164,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 2,
   },
-  contactBtn:{
+  contactBtn: {
     borderRadius: 12,
     flexDirection: 'row',
-    paddingHorizontal:10,
-    paddingVertical:3,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.darkSeafoamGreen
+    backgroundColor: Colors.darkSeafoamGreen,
   },
   conView: {
     // width: Metrics.screenWidth * 0.91466667,
@@ -162,42 +188,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     elevation: 2,
   },
-  textCardContainer:{
+  textCardContainer: {
     flex: 1,
     borderLeftWidth: 0.5,
-    borderLeftColor: Colors.lightGrey
+    borderLeftColor: Colors.lightGrey,
   },
   textCard: {
     fontSize: 12,
     paddingTop: 10,
     paddingRight: 10,
     color: Colors.darkSlateBlue,
-    fontWeight: Platform.OS === 'android' ? '400' : 'bold',
     width: '100%',
     textAlign: 'right',
-    fontWeight:'500'
+    fontWeight: '500',
   },
   counterViewContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
-    paddingTop: 5
+    paddingTop: 5,
   },
-  counterView:{
+  counterView: {
     paddingHorizontal: 10,
     flexDirection: 'column',
     textAlign: 'right',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    backgroundColor: '#fcfcfc'
+    backgroundColor: '#fcfcfc',
   },
   socialBtn: {
-    borderRadius: 50    
+    borderRadius: 50,
   },
-  counterViewText:{
+  counterViewText: {
     ...Fonts.style.normal,
     fontSize: 12,
-    color: Colors.darkSeafoamGreen
-  }
+    color: Colors.darkSeafoamGreen,
+  },
 });
 
 export default officeCard;

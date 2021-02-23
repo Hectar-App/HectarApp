@@ -5,19 +5,18 @@ import CardItem from './officeCard';
 
 const officeList = props => {
   return (
-    <View style={{ flex: 1}}>
+    <View style={{ flex: 1 }}>
       <FlatList
-        
         onScroll={props.onScroll}
         data={props.officesData}
         renderItem={({ item, index }) => {
           return (
             <CardItem
-              onItemPress={() => props.onItemPress(item)}
+              onItemPress={selectedItem => props.onItemPress(selectedItem)}
               onFavPress={() => props.onFavPress(item)}
               doAnimation={true}
-              showCounts = {true}
-              showContactButtons = {true}
+              showCounts={true}
+              showContactButtons={true}
               selectedOffice={item}
               index={index}
             />
