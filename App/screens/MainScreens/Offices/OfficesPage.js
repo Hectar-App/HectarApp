@@ -373,7 +373,8 @@ class OfficesPage extends React.Component {
   };
 
   handleCardPress = v => {
-    this.props.navigation.navigate('OfficeDetail', { office: v });
+    console.log(this.props)
+    this.props.navigation.push('OfficeDetails', { officeDetails: v });
   };
 
   mapUpdate = v => {
@@ -502,7 +503,6 @@ class OfficesPage extends React.Component {
 
   render() {
     const theme = this.context;
-    console.log({ badawey101: this.state });
     const testStyle = this.state.Animation.mapButtonAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [201, Metrics.screenHeight - 160],
@@ -553,7 +553,7 @@ class OfficesPage extends React.Component {
         <View
           style={{
             flex: 1,
-            backgroundColor: theme === 'dark' ? '#202126' : '#fff',
+            backgroundColor: theme === 'dark' ? '#202126' : '#fcfcfc',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -784,7 +784,6 @@ class OfficesPage extends React.Component {
               ref={ref => (this.mapRef = ref)}
               style={[styles.map]}
               customMapStyle={theme === 'dark' ? MapStyleDark : MapStyle}
-              minZoomLevel={10}
               onMapReady={() => this.setState({ mapReady: true })}
               followsUserLocation
               onRegionChangeComplete={v => this.mapUpdate(v)}
@@ -842,68 +841,70 @@ class OfficesPage extends React.Component {
                 style={{
                   width: '100%',
                   flexWrap: 'wrap',
-                  flexDirection: 'row-reverse',
-                  justifyContent: 'flex-start',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   alignItems: 'center',
                   flex: 1,
+                  marginTop: 35,
+                  marginBottom: 55,
                 }}>
-                {/*{this.state.numberOfOfficesShow ? (*/}
-                {/*  <Animated.View*/}
-                {/*    style={{*/}
-                {/*      borderRadius: 12,*/}
-                {/*      backgroundColor: Colors.darkSlateBlue,*/}
-                {/*      alignItems: 'center',*/}
-                {/*      justifyContent: 'center',*/}
-                {/*      alignSelf: 'flex-end',*/}
-                {/*      marginTop: 50,*/}
-                {/*      marginEnd: 16,*/}
-                {/*      padding: 10,*/}
-                {/*      transform: [{ rotateX: rotateListLabel2 }],*/}
-                {/*    }}>*/}
-                {/*    <Text*/}
-                {/*      style={[*/}
-                {/*        Fonts.style.normal,*/}
-                {/*        {*/}
-                {/*          fontSize: 10,*/}
-                {/*          color: '#fff',*/}
-                {/*          fontWeight: 'normal',*/}
-                {/*        },*/}
-                {/*      ]}>*/}
-                {/*      {(this.props.offices || []).length > 0*/}
-                {/*        ? `${this.props.offices.length} /////  ${*/}
-                {/*            (this.props.offices || []).length*/}
-                {/*          } `*/}
-                {/*        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}*/}
-                {/*    </Text>*/}
-                {/*  </Animated.View>*/}
-                {/*) : (*/}
-                {/*  <Animated.View*/}
-                {/*    style={{*/}
-                {/*      borderRadius: 12,*/}
-                {/*      backgroundColor: Colors.darkSeafoamGreen,*/}
-                {/*      alignItems: 'center',*/}
-                {/*      justifyContent: 'center',*/}
-                {/*      alignSelf: 'flex-end',*/}
-                {/*      marginTop: 50,*/}
-                {/*      marginEnd: 16,*/}
-                {/*      padding: 10,*/}
-                {/*      transform: [{ rotateX: rotateListLabel }],*/}
-                {/*    }}>*/}
-                {/*    <Text*/}
-                {/*      style={[*/}
-                {/*        Fonts.style.normal,*/}
-                {/*        {*/}
-                {/*          fontSize: 10,*/}
-                {/*          color: '#fff',*/}
-                {/*          fontWeight: 'normal',*/}
-                {/*        },*/}
-                {/*      ]}>*/}
-                {/*      {*/}
-                {/*        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'*/}
-                {/*      }*/}
-                {/*    </Text>*/}
-                {/*  </Animated.View>*/}
-                {/*)}*/}
+                {/* {this.state.numberOfOfficesShow ? (
+                  <Animated.View
+                    style={{
+                      borderRadius: 12,
+                      backgroundColor: Colors.darkSlateBlue,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf: 'center',
+                      marginTop: 50,
+                      marginEnd: 16,
+                      padding: 10,
+                      transform: [{ rotateX: rotateListLabel2 }],
+                    }}>
+                    <Text
+                      style={[
+                        Fonts.style.normal,
+                        {
+                          fontSize: 10,
+                          color: '#fff',
+                          fontWeight: 'normal',
+                        },
+                      ]}>
+                      {(this.props.offices || []).length > 0
+                        ? `${this.props.offices.length} /////  ${
+                            (this.props.offices || []).length
+                          } `
+                        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
+                    </Text>
+                  </Animated.View>
+                ) : (
+                  <Animated.View
+                    style={{
+                      borderRadius: 12,
+                      backgroundColor: Colors.darkSeafoamGreen,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf: 'flex-end',
+                      marginTop: 50,
+                      marginEnd: 16,
+                      padding: 10,
+                      transform: [{ rotateX: rotateListLabel }],
+                    }}>
+                    <Text
+                      style={[
+                        Fonts.style.normal,
+                        {
+                          fontSize: 10,
+                          color: '#fff',
+                          fontWeight: 'normal',
+                        },
+                      ]}>
+                      {
+                        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'
+                      }
+                    </Text>
+                  </Animated.View>
+                )} */}
                 <OfficeList
                   handleGetMoreDatat={this.handleGetMoreDatat}
                   numberOfOffices={this.state.numberOfOffices}
@@ -917,17 +918,7 @@ class OfficesPage extends React.Component {
             </Animated.View>
           )}
 
-          {this.state.cardView && (
-            <CardItem
-              selectedOffice={this.state.selectedOffice}
-              onCardPress={() =>
-                this.handleCardPress(this.state.selectedOffice)
-              }
-              doAnimation={true}
-              onFavPress={this.handleFavPress}
-              fav={this.props.checker || this.state.fav}
-            />
-          )}
+         
         </View>
       </TouchableWithoutFeedback>
     );

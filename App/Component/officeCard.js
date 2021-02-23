@@ -4,6 +4,8 @@ import {
   Platform,
   StyleSheet,
   Text,
+  Image,
+  Button,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -15,6 +17,8 @@ const officeCard = props => {
       location: { lat, lng },
     },
     name,
+    for_rent,
+    for_sale
   } = props.selectedOffice;
 
   return (
@@ -22,13 +26,7 @@ const officeCard = props => {
       <Animated.View style={[props.containerStyle]}>
         <View style={styles.conView}>
           <View
-            style={{
-              flex: 1,
-              height: 81,
-              alignSelf: 'center',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}>
+            style={[styles.textCardContainer]}>
             <Text
               style={[
                 Fonts.style.normal,
@@ -37,38 +35,69 @@ const officeCard = props => {
               ]}>
               {name}
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row' }}>
               <Text
                 style={[
                   Fonts.style.normal,
                   {
-                    fontSize: 12,
+                    fontSize: 10,
                     width: '90%',
                     textAlign: 'right',
-                    marginEnd: 5,
-                    alignSelf: 'center',
-                    color: '#464646',
+                    color: '#7c7c7c'
                   },
                 ]}>
                 {name}
               </Text>
+              <Image
+              style={{
+                marginStart: 5
+              }}
+                source={require('../assets/imgs/001-location1.png')}
+              />
             </View>
             <Text
-              style={[Fonts.style.normal, styles.textCard, { marginTop: 7 }]}
-            />
-          </View>
-          <View
-            style={{
-              height: 81,
-              width: Metrics.screenWidth * 0.21066667,
-              alignSelf: 'center',
-              marginStart: 13,
-              marginEnd: 16,
-              borderRadius: 10,
-            }}
-          />
+              style={[Fonts.style.normal, styles.textCard, { fonrSize: 10,marginTop: 4,color: Colors.darkSeafoamGreen }]}
+            >
+              مناطق الخدمة
+            </Text>
+            {props.showContactButtons && 
+            <View style={{flexDirection:'row-reverse',padding: 10}}>
+              <TouchableOpacity style={[styles.contactBtn]}>
+                <Text style={{color: Colors.white,marginHorizontal:5}}>اتصال</Text>
+                <Image source={require('../assets/imgs/call2.png')}></Image>
 
-          <TouchableOpacity
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal: 10}}>
+              <Image source={require('../assets/imgs/whatsapp-outline.png')}></Image>
+
+
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.socialBtn]}>
+              <Image source={require('../assets/imgs/telegram-outlined.png')}></Image>
+
+
+              </TouchableOpacity>              
+            </View>
+            }
+          </View>
+          {props.showCounts&&
+           <View style={[styles.counterViewContainer]} > 
+            <View style={[styles.counterView]}>
+              <Text style={[styles.counterViewText]}>للايجار</Text>
+              <Text style={{fontWeight: 'bold'}}>{for_rent} <Text style={[Fonts.style.normal,styles.textCard,{fontWeight: '100',}]}>عقار</Text></Text>
+
+            </View>
+            <View style={{borderBottomWidth: 0.6,borderBottomColor: Colors.lightGrey, width: '100%'}}/>
+            <View style={[styles.counterView,{paddingBottom:5}]}>
+              <Text style={[styles.counterViewText]}>للبيع</Text>
+              <Text style={{fontWeight: 'bold'}}>{for_sale} <Text style={[Fonts.style.normal,styles.textCard,{fontWeight: '100',}]}>عقار</Text></Text>
+
+            </View>
+
+           </View>
+          }
+
+          {/* <TouchableOpacity
             style={{
               width: 25,
               height: 25,
@@ -87,7 +116,7 @@ const officeCard = props => {
               size={18}
               color={Colors.darkSeafoamGreen}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Animated.View>
     </TouchableOpacity>
@@ -97,7 +126,8 @@ const officeCard = props => {
 const styles = StyleSheet.create({
   container: {
     width: Metrics.screenWidth,
-    height: 164,
+    marginBottom:15,
+    //height: 100,
     shadowColor: 'rgba(0, 0, 0, 0.08)',
     shadowOffset: {
       width: 0,
@@ -108,28 +138,66 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 2,
   },
+  contactBtn:{
+    borderRadius: 12,
+    flexDirection: 'row',
+    paddingHorizontal:10,
+    paddingVertical:3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.darkSeafoamGreen
+  },
   conView: {
-    width: Metrics.screenWidth * 0.91466667,
-    height: Metrics.screenWidth * 0.30666667,
+    // width: Metrics.screenWidth * 0.91466667,
+    // height: Metrics.screenWidth * 0.35666667,
+    width: '95%',
     backgroundColor: '#ffffff',
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     shadowOffset: {
       width: 0,
       height: 7,
     },
-    borderRadius: 20,
+    borderRadius: 8,
     shadowOpacity: 1,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     elevation: 2,
   },
+  textCardContainer:{
+    flex: 1,
+    borderLeftWidth: 0.5,
+    borderLeftColor: Colors.lightGrey
+  },
   textCard: {
-    fontSize: 15,
-    alignSelf: 'center',
+    fontSize: 12,
+    paddingTop: 10,
+    paddingRight: 10,
     color: Colors.darkSlateBlue,
     fontWeight: Platform.OS === 'android' ? '400' : 'bold',
     width: '100%',
     textAlign: 'right',
+    fontWeight:'500'
   },
+  counterViewContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    paddingTop: 5
+  },
+  counterView:{
+    paddingHorizontal: 10,
+    flexDirection: 'column',
+    textAlign: 'right',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: '#fcfcfc'
+  },
+  socialBtn: {
+    borderRadius: 50    
+  },
+  counterViewText:{
+    ...Fonts.style.normal,
+    fontSize: 12,
+    color: Colors.darkSeafoamGreen
+  }
 });
 
 export default officeCard;

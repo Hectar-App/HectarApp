@@ -36,6 +36,7 @@ import OwnerRealEstates from '../screens/MainScreens/Home/ownerRealEstate';
 
 // Offices
 import OfficesPage from '../screens/MainScreens/Offices/OfficesPage';
+import OfficeDetails from '../screens/MainScreens/Offices/OfficeDetails';
 
 // Favorate
 import FavoratePage from '../screens/MainScreens/Profile/Favorate';
@@ -140,6 +141,7 @@ HomeStackNav.navigationOptions = ({navigation}) => {
 const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: {screen: OfficesPage},
+    officeDetails: { screen: OfficeDetails },
     ...x,
   },
   {
@@ -147,6 +149,7 @@ const OfficesStackNav = createStackNavigator(
     transitionConfig: transConfig,
   },
 );
+
 
 HomeStackNav.navigationOptions = ({navigation}) => {
   let {routeName} = navigation.state.routes[navigation.state.index];
@@ -264,6 +267,7 @@ const bottomTab = createBottomTabNavigator(
       },
     },
     OfficesStackNav: {
+
       screen: OfficesStackNav,
       navigationOptions: {
         tabBarLabel: 'المكاتب',
