@@ -18,7 +18,6 @@ import NetInfo from '@react-native-community/netinfo';
 import SugestionComp from '../../../Component/sugestionComp';
 
 import OfficesHeader from '../../../Component/OfficesHeader';
-import CardItem from '../../../Component/itemCard';
 import {
   ApplicationStyles,
   Colors,
@@ -231,6 +230,8 @@ class OfficesPage extends React.Component {
 
   componentDidMount() {
     this.goToUserLocation();
+    this.setState({ loading: false });
+
   }
 
   componentWillUnmount() {

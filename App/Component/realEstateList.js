@@ -15,6 +15,7 @@ import CardItem from './itemCard'
 const realEstateList = (props) => {
     const animtion = useAnimation({ doAnimation: props.doAnimation, duration:550})
     // console.log('ite', props)
+    console.log('properties',props.realestateData)
     return (
         <LinearGradient colors={['#fff', '#fff','#fff']} style={[styles.container, props.containerStyle]} >
             {/* <Animated.View style={[styles.container, props.containerStyle]}> */}

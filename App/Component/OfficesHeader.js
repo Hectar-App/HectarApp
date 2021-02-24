@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     height: 40,
-    borderRadius: 24,
+    borderRadius: 4,
     backgroundColor: '#ffffff',
     shadowColor: 'rgba(0, 0, 0, 0.08)',
     shadowOffset: {
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     paddingEnd: 35,
     textAlign: 'right',
     fontSize: 12,
+    borderRadius: 4
   },
   itemText: {
     fontSize: 12,

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Fonts } from '../../../Themes';
 import {
   perfectFont,
   perfectHeight,
@@ -34,9 +35,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEFBF4',
   },
   text: {
-    fontFamily: 'TheMixArab',
+    fontFamily: Fonts.style.normal.fontFamily,
+    paddingVertical: 5,
     fontWeight: '700',
-    fontSize: perfectFont(12),
+    fontSize: perfectFont(14),
     lineHeight: 16,
     color: '#3D3D3D',
   },

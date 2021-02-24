@@ -609,5 +609,5 @@ const create = (baseURL = apiURL) => {
 
 // let's return back our create method as the default.
 export default {
-  create,
+  create,apiURL
 };

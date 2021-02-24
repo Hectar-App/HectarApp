@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   inputStyle: {
-    fontSize: 17,
+    fontSize: 13,
     fontWeight: 'normal',
     fontStyle: 'normal',
     lineHeight: 22,
