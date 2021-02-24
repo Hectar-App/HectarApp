@@ -60,6 +60,7 @@ import AboutApp from '../screens/MainScreens/Profile/AboutHectar';
 import MyRealEstate from '../screens/MainScreens/Profile/MyRealEstate';
 import Request from '../screens/MainScreens/Profile/Requests';
 import QRScan from '../screens/MainScreens/QRScan/QRScan';
+import OfficeDetails from '../screens/MainScreens/Offices/OfficeDetails';
 
 const verticalTransitionsScreens = [];
 const noAnimation = [
@@ -141,6 +142,7 @@ HomeStackNav.navigationOptions = ({ navigation }) => {
 const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: { screen: OfficesPage },
+    officeDetails: { screen: OfficeDetails },
     ...x,
   },
   {
