@@ -4,7 +4,16 @@ import { createAppContainer } from 'react-navigation';
 
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import {
+  createMaterialBottomTabNavigator,
+  NavigationMaterialBottomTabConfig,
+} from 'react-navigation-material-bottom-tabs';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
+
+import { CustomIcon, Colors } from '../Themes';
+
+import Icon from 'react-native-vector-icons';
+import { IconButton } from 'react-native-paper';
 
 import TabBarNav from './TabBarNav';
 
@@ -27,7 +36,6 @@ import OwnerRealEstates from '../screens/MainScreens/Home/ownerRealEstate';
 
 // Offices
 import OfficesPage from '../screens/MainScreens/Offices/OfficesPage';
-import OfficeDetails from '../screens/MainScreens/Offices/OfficeDetails';
 
 // Favorate
 import FavoratePage from '../screens/MainScreens/Profile/Favorate';
@@ -51,6 +59,7 @@ import FAQs from '../screens/MainScreens/Profile/FAQs';
 import AboutApp from '../screens/MainScreens/Profile/AboutHectar';
 import MyRealEstate from '../screens/MainScreens/Profile/MyRealEstate';
 import Request from '../screens/MainScreens/Profile/Requests';
+import QRScan from '../screens/MainScreens/QRScan/QRScan';
 
 const verticalTransitionsScreens = [];
 const noAnimation = [
@@ -132,7 +141,6 @@ HomeStackNav.navigationOptions = ({ navigation }) => {
 const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: { screen: OfficesPage },
-    officeDetails: { screen: OfficeDetails },
     ...x,
   },
   {
@@ -140,7 +148,6 @@ const OfficesStackNav = createStackNavigator(
     transitionConfig: transConfig,
   },
 );
-
 
 HomeStackNav.navigationOptions = ({ navigation }) => {
   let { routeName } = navigation.state.routes[navigation.state.index];
@@ -240,36 +247,35 @@ ProfileStackNav.navigationOptions = ({ navigation }) => {
 
 const bottomTab = createBottomTabNavigator(
   {
-    HomeStackNav: {
-      screen: HomeStackNav,
+    ProfileStackNav: {
+      screen: ProfileStackNav,
       navigationOptions: {
-        tabBarLabel: 'العقارات',
+        tabBarLabel: 'الإعدادات',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/home.png')
-                : require('../assets/imgs/home1.png')
+                ? require('../assets/imgs/more.png')
+                : require('../assets/imgs/more1.png')
             }
           />
         ),
       },
     },
-    OfficesStackNav: {
-
-      screen: OfficesStackNav,
+    QRScan: {
+      screen: QRScan,
       navigationOptions: {
-        tabBarLabel: 'المكاتب',
+        tabBarLabel: 'مسح',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/office-building-active.png')
-                : require('../assets/imgs/office-building.png')
+                ? require('../assets/imgs/qrScan.png')
+                : require('../assets/imgs/qr-menu.png')
             }
           />
         ),
@@ -292,37 +298,54 @@ const bottomTab = createBottomTabNavigator(
         ),
       },
     },
-    /* BarCodeStackNav: {
-      screen: BarCodeStackNav,
+    OfficesStackNav: {
+      screen: OfficesStackNav,
       navigationOptions: {
-        tabBarIcon: ({focused}) => (
-          <Image
-            source={
-              focused
-                ? require('../assets/imgs/notification.png')
-                : require('../assets/imgs/notification1.png')
-            }
-          />
-        ),
-      },
-    },*/
-    ProfileStackNav: {
-      screen: ProfileStackNav,
-      navigationOptions: {
-        tabBarLabel: 'الإعدادات',
+        tabBarLabel: 'المكاتب',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
         tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/more.png')
-                : require('../assets/imgs/more1.png')
+                ? require('../assets/imgs/office-building-active.png')
+                : require('../assets/imgs/office-building.png')
             }
           />
         ),
       },
     },
+    HomeStackNav: {
+      screen: HomeStackNav,
+      navigationOptions: {
+        tabBarLabel: 'العقارات',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
+        tabBarIcon: ({ focused }) => (
+          <Image
+            source={
+              focused
+                ? require('../assets/imgs/home.png')
+                : require('../assets/imgs/home1.png')
+            }
+          />
+        ),
+      },
+    },
+    // BarCodeStackNav: {
+    //   screen: BarCodeStackNav,
+    //   navigationOptions: {
+    //     tabBarIcon: ({ focused }) => (
+    //       <Image
+    //         source={
+    //           focused
+    //             ? require('../assets/imgs/notification.png')
+    //             : require('../assets/imgs/notification1.png')
+    //         }
+    //       />
+    //     ),
+    //   },
+    // },
   },
   {
     tabBarComponent: props => <TabBarNav {...props} />,
