@@ -191,9 +191,6 @@ class OfficesPage extends React.Component {
 
   handleViewPress = () => {
     this.setState({ offices: this.state.office || this.props.offices });
-    console.log({ badawey: this.state.office });
-    console.log({ badawey2: this.state });
-    console.log({ badawey3: this.props });
     this.startTestAnimatio();
     this.startMoveButton();
   };

@@ -1,19 +1,19 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {createAppContainer} from 'react-navigation';
+import { Image } from 'react-native';
+import { createAppContainer } from 'react-navigation';
 
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import {
   createMaterialBottomTabNavigator,
   NavigationMaterialBottomTabConfig,
 } from 'react-navigation-material-bottom-tabs';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
-import {CustomIcon, Colors} from '../Themes';
+import { CustomIcon, Colors } from '../Themes';
 
 import Icon from 'react-native-vector-icons';
-import {IconButton} from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 
 import TabBarNav from './TabBarNav';
 
@@ -59,6 +59,7 @@ import FAQs from '../screens/MainScreens/Profile/FAQs';
 import AboutApp from '../screens/MainScreens/Profile/AboutHectar';
 import MyRealEstate from '../screens/MainScreens/Profile/MyRealEstate';
 import Request from '../screens/MainScreens/Profile/Requests';
+import QRScan from '../screens/MainScreens/QRScan/QRScan';
 
 const verticalTransitionsScreens = [];
 const noAnimation = [
@@ -102,20 +103,20 @@ const transConfig = () => {
 };
 
 let x = {
-  FirstStepAddAqar: {screen: FirstStepAddAqar},
-  SecondStepAddAqar: {screen: SecondStepAddAqar},
-  ThirdStepAddAqar: {screen: ThirdStepAddAqar},
-  ForthStepAddAqar: {screen: ForthStepAddAqar},
-  EarthThirdStepAddAqar: {screen: EarthThirdStepAddAqar},
-  FifthStepAddAqar: {screen: FifthStepAddAqar},
+  FirstStepAddAqar: { screen: FirstStepAddAqar },
+  SecondStepAddAqar: { screen: SecondStepAddAqar },
+  ThirdStepAddAqar: { screen: ThirdStepAddAqar },
+  ForthStepAddAqar: { screen: ForthStepAddAqar },
+  EarthThirdStepAddAqar: { screen: EarthThirdStepAddAqar },
+  FifthStepAddAqar: { screen: FifthStepAddAqar },
 };
 
 const HomeStackNav = createStackNavigator(
   {
-    HomePage: {screen: HomePage},
-    FilterPage: {screen: FilterPage},
-    RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
-    OwnerRealEstates: {screen: OwnerRealEstates},
+    HomePage: { screen: HomePage },
+    FilterPage: { screen: FilterPage },
+    RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
+    OwnerRealEstates: { screen: OwnerRealEstates },
     ...x,
   },
   {
@@ -124,8 +125,8 @@ const HomeStackNav = createStackNavigator(
   },
 );
 
-HomeStackNav.navigationOptions = ({navigation}) => {
-  let {routeName} = navigation.state.routes[navigation.state.index];
+HomeStackNav.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
   if (
     routeName === 'FilterPage' ||
@@ -139,7 +140,7 @@ HomeStackNav.navigationOptions = ({navigation}) => {
 
 const OfficesStackNav = createStackNavigator(
   {
-    OfficesPage: {screen: OfficesPage},
+    OfficesPage: { screen: OfficesPage },
     ...x,
   },
   {
@@ -148,8 +149,8 @@ const OfficesStackNav = createStackNavigator(
   },
 );
 
-HomeStackNav.navigationOptions = ({navigation}) => {
-  let {routeName} = navigation.state.routes[navigation.state.index];
+HomeStackNav.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
   if (
     routeName === 'FilterPage' ||
@@ -170,7 +171,7 @@ const AddAqarStackNav = createStackNavigator(
     // EarthThirdStepAddAqar: { screen: EarthThirdStepAddAqar },
     // FifthStepAddAqar: { screen: FifthStepAddAqar },
     ...x,
-    RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
+    RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
   },
   {
     headerMode: 'none',
@@ -179,8 +180,8 @@ const AddAqarStackNav = createStackNavigator(
   },
 );
 
-AddAqarStackNav.navigationOptions = ({navigation}) => {
-  let {routeName} = navigation.state.routes[navigation.state.index];
+AddAqarStackNav.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
   if (routeName === 'RealEstateDetail') {
     navigationOptions.tabBarVisible = false;
@@ -190,8 +191,8 @@ AddAqarStackNav.navigationOptions = ({navigation}) => {
 
 const NotificationStackNav = createStackNavigator(
   {
-    NotificationPage: {screen: NotificationPage},
-    RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
+    NotificationPage: { screen: NotificationPage },
+    RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
     ...x,
   },
   {
@@ -199,8 +200,8 @@ const NotificationStackNav = createStackNavigator(
   },
 );
 
-NotificationStackNav.navigationOptions = ({navigation}) => {
-  let {routeName} = navigation.state.routes[navigation.state.index];
+NotificationStackNav.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
   if (routeName === 'RealEstateDetail') {
     navigationOptions.tabBarVisible = false;
@@ -210,16 +211,16 @@ NotificationStackNav.navigationOptions = ({navigation}) => {
 
 const ProfileStackNav = createStackNavigator(
   {
-    Profile: {screen: Profile},
-    HelpCenter: {screen: HelpCenter},
-    EdietProfile: {screen: EdietProfile},
-    FAQs: {screen: FAQs},
-    AboutApp: {screen: AboutApp},
-    MyRealEstate: {screen: MyRealEstate},
-    RealEstateDetail: {screen: RealEstateDetail, path: 'property/:property'},
-    OwnerRealEstates: {screen: OwnerRealEstates},
-    Request: {screen: Request},
-    FavoratePage: {screen: FavoratePage},
+    Profile: { screen: Profile },
+    HelpCenter: { screen: HelpCenter },
+    EdietProfile: { screen: EdietProfile },
+    FAQs: { screen: FAQs },
+    AboutApp: { screen: AboutApp },
+    MyRealEstate: { screen: MyRealEstate },
+    RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
+    OwnerRealEstates: { screen: OwnerRealEstates },
+    Request: { screen: Request },
+    FavoratePage: { screen: FavoratePage },
     ...x,
   },
   {
@@ -228,8 +229,8 @@ const ProfileStackNav = createStackNavigator(
   },
 );
 
-ProfileStackNav.navigationOptions = ({navigation}) => {
-  let {routeName} = navigation.state.routes[navigation.state.index];
+ProfileStackNav.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
   let navigationOptions = {};
   if (
     routeName === 'HelpCenter' ||
@@ -246,35 +247,35 @@ ProfileStackNav.navigationOptions = ({navigation}) => {
 
 const bottomTab = createBottomTabNavigator(
   {
-    HomeStackNav: {
-      screen: HomeStackNav,
+    ProfileStackNav: {
+      screen: ProfileStackNav,
       navigationOptions: {
-        tabBarLabel: 'العقارات',
+        tabBarLabel: 'الإعدادات',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
-        tabBarIcon: ({focused}) => (
+        tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/home.png')
-                : require('../assets/imgs/home1.png')
+                ? require('../assets/imgs/more.png')
+                : require('../assets/imgs/more1.png')
             }
           />
         ),
       },
     },
-    OfficesStackNav: {
-      screen: OfficesStackNav,
+    QRScan: {
+      screen: QRScan,
       navigationOptions: {
-        tabBarLabel: 'المكاتب',
+        tabBarLabel: 'مسح',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
-        tabBarIcon: ({focused}) => (
+        tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/office-building-active.png')
-                : require('../assets/imgs/office-building.png')
+                ? require('../assets/imgs/qrScan.png')
+                : require('../assets/imgs/qr-menu.png')
             }
           />
         ),
@@ -286,7 +287,7 @@ const bottomTab = createBottomTabNavigator(
         tabBarLabel: 'إضافة عقار',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
-        tabBarIcon: ({focused}) => (
+        tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
@@ -297,37 +298,54 @@ const bottomTab = createBottomTabNavigator(
         ),
       },
     },
-    /* BarCodeStackNav: {
-      screen: BarCodeStackNav,
+    OfficesStackNav: {
+      screen: OfficesStackNav,
       navigationOptions: {
-        tabBarIcon: ({focused}) => (
-          <Image
-            source={
-              focused
-                ? require('../assets/imgs/notification.png')
-                : require('../assets/imgs/notification1.png')
-            }
-          />
-        ),
-      },
-    },*/
-    ProfileStackNav: {
-      screen: ProfileStackNav,
-      navigationOptions: {
-        tabBarLabel: 'الإعدادات',
+        tabBarLabel: 'المكاتب',
         activeTintColor: '#3DBA7E',
         inactiveTintColor: '#CCCCD0',
-        tabBarIcon: ({focused}) => (
+        tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('../assets/imgs/more.png')
-                : require('../assets/imgs/more1.png')
+                ? require('../assets/imgs/office-building-active.png')
+                : require('../assets/imgs/office-building.png')
             }
           />
         ),
       },
     },
+    HomeStackNav: {
+      screen: HomeStackNav,
+      navigationOptions: {
+        tabBarLabel: 'العقارات',
+        activeTintColor: '#3DBA7E',
+        inactiveTintColor: '#CCCCD0',
+        tabBarIcon: ({ focused }) => (
+          <Image
+            source={
+              focused
+                ? require('../assets/imgs/home.png')
+                : require('../assets/imgs/home1.png')
+            }
+          />
+        ),
+      },
+    },
+    // BarCodeStackNav: {
+    //   screen: BarCodeStackNav,
+    //   navigationOptions: {
+    //     tabBarIcon: ({ focused }) => (
+    //       <Image
+    //         source={
+    //           focused
+    //             ? require('../assets/imgs/notification.png')
+    //             : require('../assets/imgs/notification1.png')
+    //         }
+    //       />
+    //     ),
+    //   },
+    // },
   },
   {
     tabBarComponent: props => <TabBarNav {...props} />,
@@ -341,15 +359,15 @@ const bottomTab = createBottomTabNavigator(
 
 const AuthScreensWithFade = createStackNavigator(
   {
-    Welcome: {screen: WelcomeScreen},
-    LoginPage: {screen: LoginPage},
-    RegisterMobileStep: {screen: RegisterMobileStep},
-    RegistrationConfirmationPhone: {screen: RegistrationConfirmationPhone},
-    RegistrationUserInfo: {screen: RegistrationUserInfo},
-    ForgetPassword: {screen: ForgetPassword},
-    ForgetPasswordResetPass: {screen: ForgetPasswordResetPass},
-    RolesAndCondation: {screen: RolesAndCondation},
-    FinishRegistration: {screen: FinishRegistration},
+    Welcome: { screen: WelcomeScreen },
+    LoginPage: { screen: LoginPage },
+    RegisterMobileStep: { screen: RegisterMobileStep },
+    RegistrationConfirmationPhone: { screen: RegistrationConfirmationPhone },
+    RegistrationUserInfo: { screen: RegistrationUserInfo },
+    ForgetPassword: { screen: ForgetPassword },
+    ForgetPasswordResetPass: { screen: ForgetPasswordResetPass },
+    RolesAndCondation: { screen: RolesAndCondation },
+    FinishRegistration: { screen: FinishRegistration },
     bottomTab,
   },
   {
