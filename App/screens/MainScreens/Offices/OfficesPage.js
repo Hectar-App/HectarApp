@@ -230,7 +230,6 @@ class OfficesPage extends React.Component {
 
   componentDidMount() {
     this.goToUserLocation();
-    this.setState({ loading: false });
 
   }
 

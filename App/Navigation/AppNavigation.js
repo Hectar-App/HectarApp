@@ -36,6 +36,7 @@ import OwnerRealEstates from '../screens/MainScreens/Home/ownerRealEstate';
 
 // Offices
 import OfficesPage from '../screens/MainScreens/Offices/OfficesPage';
+import OfficeDetails from '../screens/MainScreens/Offices/OfficeDetails';
 
 // Favorate
 import FavoratePage from '../screens/MainScreens/Profile/Favorate';
@@ -141,6 +142,7 @@ HomeStackNav.navigationOptions = ({ navigation }) => {
 const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: { screen: OfficesPage },
+    OfficeDetails: { screen: OfficeDetails },
     ...x,
   },
   {
