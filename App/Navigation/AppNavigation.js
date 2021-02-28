@@ -142,7 +142,7 @@ HomeStackNav.navigationOptions = ({ navigation }) => {
 const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: { screen: OfficesPage },
-    OfficeDetails: { screen: OfficeDetails },
+    officeDetails: { screen: OfficeDetails },
     ...x,
   },
   {
