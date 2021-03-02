@@ -134,6 +134,7 @@ class OfficesPage extends React.Component {
   };
 
   handleMarkerPress = item => {
+    this.handleCardPress(item);
     this.setState({
       cardView: true,
       selectedOffice: item,
@@ -230,7 +231,6 @@ class OfficesPage extends React.Component {
 
   componentDidMount() {
     this.goToUserLocation();
-
   }
 
   componentWillUnmount() {
@@ -240,8 +240,6 @@ class OfficesPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({ loading: false });
     if (nextProps.OfficeList !== this.props.OfficeList) {
-      console.log('offices', nextProps.OfficeList);
-      console.log('badawey500', nextProps.OfficeList);
       this.setState({
         loading: false,
         tracksViewChanges: true,
@@ -369,8 +367,6 @@ class OfficesPage extends React.Component {
   };
 
   handleCardPress = selectedOffice => {
-    console.log('BADAWEY CLICKED: ', selectedOffice);
-    console.log('BADAWEY: ', this.props);
     this.props.navigation.push('officeDetails', {
       officeDetails: selectedOffice,
     });
@@ -519,16 +515,6 @@ class OfficesPage extends React.Component {
       outputRange: ['90deg', '0deg'],
     });
 
-    const rotateListLabel = this.state.Animation.listLabel.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '90deg'],
-    });
-
-    const rotateListLabel2 = this.state.Animation.listLabel2.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['90deg', '0deg'],
-    });
-
     const filterScale = this.state.Animation.filterAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 100],
@@ -580,8 +566,6 @@ class OfficesPage extends React.Component {
           <Animated.View
             style={{
               position: 'absolute',
-              // bottom: typesPosition,
-              // bottom: -220,
               top: Platform.OS === 'android' ? 125 : ifIphoneX(170, 135),
               zIndex: 99999999999999999,
               left: typesPositionHor,
