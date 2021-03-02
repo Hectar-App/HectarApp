@@ -14,17 +14,17 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import FavoriteAction from '../../../Redux/FavourteRedux';
 import RealEstateAcion from '../../../Redux/RealEstateRedux';
 
-import {Fonts, Colors, Metrics, Images, CustomIcon} from '../../../Themes';
+import { Fonts, Colors, Metrics, Images, CustomIcon } from '../../../Themes';
 
 import AqarFeatures from '../../../Component/AqarFeaturesLis';
 import BluePrintList from '../../../Component/BluePrintList';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import RatingModal from '../../../Component/RatingModal';
 
 import RequestModal from '../../../Component/RequestModal';
@@ -40,14 +40,14 @@ import HeadreRealestateDetailPersentage from '../../../Component/headerRealestat
 
 import api from '../../../Services/API';
 
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import {IconButton, ActivityIndicator} from 'react-native-paper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { IconButton, ActivityIndicator } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HectarIcon from '../../../assets/imgs/svgImagesComponents/HectarIcon';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {BallIndicator} from 'react-native-indicators';
+import { BallIndicator } from 'react-native-indicators';
 
 import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
@@ -60,7 +60,7 @@ const HEADER_MIN_HEIGHT = 120;
 const HEADER_MAX_HEIGHT = Metrics.screenHeight * 0.4;
 
 const NAVBAR_HEIGHT = 64;
-const STATUS_BAR_HEIGHT = Platform.select({ios: 50, android: 24});
+const STATUS_BAR_HEIGHT = Platform.select({ ios: 50, android: 24 });
 
 const API = api.create();
 class RealEstateDetail extends React.Component {
@@ -96,15 +96,17 @@ class RealEstateDetail extends React.Component {
 
   componentDidMount() {
     console.log('RealEstate', this.state.realEstateItem);
-    if (!this.state.toPreview)
+    if (!this.state.toPreview) {
       this.props.addShow(this.state.realEstateItem._id);
+    }
 
-    if (!this.state.toPreview)
+    if (!this.state.toPreview) {
       this.props.getRealEstateDetails(this.state.realEstateItem._id);
+    }
     // const scrollViewRef = React.createRef();
 
     if (this.state.toPreview) {
-      const {imagesSmall, images} = this.state.realEstateItem;
+      const { imagesSmall, images } = this.state.realEstateItem;
 
       this.setState({
         images:
@@ -118,8 +120,9 @@ class RealEstateDetail extends React.Component {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        if (!this.state.toPreview)
+        if (!this.state.toPreview) {
           this.props.getRealEstateDetails(this.state.realEstateItem._id);
+        }
       },
     );
 
@@ -144,11 +147,11 @@ class RealEstateDetail extends React.Component {
   componentWillReceiveProps(nextProps) {
     console.log('nextProps', nextProps);
     if (nextProps.checker !== this.props.checker) {
-      return this.setState({fav: nextProps.checker});
+      return this.setState({ fav: nextProps.checker });
     }
     if (nextProps.checkRealEstate !== this.props.checkRealEstate) {
       console.log('checker Request => ', nextProps.checkRealEstate);
-      if (nextProps.checkRealEstate !== null)
+      if (nextProps.checkRealEstate !== null) {
         return this.setState({
           like:
             nextProps.checkRealEstate.likes && nextProps.checkRealEstate.likes,
@@ -164,6 +167,7 @@ class RealEstateDetail extends React.Component {
             nextProps.checkRealEstate.request3 &&
             nextProps.checkRealEstate.request3,
         });
+      }
     }
     if (nextProps.likeRealEstateResult !== this.props.likeRealEstateResult) {
       // return this.setState({like: nextProps.checkLikeRating.likes})
@@ -173,19 +177,19 @@ class RealEstateDetail extends React.Component {
         nextProps.likeRealEstateResult.message === 'done' &&
         !this.state.like
       ) {
-        return this.setState({like: true});
+        return this.setState({ like: true });
       } else {
-        return this.setState({like: false});
+        return this.setState({ like: false });
       }
     }
 
     if (nextProps.rateRealEstateResult !== this.props.rateRealEstateResult) {
       if (nextProps.rateRealEstateResult.message) {
         // return alert(nextProps.rateRealEstateResult.message)
-        this.setState({loading: false, done: true, rate: true});
+        this.setState({ loading: false, done: true, rate: true });
 
         setTimeout(() => {
-          this.setState({showRating: false});
+          this.setState({ showRating: false });
         }, 2000);
       }
     }
@@ -196,7 +200,7 @@ class RealEstateDetail extends React.Component {
       // // if(nextProps.rateRealEstateResult.message){
       // return alert(nextProps.rateRealEstateResult.message)
       if (nextProps.realEstateDetail) {
-        this.setState({realEstateItem: nextProps.realEstateDetail});
+        this.setState({ realEstateItem: nextProps.realEstateDetail });
 
         if (this.props.user && this.props.user.token && !this.state.toPreview) {
           this.props.checkRealEstateInFav(this.state.realEstateItem._id);
@@ -223,10 +227,10 @@ class RealEstateDetail extends React.Component {
         }
 
         if (!this.props.user && !this.state.toPreview) {
-          this.setState({rate: false});
+          this.setState({ rate: false });
         }
-        const {imagesSmall, images} = this.state.realEstateItem;
-        if (imagesSmall)
+        const { imagesSmall, images } = this.state.realEstateItem;
+        if (imagesSmall) {
           this.setState({
             images:
               (imagesSmall || []).length > 0
@@ -234,6 +238,7 @@ class RealEstateDetail extends React.Component {
                 : this.state.realEstateItem.images,
             compaond: this.state.realEstateItem.type.nameEn === 'compound',
           });
+        }
       } else {
         this.props.navigation.goBack();
       }
@@ -245,29 +250,33 @@ class RealEstateDetail extends React.Component {
     }
 
     if (nextProps.rateRealEstateError !== this.props.rateRealEstateError) {
-      if (nextProps.rateRealEstateError.error)
-        if (nextProps.rateRealEstateError.error)
+      if (nextProps.rateRealEstateError.error) {
+        if (nextProps.rateRealEstateError.error) {
           return alert(nextProps.rateRealEstateError.error);
+        }
+      }
     }
 
     if (nextProps.addRequestError !== this.props.addRequestError) {
-      this.setState({requestLoading: null});
-      if (nextProps.addRequestError.message)
+      this.setState({ requestLoading: null });
+      if (nextProps.addRequestError.message) {
         return alert(nextProps.addRequestError.message);
+      }
 
-      if (nextProps.addRequestError.error)
+      if (nextProps.addRequestError.error) {
         return alert(nextProps.addRequestError.error);
+      }
     }
 
     if (nextProps.addRequestResult !== this.props.addRequestResult) {
       if (this.state.request === 1) {
-        this.setState({request1: true});
+        this.setState({ request1: true });
       } else if (this.state.request === 2) {
-        this.setState({request2: true});
+        this.setState({ request2: true });
       } else {
-        this.setState({request3: true});
+        this.setState({ request3: true });
       }
-      this.setState({requestLoading: null, done: true});
+      this.setState({ requestLoading: null, done: true });
       // this.props.checkLikeRating(this.state.realEstateItem._id, this.props.user.token)
       // setTimeout(()=> {
       //     this.setState({showRequest: false, done: false})
@@ -278,7 +287,9 @@ class RealEstateDetail extends React.Component {
   }
 
   handleShare = () => {
-    if (this.state.toPreview) return;
+    if (this.state.toPreview) {
+      return;
+    }
     Share.share({
       message:
         'لاعجابي الشديد بهذا العقار وددت مشاركته ' +
@@ -291,20 +302,22 @@ class RealEstateDetail extends React.Component {
   handleGetSuggestion = () => {
     console.log(this.state.suggestionDate);
     if (this.state.suggestionDate === undefined && !this.state.sugLoading) {
-      this.setState({sugLoading: true});
+      this.setState({ sugLoading: true });
       API.suggestionRealEstate(this.state.realEstateItem._id)
         .then(res => {
           if (res.data && !res.data.message) {
             console.log('res', res);
-            this.setState({suggestionDate: res.data, sugLoading: false});
+            this.setState({ suggestionDate: res.data, sugLoading: false });
           }
         })
-        .catch(err => this.setState({sugLoading: true}));
+        .catch(err => this.setState({ sugLoading: true }));
     }
   };
 
   goToDetail = () => {
-    if (this.state.toPreview) return;
+    if (this.state.toPreview) {
+      return;
+    }
 
     this.props.navigation.navigate('FirstStepAddAqar', {
       fromDetail: true,
@@ -313,17 +326,20 @@ class RealEstateDetail extends React.Component {
   };
 
   handleLogin = () => {
-    this.setState({showAlert: false});
+    this.setState({ showAlert: false });
     this.props.navigation.navigate('LoginPage');
   };
 
   addLike = () => {
-    if (this.state.toPreview) return;
-    if (!this.props.user || !this.props.user.token)
+    if (this.state.toPreview) {
+      return;
+    }
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
         alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
+    }
 
     this.props.addLike(
       this.state.realEstateItem._id,
@@ -369,14 +385,17 @@ class RealEstateDetail extends React.Component {
   // },[props.addLike])
 
   favProccess = () => {
-    if (this.state.toPreview) return;
-    if (!this.props.user || !this.props.user.token)
+    if (this.state.toPreview) {
+      return;
+    }
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
         alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
+    }
     // return alert('الرجاء تسجيل الدخول للاستفادة')
-    this.setState({fav: !this.state.fav});
+    this.setState({ fav: !this.state.fav });
     this.state.fav
       ? this.props.deleteRealEstateFromFav(
           this.state.realEstateItem._id,
@@ -412,7 +431,7 @@ class RealEstateDetail extends React.Component {
   handleRequest(request) {
     if (this.props.user && this.props.user.token) {
       console.log('selected', request);
-      this.setState({requestLoading: request._id, request: request._id});
+      this.setState({ requestLoading: request._id, request: request._id });
       this.props.addRequest(
         this.state.realEstateItem._id,
         request._id,
@@ -449,7 +468,7 @@ class RealEstateDetail extends React.Component {
 
     // let opacity = 1
 
-    const {realEstateItem, owner, like, fav, showRating, images} = this.state;
+    const { realEstateItem, owner, like, fav, showRating, images } = this.state;
     const typeFemale =
       realEstateItem.type &&
       (realEstateItem.type.nameEn === 'land' ||
@@ -530,8 +549,8 @@ class RealEstateDetail extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{flex: 1, backgroundColor: '#fff'}}>
-          <View style={{flex: 1}}>
+        <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View style={{ flex: 1 }}>
             <Animated.View
               style={{
                 width: '100%',
@@ -542,8 +561,8 @@ class RealEstateDetail extends React.Component {
               {/* <LinearGradient colors={['rgba(0,0,0,0.0)', 'rgba(0,0,0,.2)','rgba(0,0,0,.5)']} style={[{
                             // position: 'absolute', opacity: opacity > 0 ? .3: 0, bottom: 0, width: '100%', height: 100, zIndex: 9999
                                 position: 'absolute',
-                                width: '100%', 
-                                height: 120, 
+                                width: '100%',
+                                height: 120,
                                 // backgroundColor: '#000',
                                 bottom: 0,
                                 zIndex: 9999099,
@@ -595,9 +614,9 @@ class RealEstateDetail extends React.Component {
                   <Animated.Text
                     style={[
                       Fonts.style.normal,
-                      {marginBottom: 9, color: headerBackgroundColorText},
+                      { marginBottom: 9, color: headerBackgroundColorText },
                     ]}>
-                    <Text style={{...Fonts.style.boldText}}>
+                    <Text style={{ ...Fonts.style.boldText }}>
                       {(realEstateItem &&
                         realEstateItem.price &&
                         this.kFormatter(realEstateItem.price)) ||
@@ -689,8 +708,8 @@ class RealEstateDetail extends React.Component {
                   {/* <Animated.Text style={[Fonts.style.normal, {marginTop: 7, color: headerBackgroundColorText}]} >{realEstateItem && realEstateItem.price && realEstateItem.price}</Animated.Text> */}
                   {/* <Animated.Text style={[Fonts.style.normal, {marginBottom: 9,  color: headerBackgroundColorText}]} s >
                                         <Text style={{...Fonts.style.boldText}} >
-                                            {realEstateItem && realEstateItem.price && this.kFormatter(realEstateItem.price) || ' السعر غير محدد '} 
-                                        </Text>  
+                                            {realEstateItem && realEstateItem.price && this.kFormatter(realEstateItem.price) || ' السعر غير محدد '}
+                                        </Text>
                                             { realEstateItem && realEstateItem.price && (realEstateItem && realEstateItem.payType == '0' ? ' ريال / سنوي': realEstateItem.payType === 1 ? ' ريال / شهري': realEstateItem.payType === 2 ? ' / يومي': ' ريال')}
                                 </Animated.Text> */}
 
@@ -719,7 +738,7 @@ class RealEstateDetail extends React.Component {
                         name={'clock3'}
                         color={Colors.white}
                         size={16}
-                        style={{marginStart: 10}}
+                        style={{ marginStart: 10 }}
                       />
                     </View>
                   )}
@@ -757,7 +776,7 @@ class RealEstateDetail extends React.Component {
               <Gallery
                 isVisible={this.state.imageFullScreen}
                 images={this.state.images}
-                onBackPress={() => this.setState({imageFullScreen: false})}
+                onBackPress={() => this.setState({ imageFullScreen: false })}
               />
 
               <Carousel
@@ -774,16 +793,15 @@ class RealEstateDetail extends React.Component {
                               selectedImage: item.item,
                             })
                       }>
-                      {/* <Image source={images && (images || []).length > 0 ?{uri: item.item} : Images.testCardImage} style={{width: '100%', height: '100%'}} /> */}
                       <Animated.Image
                         source={
                           images && (images || []).length > 0
-                            ? {uri: item.item.uri || item.item}
+                            ? { uri: item?.item?.uri || item.item }
                             : Images.testCardImage
                         }
                         style={[
-                          {width: '100%', height: '100%', opacity},
-                          Platform.OS && {width: Metrics.screenWidth},
+                          { width: '100%', height: '100%', opacity },
+                          Platform.OS && { width: Metrics.screenWidth },
                         ]}
                       />
                       <View
@@ -812,7 +830,7 @@ class RealEstateDetail extends React.Component {
                 // inactiveSlideScale={0.94}
                 // inactiveSlideOpacity={0.7}
                 // inactiveSlideShift={20}
-                containerCustomStyle={[{overflow: 'visible'}]}
+                containerCustomStyle={[{ overflow: 'visible' }]}
                 // contentContainerCustomStyle={styles.sliderContentContainer}
                 loop={true}
                 loopClonesPerSide={2}
@@ -820,7 +838,7 @@ class RealEstateDetail extends React.Component {
                 // autoplayDelay={500}
                 autoplayInterval={3000}
                 onSnapToItem={index =>
-                  this.setState({sliderActiveSlide: index})
+                  this.setState({ sliderActiveSlide: index })
                 }
               />
 
@@ -858,7 +876,7 @@ class RealEstateDetail extends React.Component {
                 <IconButton
                   icon={'chevron-right'}
                   color={'#fff'}
-                  style={{alignSelf: 'center'}}
+                  style={{ alignSelf: 'center' }}
                 />
               </TouchableOpacity>
             </Animated.View>
@@ -936,12 +954,12 @@ class RealEstateDetail extends React.Component {
                   />
 
                   {/* <Text style={[ Fonts.style.normal, {
-                                    fontWeight: "normal", 
-                                    marginTop: 10, 
-                                    fontSize: 10, 
+                                    fontWeight: "normal",
+                                    marginTop: 10,
+                                    fontSize: 10,
                                     // position:'absolute',
                                     color: Colors.darkSlateBlue,
-                                    // bottom: -22, 
+                                    // bottom: -22,
                                     // left: 14
                                 }]}>
                                     تعديل
@@ -952,17 +970,17 @@ class RealEstateDetail extends React.Component {
 
             <AlertModal
               closeErrorModel={this.handleLogin}
-              okTextStyle={{color: Colors.redWhite}}
+              okTextStyle={{ color: Colors.redWhite }}
               buttonText={'تسجيل دخول'}
               twoButtons={false}
               contentMessage={this.state.alertMessage}
-              closePress={() => this.setState({showAlert: false})}
+              closePress={() => this.setState({ showAlert: false })}
               isVisible={this.state.showAlert}
             />
 
             {this.state.showErrorMessage && (
               <ErroAlert
-                setAnimation={() => this.setState({showErrorMessage: false})}
+                setAnimation={() => this.setState({ showErrorMessage: false })}
                 doAnimation={this.state.showErrorMessage}
               />
             )}
@@ -979,12 +997,12 @@ class RealEstateDetail extends React.Component {
                 alignItems: 'center',
                 paddingRight: 20,
               }}
-              style={{paddingBottom: 180, marginBottom: 0}}
+              style={{ paddingBottom: 180, marginBottom: 0 }}
               onScroll={Animated.event(
                 [
                   {
                     nativeEvent: {
-                      contentOffset: {y: this.state.animation.Animation},
+                      contentOffset: { y: this.state.animation.Animation },
                     },
                     // addListener: (e) => {
                     //     console.log(e)
@@ -1034,7 +1052,11 @@ class RealEstateDetail extends React.Component {
               // }}
             >
               <TouchableWithoutFeedback
-                style={{paddingBottom: 10, flex: 1, backgroundColor: 'tomato'}}>
+                style={{
+                  paddingBottom: 10,
+                  flex: 1,
+                  backgroundColor: 'tomato',
+                }}>
                 <Animated.View
                   style={{
                     paddingBottom: 30,
@@ -1086,7 +1108,9 @@ class RealEstateDetail extends React.Component {
                     ]}>
                     <TouchableOpacity
                       style={[styles.ballView]}
-                      onPress={() => this.setState({shaowNearFeatures: true})}>
+                      onPress={() =>
+                        this.setState({ shaowNearFeatures: true })
+                      }>
                       {/* <Image source={Images.mapIconForList} style={{borderWidth: 1}} /> */}
                       {/* <CustomIcon name={'map-marker'} size={18} color={Colors.darkSeafoamGreen} /> */}
                       <IconButton
@@ -1117,7 +1141,9 @@ class RealEstateDetail extends React.Component {
                     {false && (
                       <TouchableOpacity
                         style={[styles.ballView]}
-                        onPress={() => this.setState({showPanoramaView: true})}>
+                        onPress={() =>
+                          this.setState({ showPanoramaView: true })
+                        }>
                         {/* <Image source={Images.scopeDetail} /> */}
                         {/* <CustomIcon name={'world-o'} size={22} color={Colors.darkSeafoamGreen} /> */}
                         <Text
@@ -1369,7 +1395,7 @@ class RealEstateDetail extends React.Component {
                         }}>
                         {/* <Image source={Images.sofaIcon} />  */}
                         <CustomIcon
-                          name="hall"
+                          name='hall'
                           color={Colors.primaryGreen}
                           size={25}
                         />
@@ -1413,7 +1439,7 @@ class RealEstateDetail extends React.Component {
                         }}>
                         {/* <Image source={Images.bathRoomIcon} />  */}
                         <CustomIcon
-                          name="bathroom"
+                          name='bathroom'
                           color={Colors.primaryGreen}
                           size={25}
                         />
@@ -1518,13 +1544,13 @@ class RealEstateDetail extends React.Component {
                             name={'city'}
                             color={Colors.primaryGreen}
                             size={16}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                           />
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'رقم الاعلان'}:{' '}
                           </Text>
@@ -1557,13 +1583,13 @@ class RealEstateDetail extends React.Component {
                             name={'city'}
                             color={Colors.primaryGreen}
                             size={16}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                           />
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'نبذة عن العقار'}:{' '}
                           </Text>
@@ -1572,7 +1598,7 @@ class RealEstateDetail extends React.Component {
                           style={[
                             Fonts.style.normal,
                             styles.textStyle,
-                            {width: '80%', margin: 12},
+                            { width: '80%', margin: 12 },
                           ]}>
                           {realEstateItem.notes}
                         </Text>
@@ -1674,7 +1700,7 @@ class RealEstateDetail extends React.Component {
                           style={[
                             Fonts.style.normal,
                             styles.textStyle,
-                            {color: Colors.darkSlateBlue},
+                            { color: Colors.darkSlateBlue },
                           ]}>
                           {'الموقع'}:{' '}
                         </Text>
@@ -1682,7 +1708,7 @@ class RealEstateDetail extends React.Component {
                           name={'map-marker'}
                           color={Colors.primaryGreen}
                           size={16}
-                          style={{marginStart: 10}}
+                          style={{ marginStart: 10 }}
                         />
                       </View>
                     )}
@@ -1703,19 +1729,19 @@ class RealEstateDetail extends React.Component {
                           {realEstateItem.purpose.nameAr}
                           {typeFemale && 'ة'}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'الغرض من العقار'}:{' '}
                           </Text>
                           <CustomIcon
                             name={'bullhorn'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1737,19 +1763,19 @@ class RealEstateDetail extends React.Component {
                         <Text style={[Fonts.style.normal, styles.textStyle]}>
                           {realEstateItem.space + ''}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'المساحة'}:{' '}
                           </Text>
                           <CustomIcon
                             name={'area'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1772,19 +1798,19 @@ class RealEstateDetail extends React.Component {
                         <Text style={[Fonts.style.normal, styles.textStyle]}>
                           {realEstateItem.streetWidth + ''}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'عرض الشارع'}:{' '}
                           </Text>
                           <CustomIcon
                             name={'road'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1806,19 +1832,19 @@ class RealEstateDetail extends React.Component {
                         <Text style={[Fonts.style.normal, styles.textStyle]}>
                           {realEstateItem.age}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'عمر العقار'}:{' '}
                           </Text>
                           <CustomIcon
                             name={'calender'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1840,19 +1866,19 @@ class RealEstateDetail extends React.Component {
                         <Text style={[Fonts.style.normal, styles.textStyle]}>
                           {realEstateItem.floor}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'الدور'}:{' '}
                           </Text>
                           <CustomIcon
                             name={'layers'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1876,12 +1902,12 @@ class RealEstateDetail extends React.Component {
                             realEstateItem.populationType.nameAr) ||
                             ''}
                         </Text>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'الساكن'}:{' '}
                           </Text>
@@ -1889,7 +1915,7 @@ class RealEstateDetail extends React.Component {
                             name={'user'}
                             color={Colors.primaryGreen}
                             size={16}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                           />
                         </View>
                       </View>
@@ -1907,14 +1933,14 @@ class RealEstateDetail extends React.Component {
                           paddingBottom: 8,
                           borderBottomColor: '#e7e7e7',
                         }}>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           {(realEstateItem.selectedSides || []).map(
                             (item, index) => (
                               <Text
                                 style={[
                                   Fonts.style.normal,
                                   styles.textStyle,
-                                  {paddingHorizontal: 1},
+                                  { paddingHorizontal: 1 },
                                 ]}>
                                 {item === '0'
                                   ? 'الجنوبية'
@@ -1928,19 +1954,22 @@ class RealEstateDetail extends React.Component {
                           )}
                         </View>
                         <View
-                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}>
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
-                              {color: Colors.darkSlateBlue},
+                              { color: Colors.darkSlateBlue },
                             ]}>
                             {'الواجهة'}:{' '}
                           </Text>
                           <Icon
                             name={'directions-fork'}
                             color={Colors.primaryGreen}
-                            style={{marginStart: 10}}
+                            style={{ marginStart: 10 }}
                             size={16}
                           />
                         </View>
@@ -1977,7 +2006,7 @@ class RealEstateDetail extends React.Component {
                         <Icon
                           name={'home'}
                           color={Colors.primaryGreen}
-                          style={{marginStart: 10}}
+                          style={{ marginStart: 10 }}
                           size={18}
                         />
                       </View>
@@ -2011,7 +2040,7 @@ class RealEstateDetail extends React.Component {
 
                   {(realEstateItem.bluePrint || []).length > 0 && (
                     <BluePrintList
-                      containerStyle={{marginTop: 20}}
+                      containerStyle={{ marginTop: 20 }}
                       bluePrint={realEstateItem.bluePrint}
                       doAnimation={true}
                     />
@@ -2022,7 +2051,7 @@ class RealEstateDetail extends React.Component {
                                 { realEstateItem.features && <AqarFeatures realEstateFeatures={realEstateItem.features} />}
 
 
-                                
+
                             {realEstateItem.bluePrint && <BluePrintList containerStyle={{marginTop: 20 }} doAnimation={true}   />} */}
 
                   {this.state.suggestionDate &&
@@ -2048,7 +2077,7 @@ class RealEstateDetail extends React.Component {
                       </Text>
                     )}
                   {this.state.sugLoading && (
-                    <BallIndicator style={{marginTop: 20}} color={'green'} />
+                    <BallIndicator style={{ marginTop: 20 }} color={'green'} />
                   )}
                   {this.state.suggestionDate && (
                     <SugesstionRealEstate
@@ -2072,8 +2101,8 @@ class RealEstateDetail extends React.Component {
               loading={this.state.loading}
               done={this.state.done}
               isVisible={this.state.showRating}
-              onClose={() => this.setState({showRating: false})}
-              onSwipe={() => this.setState({showRating: false})}
+              onClose={() => this.setState({ showRating: false })}
+              onSwipe={() => this.setState({ showRating: false })}
               onDonePress={(rating, selected) =>
                 this.handleRating(rating, selected)
               }
@@ -2087,8 +2116,8 @@ class RealEstateDetail extends React.Component {
                 loading={this.state.requestLoading}
                 done={this.state.done}
                 isVisible={this.state.showRequest}
-                onClose={() => this.setState({showRequest: false})}
-                onSwipe={() => this.setState({showRequest: false})}
+                onClose={() => this.setState({ showRequest: false })}
+                onSwipe={() => this.setState({ showRequest: false })}
                 onRequest={request => this.handleRequest(request)}
               />
             )}
@@ -2125,12 +2154,13 @@ class RealEstateDetail extends React.Component {
                     disabled={this.props.disabled}
                     style={styles.row}
                     onPress={() => {
-                      if (!this.props.user || !this.props.user.token)
+                      if (!this.props.user || !this.props.user.token) {
                         return this.setState({
                           showAlert: true,
                           alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
                         });
-                      this.setState({showRating: true});
+                      }
+                      this.setState({ showRating: true });
                     }}>
                     {!this.props.loading ? (
                       <Text
@@ -2152,8 +2182,8 @@ class RealEstateDetail extends React.Component {
               </Animated.View>
             )}
 
-            {/* {this.state.owner && <Animated.View style={[styles.backgroundStyle, 
-                        // { transform: [{ translateY: navbarTranslate }] } 
+            {/* {this.state.owner && <Animated.View style={[styles.backgroundStyle,
+                        // { transform: [{ translateY: navbarTranslate }] }
                         ]} >
                         <Animated.View style={[styles.container, this.props.halfButton && {width: Metrics.screenWidth * 0.42933333, height: 46, }, {backgroundColor: this.props.doAnimation? this.state.animation.animtion3.interpolate({inputRange:[0,1], outputRange:['#fff',Colors.darkSeafoamGreen]}): this.props.backgroundColorT? this.props.backgroundColorT: Colors.darkSeafoamGreen, shadowColor: this.props.shadowColor || "rgba(61, 186, 126, 0.25)"}, this.props.containerStyle]}>
                             <TouchableOpacity disabled={this.props.disabled} style={styles.row} onPress={()=> {
@@ -2176,7 +2206,9 @@ class RealEstateDetail extends React.Component {
                     realEstateItem.address
                   }
                   isVisible={this.state.shaowNearFeatures}
-                  onBackPress={() => this.setState({shaowNearFeatures: false})}
+                  onBackPress={() =>
+                    this.setState({ shaowNearFeatures: false })
+                  }
                 />
               )}
 
@@ -2184,7 +2216,7 @@ class RealEstateDetail extends React.Component {
               <PanoramView
                 id={realEstateItem._id}
                 isVisible={this.state.showPanoramaView}
-                onBackPress={() => this.setState({showPanoramaView: false})}
+                onBackPress={() => this.setState({ showPanoramaView: false })}
               />
             )}
           </View>
@@ -2256,7 +2288,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0,
     },
-    elevation: 2,
     shadowRadius: 30,
     shadowOpacity: 1,
     justifyContent: 'center',
