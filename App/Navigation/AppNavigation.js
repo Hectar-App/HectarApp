@@ -355,7 +355,7 @@ const bottomTab = createBottomTabNavigator(
       activeTintColor: 'rgb(61,186,126)',
       inactiveTintColor: 'rgb(204,204,208)',
     },
-    // initialRouteName: 'AddAqarStackNav'
+    initialRouteName: 'HomeStackNav',
   },
 );
 
