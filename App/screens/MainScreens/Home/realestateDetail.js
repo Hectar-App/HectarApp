@@ -5,16 +5,13 @@ import {
   Text,
   Keyboard,
   Share,
-  Dimensions,
   TouchableWithoutFeedback,
   Linking,
   TouchableOpacity,
-  ScrollView,
   Image,
   Platform,
   StyleSheet,
 } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 import { connect } from 'react-redux';
 import FavoriteAction from '../../../Redux/FavourteRedux';
@@ -44,22 +41,18 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { IconButton, ActivityIndicator } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HectarIcon from '../../../assets/imgs/svgImagesComponents/HectarIcon';
-import LinearGradient from 'react-native-linear-gradient';
-
 import { BallIndicator } from 'react-native-indicators';
 
 import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
 
-import TimeAgo from 'react-native-timeago';
 import moment from 'moment';
+import 'moment/locale/ar';
+import Tags from '../../../Component/core/Tags';
+import { perfectWidth } from '../../../utils/commonFunctions';
 
 const HEADER_MIN_HEIGHT = 120;
-const HEADER_MAX_HEIGHT = 220;
-
-const NAVBAR_HEIGHT = 64;
-const STATUS_BAR_HEIGHT = Platform.select({ ios: 50, android: 24 });
+const HEADER_MAX_HEIGHT = Metrics.screenHeight * 0.4;
 
 const API = api.create();
 class RealEstateDetail extends React.Component {
@@ -98,44 +91,31 @@ class RealEstateDetail extends React.Component {
     if (!this.state.toPreview) {
       this.props.addShow(this.state.realEstateItem._id);
     }
-    // const scrollViewRef = React.createRef();
 
-    // console.log('HelloEfect')
-    if (this.props.user && this.props.user.token && !this.state.toPreview) {
-      this.props.checkRealEstateInFav(this.state.realEstateItem._id);
-      this.props.checkLikeRating(
-        this.state.realEstateItem._id,
-        this.props.user.token,
-      );
+    if (!this.state.toPreview) {
+      this.props.getRealEstateDetails(this.state.realEstateItem._id);
     }
-    // console.log('props.checker', props.checker)
-    // setFav(props.checker)
 
-    if (this.state.realEstateItem && !this.state.toPreview) {
+    if (this.state.toPreview) {
+      const { imagesSmall, images } = this.state.realEstateItem;
+
       this.setState({
-        owner:
-          this.props.user &&
-          this.props.user._id === this.state.realEstateItem.owner._id,
-        // images: this.state.realEstateItem.images,
-        // compaond: this.state.realEstateItem.type.nameEn === "compound"
+        images:
+          (imagesSmall || []).length > 0
+            ? imagesSmall
+            : this.state.realEstateItem.images,
+        compaond: this.state.realEstateItem.type.nameEn === 'compound',
       });
     }
 
-    if (!this.props.user && !this.state.toPreview) {
-      this.setState({ rate: false });
-    }
-    const { imagesSmall, images } = this.state.realEstateItem;
-    this.setState({
-      images:
-        (imagesSmall || []).length > 0
-          ? imagesSmall
-          : this.state.realEstateItem.images,
-      compaond: this.state.realEstateItem.type.nameEn === 'compound',
-    });
-
-    // this.startAllAnimation()
-
-    // setLike(props.checkRealEstate && props.checkRealEstate.likes)
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      () => {
+        if (!this.state.toPreview) {
+          this.props.getRealEstateDetails(this.state.realEstateItem._id);
+        }
+      },
+    );
   }
 
   componentWillMount() {
@@ -147,7 +127,6 @@ class RealEstateDetail extends React.Component {
     Animated.timing(this.state.animation.Animation2, {
       toValue: 1,
       duration: 550,
-      // useNativeDriver: true
     }).start();
   }
 
@@ -177,7 +156,7 @@ class RealEstateDetail extends React.Component {
       }
     }
     if (nextProps.likeRealEstateResult !== this.props.likeRealEstateResult) {
-      // return this.setState({like: nextProps.checkLikeRating.likes})
+      this.props.getRealEstateDetails(this.state.realEstateItem._id);
       if (
         nextProps.likeRealEstateResult.message &&
         nextProps.likeRealEstateResult.message === 'done' &&
@@ -197,6 +176,48 @@ class RealEstateDetail extends React.Component {
         setTimeout(() => {
           this.setState({ showRating: false });
         }, 2000);
+      }
+    }
+
+    if (nextProps.realEstateDetail !== this.props.realEstateDetail) {
+      if (nextProps.realEstateDetail) {
+        this.setState({ realEstateItem: nextProps.realEstateDetail });
+
+        if (this.props.user && this.props.user.token && !this.state.toPreview) {
+          this.props.checkRealEstateInFav(this.state.realEstateItem._id);
+          this.props.checkLikeRating(
+            this.state.realEstateItem._id,
+            this.props.user.token,
+          );
+        }
+
+        if (
+          this.state.realEstateItem &&
+          this.state.realEstateItem.owner &&
+          !this.state.toPreview
+        ) {
+          this.setState({
+            owner:
+              this.props.user &&
+              this.props.user._id === this.state.realEstateItem.owner._id,
+          });
+        }
+
+        if (!this.props.user && !this.state.toPreview) {
+          this.setState({ rate: false });
+        }
+        const { imagesSmall, images } = this.state.realEstateItem;
+        if (imagesSmall) {
+          this.setState({
+            images:
+              (imagesSmall || []).length > 0
+                ? imagesSmall
+                : this.state.realEstateItem.images,
+            compaond: this.state.realEstateItem.type.nameEn === 'compound',
+          });
+        }
+      } else {
+        this.props.navigation.goBack();
       }
     }
 
@@ -228,20 +249,17 @@ class RealEstateDetail extends React.Component {
         this.setState({ request3: true });
       }
       this.setState({ requestLoading: null, done: true });
-      // this.props.checkLikeRating(this.state.realEstateItem._id, this.props.user.token)
-      // setTimeout(()=> {
-      //     this.setState({showRequest: false, done: false})
-      // }, 2000)
-      // if(nextProps.rateRealEstateError.error)
-      //     return alert(nextProps.addRequestResult.error)
     }
   }
 
   handleShare = () => {
+    if (this.state.toPreview) {
+      return;
+    }
     Share.share({
       message:
-        'لاعجابي الشديد بهذا الحساب وددت مشاركته ' +
-        'http://dev.hectar.io/property/' +
+        'لاعجابي الشديد بهذا العقار وددت مشاركته ' +
+        'https://hectar.io/property/' +
         this.state.realEstateItem._id +
         '/0',
     });
@@ -264,7 +282,7 @@ class RealEstateDetail extends React.Component {
 
   goToDetail = () => {
     if (this.state.toPreview) {
-      return alert('لم يتم اضافة العقار بعد');
+      return;
     }
 
     this.props.navigation.navigate('FirstStepAddAqar', {
@@ -280,7 +298,7 @@ class RealEstateDetail extends React.Component {
 
   addLike = () => {
     if (this.state.toPreview) {
-      return alert('لم يتم اضافة العقار بعد');
+      return;
     }
     if (!this.props.user || !this.props.user.token) {
       return this.setState({
@@ -294,45 +312,38 @@ class RealEstateDetail extends React.Component {
       this.state.like ? 2 : 1,
       this.props.user.token,
     );
-    // setLike(s => s = !s)
   };
 
   timeSince(date) {
-    // console.log('date', date)
-    // console.log('date', this.state.realEstateItem)
     var seconds = Math.floor((new Date() - date) / 1000);
 
     var interval = Math.floor(seconds / 31536000);
 
     if (interval > 1) {
-      return interval + ' سنوات';
+      return 'قبل' + interval + ' سنوات';
     }
     interval = Math.floor(seconds / 2592000);
     if (interval > 1) {
-      return interval + ' شهور';
+      return 'قبل' + interval + ' شهور';
     }
     interval = Math.floor(seconds / 86400);
     if (interval > 1) {
-      return interval + ' ايام';
+      return 'قبل' + interval + ' ايام';
     }
     interval = Math.floor(seconds / 3600);
     if (interval > 1) {
-      return interval + ' ساعات';
+      return 'قبل' + interval + ' ساعات';
     }
     interval = Math.floor(seconds / 60);
     if (interval > 1) {
-      return interval + ' دقائق';
+      return 'قبل' + interval + ' دقائق';
     }
-    return Math.floor(seconds) + ' ثواني';
+    return 'قبل' + Math.floor(seconds) + ' ثواني';
   }
-
-  // useEffect(()=> {
-  //     setLike(props.checkRealEstate && props.checkRealEstate.likes)
-  // },[props.addLike])
 
   favProccess = () => {
     if (this.state.toPreview) {
-      return alert('لم يتم اضافة العقار بعد');
+      return;
     }
     if (!this.props.user || !this.props.user.token) {
       return this.setState({
@@ -340,7 +351,6 @@ class RealEstateDetail extends React.Component {
         alertMessage: 'الرجاء تسجيل الدخول للاستفادة',
       });
     }
-    // return alert('الرجاء تسجيل الدخول للاستفادة')
     this.setState({ fav: !this.state.fav });
     this.state.fav
       ? this.props.deleteRealEstateFromFav(
@@ -388,8 +398,6 @@ class RealEstateDetail extends React.Component {
     }
   }
 
-  // const compaond = realEstateItem.type === '5e41786a48e2f5185ac4b090'
-
   kFormatter(num) {
     return Math.abs(num) > 999 && Math.abs(num) < 999999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + ' الف'
@@ -398,18 +406,11 @@ class RealEstateDetail extends React.Component {
       : Math.sign(num) * Math.abs(num);
   }
 
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+  }
+
   render() {
-    // let scrollViewStartOffsetY = 0
-
-    // const imagess = [{ url: this.state.selectedImage, props: { source: this.state.images } }]
-
-    const changeWidth = this.state.animation.animtion4.interpolate({
-      inputRange: [0, 1],
-      outputRange: [Metrics.screenWidth * 0.42933333, 48],
-    });
-
-    let opacity = 1;
-
     const { realEstateItem, owner, like, fav, showRating, images } = this.state;
     const typeFemale =
       realEstateItem.type &&
@@ -417,63 +418,45 @@ class RealEstateDetail extends React.Component {
         realEstateItem.type.nameEn === 'villa' ||
         realEstateItem.type.nameEn === 'building' ||
         realEstateItem.type.nameEn === 'flat');
+    const shop = realEstateItem.type && realEstateItem.type.nameEn === 'shop';
+    const flat = realEstateItem.type && realEstateItem.type.nameEn === 'flat';
+    const land = realEstateItem.type && realEstateItem.type.nameEn === 'land';
 
-    // var opacity = this.state.animation.Animation.interpolate({
-    // inputRange: [0, 180],
-    // outputRange: [1, 0]
-    // });
+    const populationShow =
+      realEstateItem.type &&
+      (realEstateItem.type.nameEn === 'villa' ||
+        realEstateItem.type.nameEn === 'building' ||
+        realEstateItem.type.nameEn === 'flat');
+    const purposeShow =
+      realEstateItem.type &&
+      (realEstateItem.type.nameEn === 'land' ||
+        realEstateItem.type.nameEn === 'building' ||
+        realEstateItem.type.nameEn === 'compound');
+
+    var opacity = this.state.animation.Animation.interpolate({
+      inputRange: [0, 180],
+      outputRange: [1, 0],
+    });
 
     const headerHeight = this.state.animation.Animation.interpolate({
-      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+      inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT) * 2],
       outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
       extrapolate: 'clamp',
     });
 
     const headerBackgroundColor = this.state.animation.Animation.interpolate({
-      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+      inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT) / 8],
       outputRange: ['transparent', '#fff'],
       extrapolate: 'clamp',
     });
 
     const headerBackgroundColorText = this.state.animation.Animation.interpolate(
       {
-        inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+        inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT) / 8],
         outputRange: ['#fff', Colors.darkSlateBlue],
         extrapolate: 'clamp',
       },
     );
-
-    const footerAnimation = this.state.animation.Animation.interpolate({
-      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
-      outputRange: [0, Colors.darkSlateBlue],
-      extrapolate: 'clamp',
-    });
-
-    const scaleAnimation = this.state.animation.Animation2.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.1, 1],
-    });
-
-    const navbarTranslate = this.state.animation.Animation.interpolate({
-      // inputRange: [0, NAVBAR_HEIGHT - STATUS_BAR_HEIGHT],
-      // outputRange: [0, -(NAVBAR_HEIGHT - STATUS_BAR_HEIGHT)],
-      // extrapolate: 'clamp',
-      inputRange: [0, 100],
-      outputRange: [1, 100],
-    });
-    const navbarOpacity = this.state.animation.Animation.interpolate({
-      inputRange: [0, NAVBAR_HEIGHT - STATUS_BAR_HEIGHT],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    });
-
-    const navbarTranslate4 = this.state.animation.Animation6.interpolate({
-      // inputRange: [0, NAVBAR_HEIGHT - STATUS_BAR_HEIGHT],
-      // outputRange: [0, -(NAVBAR_HEIGHT - STATUS_BAR_HEIGHT)],
-      // extrapolate: 'clamp',
-      inputRange: [0, 100],
-      outputRange: [1, 100],
-    });
 
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -482,82 +465,43 @@ class RealEstateDetail extends React.Component {
             <Animated.View
               style={{
                 width: '100%',
-                // height: headerHeight,
-                height: HEADER_MAX_HEIGHT,
+                height: headerHeight,
                 backgroundColor: '#fff',
-                zIndex: 999999,
+                // borderWidth: 1
               }}>
-              <LinearGradient
-                colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,.8)', 'rgba(0,0,0,.8)']}
-                style={[
-                  {
-                    position: 'absolute',
-                    opacity: opacity > 0 ? 0.3 : 0,
-                    bottom: 0,
-                    width: '100%',
-                    height: 100,
-                    zIndex: 9999999999999,
-                  },
-                ]}
-              />
-
               <Animated.View
                 style={{
                   position: 'absolute',
                   width: '100%',
-                  height: 90,
+                  height: 130,
+                  backgroundColor: headerBackgroundColor,
                   bottom: 0,
-                  zIndex: 999,
-                  elevation: 2,
+                  zIndex: 9999099,
                   paddingTop: 28,
-                  backgroundColor: 'red',
-                  borderWidth: 1,
+                  justifyContent: 'center',
+                  shadowColor: 'rgba(0, 0, 0, 0.6)',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowRadius: 6,
+                  shadowOpacity: 1,
+                  elevation: 4,
                 }}>
-                <View>
-                  <Animated.Text
-                    style={[
-                      Fonts.style.normal,
-                      {
-                        marginBottom: 9,
-                        width: '100%',
-                        textAlign: 'center',
-                        color: '#fff',
-                        // color: headerBackgroundColorText
-                      },
-                    ]}>
-                    {realEstateItem &&
-                      realEstateItem.type &&
-                      realEstateItem.type.nameAr &&
-                      realEstateItem.type.nameAr}{' '}
-                    {realEstateItem &&
-                      realEstateItem.purpose &&
-                      realEstateItem.purpose.nameAr &&
-                      realEstateItem.purpose.nameAr}{' '}
-                    {realEstateItem &&
-                      realEstateItem.status &&
-                      realEstateItem.status.nameAr &&
-                      realEstateItem.status.nameAr}
-                  </Animated.Text>
-                </View>
-
-                {/* <HectarIcon style={{width: 60, position: 'absolute', height: 60, opacity: .08}} /> */}
-
                 <View
-                // style={{width: '100%', flex: 1, borderBottomEndRadius: 5, borderBottomStartRadius: 5, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}
-                >
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingRight: 21,
+                    paddingLeft: 41,
+                  }}>
                   <Animated.Text
                     style={[
                       Fonts.style.normal,
-                      {
-                        marginTop: 7,
-                        // color: headerBackgroundColorText
-                        color: '#FFF',
-                        width: '100%',
-                        textAlign: 'center',
-                        fontWeight: 'normal',
-                      },
+                      { marginBottom: 9, color: headerBackgroundColorText },
                     ]}>
-                    <Text style={{ color: Colors.primaryGreen }}>
+                    <Text style={{ ...Fonts.style.boldText }}>
                       {(realEstateItem &&
                         realEstateItem.price &&
                         this.kFormatter(realEstateItem.price)) ||
@@ -571,65 +515,147 @@ class RealEstateDetail extends React.Component {
                         ? ' ريال / شهري'
                         : realEstateItem.payType === 2
                         ? ' / يومي'
-                        : '')}
+                        : ' ريال')}
                   </Animated.Text>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Animated.Text
+                    style={[
+                      Fonts.style.normal,
+                      {
+                        marginBottom: 9,
+                        fontSize: 18,
+                        color: headerBackgroundColorText,
+                      },
+                    ]}>
+                    {realEstateItem &&
+                      realEstateItem.type &&
+                      realEstateItem.type.nameAr &&
+                      realEstateItem.type.nameAr}{' '}
+                    {realEstateItem &&
+                      realEstateItem.purpose &&
+                      realEstateItem.purpose.nameAr &&
+                      !flat &&
+                      purposeShow &&
+                      !shop &&
+                      realEstateItem.purpose.nameAr}{' '}
+                    {realEstateItem &&
+                      realEstateItem.status &&
+                      realEstateItem.status.nameAr &&
+                      realEstateItem.status.nameAr}
+                  </Animated.Text>
+                </View>
+
+                <Animated.View
+                  style={{
+                    opacity,
+                    flexWrap: 'wrap',
+                    position: 'absolute',
+                    bottom: 70,
+                    left: 10,
+                  }}>
+                  <Pagination
+                    dotsLength={(this.state.images || []).length}
+                    activeDotIndex={this.state.sliderActiveSlide}
+                    dotStyle={{
+                      backgroundColor: Colors.white,
+                    }}
+                    inactiveDotStyle={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: 4,
+                      marginHorizontal: 0,
+                      backgroundColor: Colors.brownGrey,
+                    }}
+                    inactiveDotOpacity={1}
+                    inactiveDotScale={1}
+                  />
+                </Animated.View>
+
+                <View
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingRight: 21,
+                    paddingLeft: 41,
+                  }}>
+                  {!this.state.toPreview && (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                      }}>
+                      <Animated.Text
+                        style={[
+                          Fonts.style.normal,
+                          styles.textStyle,
+                          {
+                            fontWeight: 'normal',
+                            color: headerBackgroundColorText,
+                          },
+                        ]}>
+                        {moment(realEstateItem.updatedAt).fromNow()}
+                        {/* {this.timeSince(new Date(realEstateItem.updatedAt))} */}
+                      </Animated.Text>
+                      <CustomIcon
+                        name={'clock3'}
+                        color={Colors.white}
+                        size={16}
+                        style={{ marginStart: 10 }}
+                      />
+                    </View>
+                  )}
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      flex: 5,
+                      justifyContent: 'flex-end',
+                      width: '80%',
+                    }}>
                     <Animated.Text
+                      numberOfLines={2}
                       style={[
                         Fonts.style.normal,
                         {
                           fontSize: 12,
+                          textAlign: 'right',
+                          width: '90%',
+                          marginEnd: 8,
                           alignSelf: 'center',
-                          // color: headerBackgroundColorText
-                          color: '#000',
+                          color: headerBackgroundColorText,
                         },
                       ]}>
                       {realEstateItem &&
                         realEstateItem.address &&
-                        realEstateItem.address.coordinates[0]}
-                      ,{' '}
-                      {realEstateItem &&
-                        realEstateItem.address &&
-                        realEstateItem.address.coordinates[1]}
+                        realEstateItem.address.address}
                     </Animated.Text>
                     <Image source={Images.locationFlagCardIcon} />
                   </View>
                 </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flex: 5,
+                    justifyContent: 'flex-end',
+                    marginRight: perfectWidth(13.5),
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-around',
+                    }}>
+                    {this.state.realEstateItem?.tags?.map(tag => (
+                      <Tags text={tag} />
+                    ))}
+                  </View>
+                </View>
               </Animated.View>
-
-              <Pagination
-                dotsLength={(this.state.images || []).length}
-                activeDotIndex={this.state.sliderActiveSlide}
-                containerStyle={[
-                  {
-                    width: 200,
-                    flexWrap: 'wrap',
-                    // transform: [{rotate: '180deg',}],
-                    position: 'absolute',
-                    bottom: 20,
-                    right: 10,
-                    zIndex: 999999,
-                    paddingVertical: 5,
-                    opacity,
-                  },
-                ]}
-                dotStyle={{
-                  backgroundColor: Colors.darkSeafoamGreen,
-                  marginTop: 3,
-                }}
-                inactiveDotStyle={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 4,
-                  marginHorizontal: 0,
-                  backgroundColor: Colors.white,
-                  marginTop: 3,
-                }}
-                inactiveDotOpacity={1}
-                inactiveDotScale={1}
-              />
-
               <Gallery
                 isVisible={this.state.imageFullScreen}
                 images={this.state.images}
@@ -642,7 +668,8 @@ class RealEstateDetail extends React.Component {
                   return (
                     <TouchableOpacity
                       onPress={() =>
-                        this.state.toPreview
+                        this.state.toPreview ||
+                        (this.state.images || []).length <= 0
                           ? null
                           : this.setState({
                               imageFullScreen: true,
@@ -652,9 +679,7 @@ class RealEstateDetail extends React.Component {
                       <Animated.Image
                         source={
                           images && (images || []).length > 0
-                            ? this.state.toPreview
-                              ? { uri: item?.item?.uri ? item.item?.uri : item }
-                              : { uri: item.item }
+                            ? { uri: item?.item?.uri || item.item }
                             : Images.testCardImage
                         }
                         style={[
@@ -672,74 +697,58 @@ class RealEstateDetail extends React.Component {
                         }}
                       />
                     </TouchableOpacity>
-                    // <Animated.Image source={{uri: item.item}} style={[{zIndex: -1, opacity, }, Platform.OS && {width: Metrics.screenWidth}]}  />
                   );
                 }}
                 style={{
-                  // borderWidth: 1,
                   zIndex: 999,
                 }}
-                // sliderWidth={'100%'}
-                // itemWidth={itemWidth}
                 sliderWidth={Metrics.screenWidth}
                 itemWidth={Metrics.screenWidth}
-                // hasParallaxImages={true}
-                // firstItem={0}
-                // inactiveSlideScale={0.94}
-                // inactiveSlideOpacity={0.7}
-                // inactiveSlideShift={20}
                 containerCustomStyle={[{ overflow: 'visible' }]}
-                // contentContainerCustomStyle={styles.sliderContentContainer}
                 loop={true}
                 loopClonesPerSide={2}
-                // autoplay={true}
-                // autoplayDelay={500}
                 autoplayInterval={3000}
                 onSnapToItem={index =>
                   this.setState({ sliderActiveSlide: index })
                 }
               />
-
-              {/* <Animated.Image source={require('../../../assets/imgs/kitchen21657561920.png')} style={{zIndex: -1, opacity}}  /> */}
             </Animated.View>
 
-            <View
+            <Animated.View
               style={[
                 styles.ballView,
                 {
                   position: 'absolute',
+                  width: 34,
+                  height: 34,
+                  borderRadius: 17,
                   opacity,
+                  backgroundColor: 'rgba(199,183,169, .80)',
                   justifyContent: 'center',
                   alignItems: 'center',
                   top: ifIphoneX(50, 20),
-                  left: 30,
-                  zIndex: 99999999999999,
+                  right: 15,
+                  zIndex: 99999,
                 },
               ]}>
               <TouchableOpacity
-                onPress={this.favProccess}
                 style={[
+                  styles.ballView,
                   {
-                    width: 33,
-                    height: 33,
-                    backgroundColor: '#f5fefa78',
-                    // backgroundColor: 'red',
-                    // marginEnd: 5,
-                    borderRadius: 16.5,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    zIndex: 99999,
+                    marginEnd: 0,
                   },
-                ]}>
-                {/* <Image source={Images.shareIcon} width={30} height={30} /> */}
-                <CustomIcon
-                  name={this.props.checker || fav ? 'bookmark2' : 'bookmark2-o'}
-                  size={25}
-                  color={Colors.darkSeafoamGreen}
+                ]}
+                onPress={() => this.props.navigation.goBack()}>
+                <IconButton
+                  icon={'chevron-right'}
+                  color={'#fff'}
+                  style={{ alignSelf: 'center' }}
                 />
-
-                {/* <CustomIcon name={'bookmark'} size={20} color={Colors.primaryGreen} /> */}
               </TouchableOpacity>
-            </View>
+            </Animated.View>
 
             <Animated.View
               style={[
@@ -750,34 +759,63 @@ class RealEstateDetail extends React.Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   top: ifIphoneX(50, 20),
-                  right: 10,
-                  zIndex: 99999999999999,
+                  left: 15,
+                  zIndex: 99999,
                 },
               ]}>
               <TouchableOpacity
                 style={[
                   styles.ballView,
                   {
-                    zIndex: 99999,
-                    marginEnd: 0,
-                    width: 33,
-                    height: 33,
-                    backgroundColor: 'rgb(199, 183, 169)',
-                    borderRadius: 16.5,
+                    width: 34,
+                    height: 34,
+                    borderRadius: 17,
+                    backgroundColor: 'rgb(255,255,255)',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    zIndex: 99999,
                   },
                 ]}
-                onPress={() => this.props.navigation.goBack()}>
-                <IconButton
-                  icon={'chevron-right'}
-                  size={35}
-                  color={Colors.darkSeafoamGreen}
-                  style={{ alignSelf: 'center' }}
+                onPress={this.favProccess}>
+                <CustomIcon
+                  name={
+                    (this.props.checker || fav) && !this.state.toPreview
+                      ? 'bookmark2'
+                      : 'bookmark2'
+                  }
+                  size={15}
+                  color={
+                    (this.props.checker || fav) && !this.state.toPreview
+                      ? Colors.darkSeafoamGreen
+                      : Colors.grey
+                  }
                 />
               </TouchableOpacity>
+
+              {owner && (
+                <TouchableOpacity
+                  style={[
+                    styles.ballView,
+                    {
+                      width: 34,
+                      height: 34,
+                      marginTop: 15,
+                      borderRadius: 17,
+                      backgroundColor: 'rgb(255,255,255)',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 99999,
+                    },
+                  ]}
+                  onPress={this.goToDetail}>
+                  <CustomIcon
+                    name={'pencil'}
+                    size={15}
+                    color={Colors.darkSeafoamGreen}
+                  />
+                </TouchableOpacity>
+              )}
             </Animated.View>
-            {/* <Image source={Images.bac} /> */}
 
             <AlertModal
               closeErrorModel={this.handleLogin}
@@ -813,22 +851,8 @@ class RealEstateDetail extends React.Component {
                 [
                   {
                     nativeEvent: {
-                      contentOffset: { y: this.state.animation.Animation6 },
+                      contentOffset: { y: this.state.animation.Animation },
                     },
-                    //     console.log(e)
-                    // }
-                    // nativeEvent: {
-                    //     contentOffset: {
-                    //       y: y =>
-                    //         Animated.block([
-                    //           Animated.set(this.state.animation.Animation, y),
-                    //           Animated.call(
-                    //             [y],
-                    //             ([offsetY]) => (scrollViewStartOffsetY = offsetY)
-                    //           )
-                    //         ])
-                    //     }
-                    //   }
                   },
                 ],
                 {
@@ -844,61 +868,13 @@ class RealEstateDetail extends React.Component {
                       layoutMeasurement.height + contentOffset.y >=
                       contentSize.height - paddingToBottom
                     ) {
-                      // console.log('End Scroll')
                       if (!this.state.toPreview && !owner) {
                         this.handleGetSuggestion();
                       }
                     }
                   },
-                  // useNativeDriver: true,
-                  // listener: e => {
-                  //     // console.log('e', e)
-                  //     const offsetY = e.nativeEvent.contentOffset.y;
-
-                  //     // console.log(e.nativeEvent)
-                  //     // this.scrollView.scrollToEnd({animated: true});
-                  //     // scrollViewRef.current.scrollTo({x: 150})
-                  //     // scrollViewRef.current.getNode().scrollTo({y:0, animated:true});
-                  //     // this.ScrollView
-                  //     // if(scrollViewRef.current){
-                  //     //     console.log('Hello Ref')
-                  //     if (scrollViewStartOffsetY > offsetY && scrollViewStartOffsetY !== 0) {
-                  //         //Shift down, ScrollView component scrolls up
-                  //         console.log('up');
-                  //         // this.scrollViewScrollDirection = SCROLLVIEW_DIRECTION_UP;
-                  //         // this.setState({
-                  //             //                         scrollViewScrollDirection: 'ScrollView component scrolls up'
-                  //             // });
-                  //             scrollViewRef.current.getNode().scrollTo({y:0, animated:true});
-                  //     } else if (scrollViewStartOffsetY < offsetY) {
-                  //         // Animated.event([nativeEvent])
-                  //                         //The gesture slides up and the ScrollView component scrolls down
-                  //                         // scrollViewRef.current.getNode().scrollTo({y:0, animated:true});
-                  //                         console.log('down');
-                  //         // this.scrollViewScrollDirection = SCROLLVIEW_DIRECTION_DOWN;
-                  //         // this.setState({
-                  //                                 // scrollViewScrollDirection: 'ScrollView component scrolls down'
-                  //         // });
-                  //     }
-
-                  //     // console.log(scrollViewStartOffsetY)
-                  //     // scrollViewStartOffsetY = offsetY
-                  //     //     this.scrollView.
-                  //     //     scrollViewRef.getNode().scrollTo({x:100,y:100, animated:false});
-                  //     //     // scrollViewRef.current.scrollTo({x:150})
-                  //     //    }
-                  //     // scrollViewRef.scrollToEnd({animated: true})
-                  // }
                 },
-                // { listener: this._handleScroll.bind(this) }, //Added listener
-                // {
-                // useNativeDriver: true
-                // }
-              )}
-              // onScrollAnimationEnd=
-              // onScroll={(e)=>{
-              // }}
-            >
+              )}>
               <TouchableWithoutFeedback
                 style={{
                   paddingBottom: 10,
@@ -908,17 +884,20 @@ class RealEstateDetail extends React.Component {
                 <Animated.View
                   style={{
                     paddingBottom: 30,
-                    // paddingTop: navbarTranslate
                   }}>
-                  {owner || this.state.toPreview ? (
+                  {owner || (this.state.toPreview && realEstateItem.type) ? (
                     <HeadreRealestateDetailPersentage
-                      progress={0.9}
+                      numberOfView={realEstateItem.shows + ' '}
+                      toPreview={this.state.toPreview}
+                      progress={realEstateItem.completePercentage}
                       owner={realEstateItem.owner}
                       onPress={this.goToDetail}
                     />
-                  ) : (
-                    // <View />
+                  ) : realEstateItem.type ? (
                     <HeadreRealestateDetail
+                      numberOfView={
+                        realEstateItem && realEstateItem.shows + ' '
+                      }
                       withOutQR={true}
                       owner={realEstateItem.owner}
                       onPress={() =>
@@ -927,26 +906,20 @@ class RealEstateDetail extends React.Component {
                         })
                       }
                     />
-                  )}
+                  ) : null}
 
                   <Animated.View
                     style={[
                       {
-                        // position: 'absolute',
-                        // height: owner? 162: 122,
                         width: Metrics.screenWidth * 0.8,
-                        // top: ifIphoneX(50, 20),
-                        // left: 20,
                         justifyContent: 'space-between',
                         alignItems: 'flex-end',
                         flexDirection: 'row',
                         marginHorizontal: 30,
-                        marginTop: 17,
+                        marginTop: 10,
                         flexWrap: 'wrap',
                         opacity: 1,
                         alignSelf: 'center',
-                        // borderWidth: 1
-                        // opacity
                       },
                     ]}>
                     <TouchableOpacity
@@ -954,8 +927,6 @@ class RealEstateDetail extends React.Component {
                       onPress={() =>
                         this.setState({ shaowNearFeatures: true })
                       }>
-                      {/* <Image source={Images.mapIconForList} style={{borderWidth: 1}} /> */}
-                      {/* <CustomIcon name={'map-marker'} size={18} color={Colors.darkSeafoamGreen} /> */}
                       <IconButton
                         icon={'map'}
                         size={20}
@@ -967,87 +938,14 @@ class RealEstateDetail extends React.Component {
                           Fonts.style.normal,
                           {
                             fontWeight: 'normal',
-                            // marginTop: 10,
                             fontSize: 10,
-                            // position:'absolute',
                             color: Colors.darkSlateBlue,
-                            // bottom: -22,
-                            // left: 14
                           },
                         ]}>
                         عرض بالخريطة
                       </Text>
-
-                      {/* <Image source={Images.mapIconForList} style={{borderWidth: 1}}/> */}
                     </TouchableOpacity>
 
-                    {true && (
-                      <TouchableOpacity
-                        style={[styles.ballView]}
-                        onPress={() =>
-                          this.setState({ showPanoramaView: true })
-                        }>
-                        {/* <Image source={Images.scopeDetail} /> */}
-                        {/* <CustomIcon name={'world-o'} size={22} color={Colors.darkSeafoamGreen} /> */}
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            {
-                              fontWeight: 'normal',
-                              fontSize: 16,
-                              color: Colors.darkSeafoamGreen,
-                            },
-                          ]}>
-                          360°
-                        </Text>
-
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            {
-                              fontWeight: 'normal',
-                              marginTop: 10,
-                              fontSize: 10,
-                              // position:'absolute',
-                              color: Colors.darkSlateBlue,
-                              // paddingTop: 12
-                              // bottom: -22,
-                              // left: 14
-                            },
-                          ]}>
-                          عرض 360
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-
-                    {owner && (
-                      <TouchableOpacity
-                        style={[styles.ballView, {}]}
-                        onPress={this.goToDetail}>
-                        {/* <IconButton icon={'playlist-edit'} size={18} color={Colors.darkSeafoamGreen} /> */}
-                        <CustomIcon
-                          name={'pencil'}
-                          size={18}
-                          color={Colors.darkSeafoamGreen}
-                        />
-
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            {
-                              fontWeight: 'normal',
-                              marginTop: 10,
-                              fontSize: 10,
-                              // position:'absolute',
-                              color: Colors.darkSlateBlue,
-                              // bottom: -22,
-                              // left: 14
-                            },
-                          ]}>
-                          تعديل
-                        </Text>
-                      </TouchableOpacity>
-                    )}
                     <View>
                       <TouchableOpacity
                         style={[styles.ballView, {}]}
@@ -1059,17 +957,40 @@ class RealEstateDetail extends React.Component {
                           color={Colors.darkSeafoamGreen}
                         />
                       </TouchableOpacity>
-                      {/* <Text style={[ Fonts.style.normal, {
-                                            fontWeight: "normal",
-                                            marginTop: 10,
-                                            fontSize: 12,
-                                            position:'absolute',
-                                            color: Colors.darkSlateBlue,
-                                            bottom: -22,
-                                            left: 14
-                                        }]}>
-                                                {this.state.realEstateItem.numberOfLikes}
-                                        </Text> */}
+
+                      {this.state.realEstateItem.numberOfLikes > 0 && (
+                        <View
+                          style={[
+                            Fonts.style.normal,
+                            {
+                              fontWeight: 'normal',
+                              marginTop: 10,
+                              fontSize: 12,
+                              position: 'absolute',
+                              color: Colors.darkSlateBlue,
+                              top: -15,
+                              right: -15,
+                              width: 20,
+                              height: 20,
+                              borderRadius: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              backgroundColor: Colors.darkSlateBlue,
+                            },
+                          ]}>
+                          <Text
+                            style={[
+                              Fonts.style.boldText,
+                              {
+                                fontWeight: 'normal',
+                                fontSize: 12,
+                                color: Colors.white,
+                              },
+                            ]}>
+                            {this.state.realEstateItem.numberOfLikes}
+                          </Text>
+                        </View>
+                      )}
 
                       <Text
                         style={[
@@ -1151,7 +1072,7 @@ class RealEstateDetail extends React.Component {
                       // alignItems: 'center',
                       // borderWidth: 1,
                     }}>
-                    {realEstateItem && realEstateItem.numberOfKitchenUnit && (
+                    {realEstateItem && !land && (
                       <Animated.View
                         style={{
                           alignItems: 'center',
@@ -1183,57 +1104,56 @@ class RealEstateDetail extends React.Component {
                               color: '#000',
                             },
                           ]}>
-                          {realEstateItem.numberOfKitchenUnit}
+                          {realEstateItem.numberOfKitchenUnit || 0}
                         </Text>
                       </Animated.View>
                     )}
 
-                    {realEstateItem &&
-                      (realEstateItem.numberOfRooms ||
-                        realEstateItem.numberOfUnit) && (
-                        <Animated.View
-                          style={{
-                            alignItems: 'center',
-                            height: 70,
-                            paddingHorizontal: 10,
-                            justifyContent: 'center',
-                            // transform: [{scale: scaleAnimation}]
-                          }}>
-                          {/* <Image source={Images.sofaIcon} />  */}
-                          <CustomIcon
-                            name={'bed'}
-                            size={25}
-                            color={Colors.primaryGreen}
-                          />
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              {
-                                fontWeight: 'normal',
-                                marginTop: 8,
-                                fontSize: 12,
-                                color: Colors.darkSlateBlue,
-                              },
-                            ]}>
-                            {realEstateItem.numberOfRooms ? 'الغرف' : 'الوحدات'}
-                          </Text>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              {
-                                fontWeight: 'normal',
-                                marginTop: 8,
-                                fontSize: 12,
-                                color: '#000',
-                              },
-                            ]}>
-                            {realEstateItem.numberOfRooms ||
-                              realEstateItem.numberOfUnit}
-                          </Text>
-                        </Animated.View>
-                      )}
+                    {realEstateItem && !land && (
+                      <Animated.View
+                        style={{
+                          alignItems: 'center',
+                          height: 70,
+                          paddingHorizontal: 10,
+                          justifyContent: 'center',
+                          // transform: [{scale: scaleAnimation}]
+                        }}>
+                        {/* <Image source={Images.sofaIcon} />  */}
+                        <CustomIcon
+                          name={'bed'}
+                          size={25}
+                          color={Colors.primaryGreen}
+                        />
+                        <Text
+                          style={[
+                            Fonts.style.normal,
+                            {
+                              fontWeight: 'normal',
+                              marginTop: 8,
+                              fontSize: 12,
+                              color: Colors.darkSlateBlue,
+                            },
+                          ]}>
+                          {realEstateItem.numberOfRooms ? 'الغرف' : 'الوحدات'}
+                        </Text>
+                        <Text
+                          style={[
+                            Fonts.style.normal,
+                            {
+                              fontWeight: 'normal',
+                              marginTop: 8,
+                              fontSize: 12,
+                              color: '#000',
+                            },
+                          ]}>
+                          {realEstateItem.numberOfRooms ||
+                            realEstateItem.numberOfUnit ||
+                            0}
+                        </Text>
+                      </Animated.View>
+                    )}
 
-                    {realEstateItem && realEstateItem.numberOfLivingRoom && (
+                    {realEstateItem && !land && (
                       <Animated.View
                         style={{
                           alignItems: 'center',
@@ -1272,12 +1192,12 @@ class RealEstateDetail extends React.Component {
                               color: '#000',
                             },
                           ]}>
-                          {realEstateItem.numberOfLivingRoom}
+                          {realEstateItem.numberOfLivingRoom || 0}
                         </Text>
                       </Animated.View>
                     )}
 
-                    {realEstateItem && realEstateItem.numberOfBathRoom && (
+                    {realEstateItem && !land && (
                       <Animated.View
                         style={{
                           alignItems: 'center',
@@ -1314,7 +1234,7 @@ class RealEstateDetail extends React.Component {
                               color: Colors.darkSlateBlue,
                             },
                           ]}>
-                          {realEstateItem.numberOfBathRoom}
+                          {realEstateItem.numberOfBathRoom || 0}
                         </Text>
                       </Animated.View>
                     )}
@@ -1342,22 +1262,23 @@ class RealEstateDetail extends React.Component {
                     realEstateItem.numberOfBathRoom ||
                     realEstateItem.numberOfLivingRoom ||
                     (realEstateItem.numberOfRooms ||
-                      realEstateItem.numberOfUnit)) && (
-                    <View
-                      style={{
-                        width: Metrics.screenWidth * 0.87466667,
-                        height: 0,
-                        borderStyle: 'solid',
-                        borderWidth: 1,
-                        borderColor: '#e5e5e5',
-                        // position: 'absolute',
-                        bottom: 0,
-                        alignSelf: 'center',
-                        marginTop: 20,
-                        marginBottom: 20,
-                      }}
-                    />
-                  )}
+                      realEstateItem.numberOfUnit)) &&
+                    !land && (
+                      <View
+                        style={{
+                          width: Metrics.screenWidth * 0.87466667,
+                          height: 0,
+                          borderStyle: 'solid',
+                          borderWidth: 1,
+                          borderColor: '#e5e5e5',
+                          // position: 'absolute',
+                          bottom: 0,
+                          alignSelf: 'center',
+                          marginTop: 20,
+                          marginBottom: 20,
+                        }}
+                      />
+                    )}
 
                   <View
                     style={{
@@ -1368,343 +1289,46 @@ class RealEstateDetail extends React.Component {
                       // marginTop: 20
                     }}>
                     {/* <TimeAgo style={[Fonts.style.normal, styles.textStyle, {fontWeight: 'normal', marginBottom: 20}]} time={realEstateItem.createdAt} interval={2000} /> */}
-                    {!this.state.toPreview && (
-                      <View
-                        style={{
-                          width: '100%',
-                          // marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          // borderBottomWidth: .3,
-                          paddingBottom: 6,
-                          // borderBottomColor: '#e7e7e7'
-                        }}>
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            styles.textStyle,
-                            {
-                              fontWeight: 'normal',
-                              color: Colors.darkSlateBlue,
-                            },
-                          ]}>
-                          {/* {moment(realEstateItem.updatedAt).fromNow(false)} */}
-                          {this.timeSince(new Date(realEstateItem.updatedAt))}
-                        </Text>
-                        <CustomIcon
-                          name={'clock3'}
-                          color={Colors.primaryGreen}
-                          size={16}
-                          style={{ marginStart: 10 }}
-                        />
-                      </View>
-                    )}
 
-                    {realEstateItem.shows && (
+                    {realEstateItem._id && (
                       <View
                         style={{
                           width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
+                          marginVertical: 5,
+                          // flexDirection: 'row',
                           justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 6,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.shows}
-                        </Text>
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            styles.textStyle,
-                            { color: Colors.darkSlateBlue },
-                          ]}>
-                          {'عدد المشاهدات'}:{' '}
-                        </Text>
-                        <CustomIcon
-                          name={'eye'}
-                          size={16}
-                          color={Colors.primaryGreen}
-                          style={{ marginStart: 10 }}
-                        />
-                      </View>
-                    )}
-
-                    {realEstateItem.address && !this.state.toPreview && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
+                          alignItems: 'flex-end',
+                          flexWrap: 'wrap',
                           borderBottomWidth: 0.3,
                           paddingBottom: 8,
                           borderBottomColor: '#e7e7e7',
                         }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            const scheme = Platform.select({
-                              ios: 'maps:0,0?q=',
-                              android: 'geo:0,0?q=',
-                            });
-                            const latLng = `${
-                              realEstateItem.address.coordinates[0]
-                            },${realEstateItem.address.coordinates[1]}`;
-                            const label = 'Custom Label';
-                            const url = Platform.select({
-                              ios: `${scheme}${label}@${latLng}`,
-                              android: `${scheme}${latLng}(${label})`,
-                            });
-                            Linking.openURL(url);
+                        <View
+                          style={{
+                            flexDirection: 'row-reverse',
+                            alignSelf: 'flex-end',
+                            width: '100%',
                           }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSeafoamGreen },
-                            ]}>
-                            {' '}
-                            {(realEstateItem &&
-                              realEstateItem.address &&
-                              realEstateItem.address.address) ||
-                              (realEstateItem &&
-                                realEstateItem.address &&
-                                realEstateItem.address.coordinates[0] +
-                                  ' , ' +
-                                  realEstateItem &&
-                                realEstateItem.address &&
-                                realEstateItem.address.coordinates[1])}
-                          </Text>
-                        </TouchableOpacity>
-                        <Text
-                          style={[
-                            Fonts.style.normal,
-                            styles.textStyle,
-                            { color: Colors.darkSlateBlue },
-                          ]}>
-                          {'الموقع'}:{' '}
-                        </Text>
-                        <CustomIcon
-                          name={'map-marker'}
-                          color={Colors.primaryGreen}
-                          size={16}
-                          style={{ marginStart: 10 }}
-                        />
-                      </View>
-                    )}
-
-                    {realEstateItem.purpose && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 6,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.purpose.nameAr}
-                          {typeFemale && 'ة'}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
+                          <CustomIcon
+                            name={'city'}
+                            color={Colors.primaryGreen}
+                            size={16}
+                            style={{ marginStart: 10 }}
+                          />
                           <Text
                             style={[
                               Fonts.style.normal,
                               styles.textStyle,
                               { color: Colors.darkSlateBlue },
                             ]}>
-                            {'الغرض من العقار'}:{' '}
+                            {'رقم الاعلان'}:{' '}
                           </Text>
-                          <CustomIcon
-                            name={'bullhorn'}
-                            color={Colors.primaryGreen}
-                            style={{ marginStart: 10 }}
-                            size={16}
-                          />
+                          <Text style={[Fonts.style.normal, styles.textStyle]}>
+                            {realEstateItem._id}
+                          </Text>
                         </View>
                       </View>
                     )}
-
-                    {realEstateItem.space && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 8,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.space}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSlateBlue },
-                            ]}>
-                            {'المساحة'}:{' '}
-                          </Text>
-                          <CustomIcon
-                            name={'area'}
-                            color={Colors.primaryGreen}
-                            style={{ marginStart: 10 }}
-                            size={16}
-                          />
-                        </View>
-                      </View>
-                    )}
-
-                    {realEstateItem.age && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 8,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.age}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSlateBlue },
-                            ]}>
-                            {'عمر '}:{' '}
-                          </Text>
-                          <CustomIcon
-                            name={'calender'}
-                            color={Colors.primaryGreen}
-                            style={{ marginStart: 10 }}
-                            size={16}
-                          />
-                        </View>
-                      </View>
-                    )}
-
-                    {realEstateItem.floor && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 10,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 8,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.floor}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSlateBlue },
-                            ]}>
-                            {'الدور'}:{' '}
-                          </Text>
-                          <CustomIcon
-                            name={'layers'}
-                            color={Colors.primaryGreen}
-                            style={{ marginStart: 10 }}
-                            size={16}
-                          />
-                        </View>
-                      </View>
-                    )}
-
-                    {realEstateItem.populationType && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 8,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 8,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {(realEstateItem.populationType &&
-                            realEstateItem.populationType.nameAr) ||
-                            ''}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSlateBlue },
-                            ]}>
-                            {'الساكن'}:{' '}
-                          </Text>
-                          <CustomIcon
-                            name={'user'}
-                            color={Colors.primaryGreen}
-                            size={16}
-                            style={{ marginStart: 10 }}
-                          />
-                        </View>
-                      </View>
-                    )}
-
-                    {(realEstateItem.streetWidth ||
-                      realEstateItem.streetWidth === '') && (
-                      <View
-                        style={{
-                          width: '100%',
-                          marginBottom: 8,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                          borderBottomWidth: 0.3,
-                          paddingBottom: 8,
-                          borderBottomColor: '#e7e7e7',
-                        }}>
-                        <Text style={[Fonts.style.normal, styles.textStyle]}>
-                          {realEstateItem.streetWidth || ''}
-                        </Text>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text
-                            style={[
-                              Fonts.style.normal,
-                              styles.textStyle,
-                              { color: Colors.darkSlateBlue },
-                            ]}>
-                            {'الساكن'}:{' '}
-                          </Text>
-                          <CustomIcon
-                            name={'user'}
-                            color={Colors.primaryGreen}
-                            size={16}
-                            style={{ marginStart: 10 }}
-                          />
-                        </View>
-                      </View>
-                    )}
-
                     {realEstateItem.notes && (
                       <View
                         style={{
@@ -1749,6 +1373,323 @@ class RealEstateDetail extends React.Component {
                         </Text>
                       </View>
                     )}
+
+                    {/* { !this.state.toPreview &&
+                                        <View
+                                            style={{
+                                                width: '100%',
+                                                marginBottom: 15,
+                                                flexDirection: 'row',
+                                                justifyContent:'flex-end',
+                                                alignItems: 'center',
+                                                borderBottomWidth: .5,
+                                                paddingBottom: 8,
+                                                borderBottomColor: '#e7e7e7'
+                                            }}
+                                        >
+                                            <Text
+                                                style={[Fonts.style.normal, styles.textStyle, {fontWeight: 'normal', color: Colors.darkSlateBlue }]}
+                                            >
+                                                {this.timeSince(new Date(realEstateItem.updatedAt))}
+                                            </Text>
+                                                <CustomIcon name={'clock3'} color={Colors.primaryGreen} size={16} style={{marginStart: 10}} />
+                                        </View>
+                                    } */}
+
+                    {/* {realEstateItem.shows && <View
+                                        style={{
+                                            width: '100%',
+                                            marginBottom: 15,
+                                            flexDirection: 'row',
+                                            justifyContent:'flex-end',
+                                            alignItems: 'center',
+                                            borderBottomWidth: .5,
+                                            paddingBottom: 6,
+                                            borderBottomColor: '#e7e7e7'
+                                        }}
+                                    >
+                                        <Text style={[Fonts.style.normal, styles.textStyle]} >{realEstateItem.shows}</Text>
+                                        <Text style={[Fonts.style.normal, styles.textStyle, {color: Colors.darkSlateBlue}]} >{'عدد المشاهدات'}: </Text>
+                                        <CustomIcon name={'eye'} size={16} color={Colors.primaryGreen} style={{marginStart: 10}} />
+                                    </View>} */}
+
+                    {realEstateItem.address && !this.state.toPreview && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.3,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            const scheme = Platform.select({
+                              ios: 'maps:0,0?q=',
+                              android: 'geo:0,0?q=',
+                            });
+                            const latLng = `${
+                              realEstateItem.address.coordinates[0]
+                            },${realEstateItem.address.coordinates[1]}`;
+                            const label = 'Custom Label';
+                            const url = Platform.select({
+                              ios: `${scheme}${label}@${latLng}`,
+                              android: `${scheme}${latLng}(${label})`,
+                            });
+                            Linking.openURL(url);
+                          }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              {
+                                color: Colors.darkSeafoamGreen,
+                                alignSelf: 'flex-end',
+                                width: '65%',
+                              },
+                            ]}
+                            numberOfLines={1}>
+                            {' '}
+                            {(realEstateItem &&
+                              realEstateItem.address &&
+                              realEstateItem.address.address) ||
+                              (realEstateItem &&
+                                realEstateItem.address &&
+                                realEstateItem.address.coordinates[0] +
+                                  ' , ' +
+                                  realEstateItem &&
+                                realEstateItem.address &&
+                                realEstateItem.address.coordinates[1])}
+                          </Text>
+                        </TouchableOpacity>
+                        <Text
+                          style={[
+                            Fonts.style.normal,
+                            styles.textStyle,
+                            { color: Colors.darkSlateBlue },
+                          ]}>
+                          {'الموقع'}:{' '}
+                        </Text>
+                        <CustomIcon
+                          name={'map-marker'}
+                          color={Colors.primaryGreen}
+                          size={16}
+                          style={{ marginStart: 10 }}
+                        />
+                      </View>
+                    )}
+
+                    {realEstateItem.purpose && purposeShow && !flat && !shop && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 6,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {realEstateItem.purpose.nameAr}
+                          {typeFemale && 'ة'}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'الغرض من العقار'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'bullhorn'}
+                            color={Colors.primaryGreen}
+                            style={{ marginStart: 10 }}
+                            size={16}
+                          />
+                        </View>
+                      </View>
+                    )}
+
+                    {(realEstateItem.space || realEstateItem.space === 0) && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {realEstateItem.space + ''}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'المساحة'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'area'}
+                            color={Colors.primaryGreen}
+                            style={{ marginStart: 10 }}
+                            size={16}
+                          />
+                        </View>
+                      </View>
+                    )}
+
+                    {(realEstateItem.streetWidth ||
+                      realEstateItem.streetWidth === 0) && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {realEstateItem.streetWidth + ''}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'عرض الشارع'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'road'}
+                            color={Colors.primaryGreen}
+                            style={{ marginStart: 10 }}
+                            size={16}
+                          />
+                        </View>
+                      </View>
+                    )}
+
+                    {(realEstateItem.age || realEstateItem.age === 0) && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {realEstateItem.age}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'عمر العقار'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'calender'}
+                            color={Colors.primaryGreen}
+                            style={{ marginStart: 10 }}
+                            size={16}
+                          />
+                        </View>
+                      </View>
+                    )}
+
+                    {realEstateItem.floor && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {realEstateItem.floor}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'الدور'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'layers'}
+                            color={Colors.primaryGreen}
+                            style={{ marginStart: 10 }}
+                            size={16}
+                          />
+                        </View>
+                      </View>
+                    )}
+
+                    {realEstateItem.populationType && populationShow && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomWidth: 0.5,
+                          paddingBottom: 8,
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text style={[Fonts.style.normal, styles.textStyle]}>
+                          {(realEstateItem.populationType &&
+                            realEstateItem.populationType.nameAr) ||
+                            ''}
+                        </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text
+                            style={[
+                              Fonts.style.normal,
+                              styles.textStyle,
+                              { color: Colors.darkSlateBlue },
+                            ]}>
+                            {'الساكن'}:{' '}
+                          </Text>
+                          <CustomIcon
+                            name={'user'}
+                            color={Colors.primaryGreen}
+                            size={16}
+                            style={{ marginStart: 10 }}
+                          />
+                        </View>
+                      </View>
+                    )}
+
                     {(realEstateItem.selectedSides || []).length > 0 && (
                       <View
                         style={{
@@ -1757,7 +1698,7 @@ class RealEstateDetail extends React.Component {
                           flexDirection: 'row',
                           justifyContent: 'flex-end',
                           alignItems: 'center',
-                          borderBottomWidth: 0.3,
+                          borderBottomWidth: 0.5,
                           paddingBottom: 8,
                           borderBottomColor: '#e7e7e7',
                         }}>
@@ -1803,26 +1744,37 @@ class RealEstateDetail extends React.Component {
                         </View>
                       </View>
                     )}
+                    {(realEstateItem.features || []).length > 0 && (
+                      <View
+                        style={{
+                          width: '100%',
+                          marginTop: 15,
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                          borderBottomColor: '#e7e7e7',
+                        }}>
+                        <Text
+                          style={[
+                            Fonts.style.normal,
+                            {
+                              fontSize: 18,
+                              fontWeight:
+                                Platform.OS === 'android' ? 'normal' : 'normal',
+                              color: Colors.black,
+                            },
+                          ]}>
+                          {'مميزات العقار'}
+                        </Text>
+                        <Icon
+                          name={'home'}
+                          color={Colors.primaryGreen}
+                          style={{ marginStart: 10 }}
+                          size={18}
+                        />
+                      </View>
+                    )}
                   </View>
-
-                  {(realEstateItem.features || []).length > 0 && (
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 18,
-                          alignSelf: 'flex-end',
-                          marginTop: 38,
-                          marginEnd: 16,
-                          paddingRight: 12,
-                          fontWeight:
-                            Platform.OS === 'android' ? 'normal' : 'normal',
-                          color: Colors.black,
-                        },
-                      ]}>
-                      {'مميزات العقار'}
-                    </Text>
-                  )}
 
                   {(realEstateItem.features || []).length > 0 && (
                     <AqarFeatures
@@ -1856,33 +1808,25 @@ class RealEstateDetail extends React.Component {
                       doAnimation={true}
                     />
                   )}
-
-                  {/* { realEstateItem.features && <Text style={[Fonts.style.normal,{fontSize: 18, alignSelf:'flex-end', marginTop: 38, marginEnd: 16, paddingRight: 12, fontWeight: Platform.OS === 'android'?'400': "bold", color: Colors.black}]} >{'مميزات العقار'}</Text>}
-
-                                { realEstateItem.features && <AqarFeatures realEstateFeatures={realEstateItem.features} />}
-
-
-
-                            {realEstateItem.bluePrint && <BluePrintList containerStyle={{marginTop: 20 }} doAnimation={true}   />} */}
-
-                  {this.state.suggestionDate && (
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 18,
-                          alignSelf: 'flex-end',
-                          marginTop: 38,
-                          marginEnd: 16,
-                          paddingRight: 12,
-                          fontWeight:
-                            Platform.OS === 'android' ? '400' : 'bold',
-                          color: Colors.black,
-                        },
-                      ]}>
-                      {'العقارات المشابهة'}
-                    </Text>
-                  )}
+                  {this.state.suggestionDate &&
+                    (this.state.suggestionDate || []).length > 0 && (
+                      <Text
+                        style={[
+                          Fonts.style.normal,
+                          {
+                            fontSize: 18,
+                            alignSelf: 'flex-end',
+                            marginTop: 38,
+                            marginEnd: 16,
+                            paddingRight: 12,
+                            fontWeight:
+                              Platform.OS === 'android' ? '400' : 'bold',
+                            color: Colors.black,
+                          },
+                        ]}>
+                        {'العقارات المشابهة'}
+                      </Text>
+                    )}
                   {this.state.sugLoading && (
                     <BallIndicator style={{ marginTop: 20 }} color={'green'} />
                   )}
@@ -1894,7 +1838,10 @@ class RealEstateDetail extends React.Component {
                         })
                       }
                       data={this.state.suggestionDate}
-                      containerStyle={{ marginTop: 40 }}
+                      containerStyle={{
+                        marginTop: 40,
+                        width: Metrics.screenWidth,
+                      }}
                     />
                   )}
                 </Animated.View>
@@ -1928,11 +1875,7 @@ class RealEstateDetail extends React.Component {
 
             {/* <FooterButton /> */}
             {!this.state.rate && !this.state.toPreview && (
-              <Animated.View
-                style={[
-                  styles.backgroundStyle,
-                  // { transform: [{ translateY: navbarTranslate }] }
-                ]}>
+              <Animated.View style={[styles.backgroundStyle]}>
                 <Animated.View
                   style={[
                     styles.container,
@@ -1986,71 +1929,21 @@ class RealEstateDetail extends React.Component {
               </Animated.View>
             )}
 
-            {this.state.owner && (
-              <Animated.View
-                style={[
-                  styles.backgroundStyle,
-                  // { transform: [{ translateY: navbarTranslate }] }
-                ]}>
-                <Animated.View
-                  style={[
-                    styles.container,
-                    this.props.halfButton && {
-                      width: Metrics.screenWidth * 0.42933333,
-                      height: 46,
-                    },
-                    {
-                      backgroundColor: this.props.doAnimation
-                        ? this.state.animation.animtion3.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: ['#fff', Colors.darkSeafoamGreen],
-                          })
-                        : this.props.backgroundColorT
-                        ? this.props.backgroundColorT
-                        : Colors.darkSeafoamGreen,
-                      shadowColor:
-                        this.props.shadowColor || 'rgba(61, 186, 126, 0.25)',
-                    },
-                    this.props.containerStyle,
-                  ]}>
-                  <TouchableOpacity
-                    disabled={this.props.disabled}
-                    style={styles.row}
-                    onPress={() => {
-                      if (!this.props.user || !this.props.user.token) {
-                        return alert('الرجاء تسجيل الدخول للاستفادة');
-                      }
-                      this.setState({ showRequest: true });
-                    }}>
-                    {!this.props.loading ? (
-                      <Text
-                        style={[
-                          Fonts.style.normal,
-                          styles.inputStyle,
-                          this.props.textPropsStyle,
-                        ]}>
-                        {' '}
-                        {'إطلب إحدى خدماتنا الآن!'}
-                      </Text>
-                    ) : (
-                      <ActivityIndicator color={'#fff'} animating={true} />
-                    )}
-                  </TouchableOpacity>
-                </Animated.View>
-              </Animated.View>
-            )}
-
-            {!this.state.toPreview && (
-              <NearAqarFeatures
-                address={
-                  realEstateItem &&
-                  realEstateItem.address &&
-                  realEstateItem.address
-                }
-                isVisible={this.state.shaowNearFeatures}
-                onBackPress={() => this.setState({ shaowNearFeatures: false })}
-              />
-            )}
+            {!this.state.toPreview &&
+              realEstateItem &&
+              realEstateItem.address && (
+                <NearAqarFeatures
+                  address={
+                    realEstateItem &&
+                    realEstateItem.address &&
+                    realEstateItem.address
+                  }
+                  isVisible={this.state.shaowNearFeatures}
+                  onBackPress={() =>
+                    this.setState({ shaowNearFeatures: false })
+                  }
+                />
+              )}
 
             {!this.state.toPreview && (
               <PanoramView
@@ -2082,6 +1975,8 @@ const mapDispatchToProps = dispatch => ({
   addShow: _id => dispatch(RealEstateAcion.addShow(_id)),
   rateRealEstate: (_id, stars, reason, token) =>
     dispatch(RealEstateAcion.rateRealEstate(_id, stars, reason, token)),
+  getRealEstateDetails: _id =>
+    dispatch(RealEstateAcion.getRealEstateDetails(_id)),
 });
 
 const mapStateToProps = state => {
@@ -2104,6 +1999,11 @@ const mapStateToProps = state => {
       state.realEstate.addRequestResult && state.realEstate.addRequestResult,
     addRequestError:
       state.realEstate.addRequestError && state.realEstate.addRequestError,
+    realEstateDetail:
+      state.realEstate.realEstateDetail && state.realEstate.realEstateDetail,
+    realEstateDetailError:
+      state.realEstate.realEstateDetailError &&
+      state.realEstate.realEstateDetailError,
   };
 };
 
@@ -2134,7 +2034,6 @@ const styles = StyleSheet.create({
     width: 316,
     height: 48,
     borderRadius: 12,
-    // backgroundColor: Colors.darkSeafoamGreen,
     shadowColor: 'rgba(61, 186, 126, 0.25)',
     shadowOffset: {
       width: 0,
