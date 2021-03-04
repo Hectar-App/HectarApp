@@ -1,6 +1,6 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce';
-const apiURL = 'http://172.20.10.3:9000/api';
+const apiURL = 'https://devbackend.devstagging.online:9090/api';
 
 //const apiURL = 'https://devbackend.devstagging.online:9090/api';
 // const apiURL = 'http://167.172.149.158:8080/api';
@@ -27,16 +27,16 @@ const create = (baseURL = apiURL) => {
   });
 
   const login = (phone, pass, uuid) =>
-    api.post('loginUser', {phoneNumber: phone, password: pass, uuid});
-  const checkPhone = phoneNumber => api.post('checkUser', {phoneNumber});
+    api.post('loginUser', { phoneNumber: phone, password: pass, uuid });
+  const checkPhone = phoneNumber => api.post('checkUser', { phoneNumber });
   const verifyPhone = (phoneNumber, confirmationCode) =>
-    api.post('confirmRegister', {phoneNumber, confirmationCode});
+    api.post('confirmRegister', { phoneNumber, confirmationCode });
   const registerUser = (name, phone, password, userType, email) =>
     api.post(
       'addUser',
       email
-        ? {name, phoneNumber: phone, password, userType, email}
-        : {name, phoneNumber: phone, password, userType},
+        ? { name, phoneNumber: phone, password, userType, email }
+        : { name, phoneNumber: phone, password, userType },
     );
   const userTypes = () => api.get('userTypes/getUserTypes');
   const editUser = user => {
@@ -46,15 +46,15 @@ const create = (baseURL = apiURL) => {
       Authorization: `Bearer ${user.token}`,
     });
 
-    let {name, phone, prevPassword, password, userType, email} = user;
+    let { name, phone, prevPassword, password, userType, email } = user;
 
     let ar =
       email && password
-        ? {name, phoneNumber: phone, prevPassword, password, userType, email}
+        ? { name, phoneNumber: phone, prevPassword, password, userType, email }
         : email && !password
-        ? {name, phoneNumber: phone, userType, email}
+        ? { name, phoneNumber: phone, userType, email }
         : !email && !password
-        ? {name, phoneNumber: phone, userType, email: ''}
+        ? { name, phoneNumber: phone, userType, email: '' }
         : !email &&
           password && {
             name,
@@ -68,11 +68,11 @@ const create = (baseURL = apiURL) => {
     return api.post('updateUser', ar);
   };
   const forgetPassword = phoneNumber =>
-    api.post('forgetPassword', {phoneNumber});
+    api.post('forgetPassword', { phoneNumber });
   const forgetPasswordVerifyPhone = (phoneNumber, confirmationCode) =>
-    api.post('confirmForgetCode', {phoneNumber, confirmationCode});
+    api.post('confirmForgetCode', { phoneNumber, confirmationCode });
   const resetPassword = (phoneNumber, confirmationCode, password) =>
-    api.post('resetPassword', {phoneNumber, confirmationCode, password});
+    api.post('resetPassword', { phoneNumber, confirmationCode, password });
 
   const getRealEstateAddingInfo = () => api.get('realEstate/AddAqarInfo');
   const addRealEstate = (realEstateToAdd, token) => {
@@ -420,14 +420,14 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('addToFav', {realEstate: realEstate});
+    return api.post('addToFav', { realEstate: realEstate });
   };
   const removeFromFav = (realEstate, token) => {
     api.setHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('deleteFromFav', {id: realEstate});
+    return api.post('deleteFromFav', { id: realEstate });
   };
 
   const getUserFav = token => {
@@ -455,7 +455,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('realEstate/checkLike', {_id: realEstateId});
+    return api.post('realEstate/checkLike', { _id: realEstateId });
   };
 
   const addToLike = (realEstateId, state, token) => {
@@ -463,7 +463,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('realEstate/addLike', {_id: realEstateId, state});
+    return api.post('realEstate/addLike', { _id: realEstateId, state });
   };
 
   const addShow = (realEstateId, token) => {
@@ -471,7 +471,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('realEstate/show', {_id: realEstateId});
+    return api.post('realEstate/show', { _id: realEstateId });
   };
 
   const addRating = (realEstateId, stars, reason, token) => {
@@ -491,7 +491,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('realEstate/addRequest', {_id: realEstateId, request});
+    return api.post('realEstate/addRequest', { _id: realEstateId, request });
   };
 
   const changeRequestState = (_id, status, token) => {
@@ -499,7 +499,7 @@ const create = (baseURL = apiURL) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return api.post('realEstate/changeState', {_id, status});
+    return api.post('realEstate/changeState', { _id, status });
   };
 
   const getUserRequests = token => {
@@ -609,5 +609,6 @@ const create = (baseURL = apiURL) => {
 
 // let's return back our create method as the default.
 export default {
-  create,apiURL
+  create,
+  apiURL,
 };
