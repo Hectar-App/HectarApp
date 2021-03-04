@@ -19,7 +19,6 @@ const QRScan = () => {
     <View style={styles.container}>
       <QRCodeScanner
         onRead={onReadSuccess}
-        showMarker={true}
         topContent={
           <>
             <VerticalSpace height={110} />
