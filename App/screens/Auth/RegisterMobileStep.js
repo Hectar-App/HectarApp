@@ -14,10 +14,11 @@ import Button from '../../Component/Button';
 
 import Header from '../../Component/Header';
 
-import {Metrics, ApplicationStyles, Colors, Fonts} from '../../Themes';
+import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import UserAction from '../../Redux/UserRedux';
+import { onError } from '../../utils/commonFunctions';
 
 class RegisterMobileStep extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class RegisterMobileStep extends React.Component {
     };
   }
 
-  handlePhoneNumberChange = val => this.setState({phoneNumber: val});
+  handlePhoneNumberChange = val => this.setState({ phoneNumber: val });
 
   parseArabic(str) {
     return Number(
@@ -48,18 +49,18 @@ class RegisterMobileStep extends React.Component {
       this.state.phoneNumber.length !== 9 ||
       this.state.phoneNumber.replace(/\s/g, '').length !== 9
     ) {
-      return alert('الرجاء ادخال رقم الجوال بدون صفر في البداية');
+      return onError('الرجاء ادخال رقم الجوال بدون صفر في البداية');
     }
     // console.log('HHH', this.state.phoneNumber)
     this.props.checkNumber(`+996${this.parseArabic(this.state.phoneNumber)}`);
-    this.setState({loading: true});
+    this.setState({ loading: true });
     // props.navigation.navigate('RegistrationConfirmationPhone')
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.checkNuberSucess !== this.props.checkNuberSucess) {
       console.log('Hello Sucess', nextProps.checkNuberSucess);
-      this.setState({loading: false});
+      this.setState({ loading: false });
       this.props.navigation.navigate('RegistrationConfirmationPhone', {
         phoneNumber: `+996${this.parseArabic(this.state.phoneNumber)}`,
         code: nextProps.checkNuberSucess.confirmationCode,
@@ -67,16 +68,16 @@ class RegisterMobileStep extends React.Component {
     }
 
     if (nextProps.checkNuberError !== this.props.checkNuberError) {
-      this.setState({loading: false});
+      this.setState({ loading: false });
       console.log('Hello Error', nextProps.checkNuberError);
-      alert(nextProps.checkNuberError.message);
+      onError(nextProps.checkNuberError.message);
     }
   }
 
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={{ flex: 1, backgroundColor: '#fff' }}>
           {/* <BackButton doAnimation={true} containerStyle={{marginTop: 50}} onPress={()=> this.props.navigation.goBack()} /> */}
 
           <Header
@@ -87,7 +88,7 @@ class RegisterMobileStep extends React.Component {
 
           <TitleDesc
             title={'رقم الجوال'}
-            containerStyle={{marginTop: 50}}
+            containerStyle={{ marginTop: 50 }}
             desc={'فضلا,  قم بإدخال رقم الجوال الخاص بك '}
           />
 
@@ -107,7 +108,7 @@ class RegisterMobileStep extends React.Component {
 
           <Button
             loading={this.state.loading}
-            containerStyle={{marginTop: 100}}
+            containerStyle={{ marginTop: 100 }}
             buttonText={'التالي'}
             onPress={this.handleNextStep}
           />

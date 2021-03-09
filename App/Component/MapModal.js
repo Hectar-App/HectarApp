@@ -19,6 +19,7 @@ import { Fonts, Metrics, Colors, Images, CustomIcon } from '../Themes';
 import MapView, { PROVIDER_GOOGLE, Polygon } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
 import { DotIndicator, BallIndicator } from 'react-native-indicators';
+import { onError } from '../utils/commonFunctions';
 const { width } = Dimensions.get('window');
 const MapModal = props => {
   const [x, setX] = useState({
@@ -199,7 +200,7 @@ const MapModal = props => {
         ]}
         onPress={() => {
           if (Math.log2(360 * (width / 256 / r.longitudeDelta)) + 1 < 16) {
-            return alert('الرجاء اختيار المكان باكثر دقة يجب التقريب اكثر');
+            return onError('الرجاء اختيار المكان باكثر دقة يجب التقريب اكثر');
           }
           setLoading(true);
           fetch(

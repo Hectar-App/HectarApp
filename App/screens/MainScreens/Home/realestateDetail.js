@@ -49,7 +49,7 @@ import ErroAlert from '../../../Component/ErrorAlert';
 import moment from 'moment';
 import 'moment/locale/ar';
 import Tags from '../../../Component/core/Tags';
-import { perfectWidth } from '../../../utils/commonFunctions';
+import { onError, perfectWidth } from '../../../utils/commonFunctions';
 
 const HEADER_MIN_HEIGHT = 120;
 const HEADER_MAX_HEIGHT = Metrics.screenHeight * 0.4;
@@ -224,7 +224,7 @@ class RealEstateDetail extends React.Component {
     if (nextProps.rateRealEstateError !== this.props.rateRealEstateError) {
       if (nextProps.rateRealEstateError.error) {
         if (nextProps.rateRealEstateError.error) {
-          return alert(nextProps.rateRealEstateError.error);
+          return onerror(nextProps.rateRealEstateError.error);
         }
       }
     }
@@ -232,11 +232,11 @@ class RealEstateDetail extends React.Component {
     if (nextProps.addRequestError !== this.props.addRequestError) {
       this.setState({ requestLoading: null });
       if (nextProps.addRequestError.message) {
-        return alert(nextProps.addRequestError.message);
+        return onError(nextProps.addRequestError.message);
       }
 
       if (nextProps.addRequestError.error) {
-        return alert(nextProps.addRequestError.error);
+        return onError(nextProps.addRequestError.error);
       }
     }
 
@@ -394,7 +394,7 @@ class RealEstateDetail extends React.Component {
         this.props.user.token,
       );
     } else {
-      return alert('الرجاء تسجيل الدخول للاستفادة');
+      return onError('الرجاء تسجيل الدخول للاستفادة');
     }
   }
 

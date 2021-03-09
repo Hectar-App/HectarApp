@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Animated,
@@ -6,16 +6,17 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import Header from '../../../Component/Header';
 import RealEstateList from '../../../Component/realEstateList';
 
-import {Fonts} from '../../../Themes';
+import { Fonts } from '../../../Themes';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import FavoriteAction from '../../../Redux/FavourteRedux';
 import AlertModal from '../../../Component/Alert';
+import { onError } from '../../../utils/commonFunctions';
 
 const FavoratePage = props => {
   const [realestateData, setRealestateData] = useState([
@@ -25,7 +26,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: true,
       showDetail: false,
-      coordinates: {lat: 24.78827, long: 46.0005},
+      coordinates: { lat: 24.78827, long: 46.0005 },
     },
     {
       _id: 2,
@@ -33,7 +34,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: false,
       showDetail: false,
-      coordinates: {lat: 24.78826, long: 46.882281},
+      coordinates: { lat: 24.78826, long: 46.882281 },
     },
     {
       _id: 1,
@@ -41,7 +42,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: true,
       showDetail: false,
-      coordinates: {lat: 24.78825, long: 46.622831},
+      coordinates: { lat: 24.78825, long: 46.622831 },
     },
     {
       _id: 4,
@@ -49,7 +50,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: false,
       showDetail: false,
-      coordinates: {lat: 24.78828, long: 47.122831},
+      coordinates: { lat: 24.78828, long: 47.122831 },
     },
     {
       _id: 5,
@@ -57,7 +58,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: true,
       showDetail: false,
-      coordinates: {lat: 24.78829, long: 46.922831},
+      coordinates: { lat: 24.78829, long: 46.922831 },
     },
     {
       _id: 6,
@@ -65,7 +66,7 @@ const FavoratePage = props => {
       nameEn: 'area',
       smallIcon: false,
       showDetail: false,
-      coordinates: {lat: 24.7882, long: 46.222831},
+      coordinates: { lat: 24.7882, long: 46.222831 },
     },
   ]);
 
@@ -75,7 +76,7 @@ const FavoratePage = props => {
 
   const favProccess = item => {
     if (!props.user || !props.user.token) {
-      return alert('الرجاء تسجيل الدخول للاستفادة');
+      return onError('الرجاء تسجيل الدخول للاستفادة');
     }
 
     // console.log(item)
@@ -97,7 +98,7 @@ const FavoratePage = props => {
     return props.navigation.dispatch(
       StackActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({routeName: 'bottomTab'})],
+        actions: [NavigationActions.navigate({ routeName: 'bottomTab' })],
       }),
     );
   };
@@ -110,7 +111,7 @@ const FavoratePage = props => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Header
           noBackButton={true}
           headerTitle={'المفضلة'}
@@ -151,7 +152,7 @@ const FavoratePage = props => {
             onFavPress={item => favProccess(item)}
             realestateData={props.favorite}
             listType={'favorate'}
-            containerStyle={{paddingTop: 10, backgroundColor: 'red'}}
+            containerStyle={{ paddingTop: 10, backgroundColor: 'red' }}
           />
         )}
       </View>

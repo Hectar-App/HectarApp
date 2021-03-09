@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,14 @@ import {
   FlatList,
   TouchableHighlight,
 } from 'react-native';
-import {useAnimation} from '../assets/Animation/animation';
-import {Fonts, Metrics, Colors} from '../Themes';
+import { useAnimation } from '../assets/Animation/animation';
+import { Fonts, Metrics, Colors } from '../Themes';
 import BackButton from './BackButton';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import {Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import MarkerAction from '../Redux/mapMarkerRedux';
-import {connect} from 'react-redux';
-import {useTheme} from 'react-navigation';
+import { connect } from 'react-redux';
+import { useTheme } from 'react-navigation';
 function kFormatter(num) {
   return Math.abs(num) > 999 && Math.abs(num) < 999999
     ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + ' الف'
@@ -57,7 +57,9 @@ const MarkerItem = props => {
           }}
           key={props.item._id}
           onPress={() => {
-            if (colorCheck) props.addToMarkers(props.item._id);
+            if (colorCheck) {
+              props.addToMarkers(props.item._id);
+            }
 
             colorCheck =
               (props.realEstates || []).findIndex(i => i === props.item._id) !==
@@ -85,7 +87,7 @@ const MarkerItem = props => {
               paddingHorizontal: 8,
               paddingVertical: 8,
               shadowColor: theme === 'dark' ? '#2f2f31' : '#ccc',
-              shadowOffset: {width: 0, height: 5},
+              shadowOffset: { width: 0, height: 5 },
               shadowOpacity: 8,
               shadowRadius: 2,
               elevation: 5,
@@ -95,7 +97,10 @@ const MarkerItem = props => {
               borderColor: '#fff',
             }}>
             <Text
-              style={[Fonts.style.normal, {color: Colors.white, fontSize: 11}]}>
+              style={[
+                Fonts.style.normal,
+                { color: Colors.white, fontSize: 11 },
+              ]}>
               {(props.item.price && kFormatter(props.item.price) + ' ريال ') ||
                 'السعر غير محدد'}{' '}
             </Text>
@@ -142,7 +147,7 @@ const MarkerItem = props => {
                         : colorCheck
                         ? Colors.darkSlateBlue
                         : Colors.grey,
-                    transform: [{rotate: '180deg'}],
+                    transform: [{ rotate: '180deg' }],
                   },
             ]}
           />
@@ -163,7 +168,9 @@ const MarkerItem = props => {
           }}
           key={props.item._id}
           onPress={() => {
-            if (colorCheck) props.addToMarkers(props.item._id);
+            if (colorCheck) {
+              props.addToMarkers(props.item._id);
+            }
 
             colorCheck =
               (props.realEstates || []).findIndex(i => i === props.item._id) !==
@@ -173,7 +180,7 @@ const MarkerItem = props => {
           }}>
           {props.showDetail ? (
             <View
-              style={{position: 'absolute', width: 100, top: -35, left: -5}}>
+              style={{ position: 'absolute', width: 100, top: -35, left: -5 }}>
               <TouchableOpacity
                 style={{
                   backgroundColor:
@@ -193,11 +200,11 @@ const MarkerItem = props => {
                   paddingVertical: 8,
                   zIndex: 999,
                 }}
-                onPress={() => alert(1)}>
+                onPress={() => ({})}>
                 <Text
                   style={[
                     Fonts.style.normal,
-                    {color: Colors.white, fontSize: 11},
+                    { color: Colors.white, fontSize: 11 },
                   ]}>
                   {'شقة سكنية للبيع'}
                 </Text>
@@ -242,7 +249,7 @@ const MarkerItem = props => {
                 borderColor: '#fff',
                 borderRadius: 5,
                 shadowColor: '#fff',
-                shadowOffset: {width: 0, height: 0},
+                shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 2,
                 shadowRadius: 4,
                 elevation: 2,

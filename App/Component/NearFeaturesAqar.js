@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {IconButton} from 'react-native-paper';
-import {useAnimation} from '../assets/Animation/animation';
-import {Fonts, Metrics, Colors} from '../Themes';
+import { IconButton } from 'react-native-paper';
+import { useAnimation } from '../assets/Animation/animation';
+import { Fonts, Metrics, Colors } from '../Themes';
 import StarRating from 'react-native-star-rating';
 import Button from './Button';
 import Header from './Header';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as THREE from 'three';
 // import { Canvas, extend, useFrame, useThree, useLoader } from 'react-three-fiber'
 
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 
 const NearAqarFeatures = props => {
   const animtion = useAnimation({
@@ -30,15 +30,15 @@ const NearAqarFeatures = props => {
   });
 
   const [radioButtonD, setRadioButtonD] = useState([
-    {_id: 0, name: 'لم يتم التجاوب '},
-    {_id: 1, name: 'مواصفات العقار غير متطابقة'},
-    {_id: 2, name: 'عدم الالتزام في المواعيد'},
-    {_id: 3, name: 'سوء المعاملة'},
+    { _id: 0, name: 'لم يتم التجاوب ' },
+    { _id: 1, name: 'مواصفات العقار غير متطابقة' },
+    { _id: 2, name: 'عدم الالتزام في المواعيد' },
+    { _id: 3, name: 'سوء المعاملة' },
   ]);
 
   const [rating, setRating] = useState(0);
 
-  const [selectedOption, setSelectedOption] = useState({_id: 0});
+  const [selectedOption, setSelectedOption] = useState({ _id: 0 });
   const [selectedType, setSelectedType] = useState(1);
   console.log('propsNear', props);
 
@@ -52,11 +52,11 @@ const NearAqarFeatures = props => {
         // swipeDirection={'down'}
         swipeThreshold={50}
         // onSwipe={props.onSwipe}
-        style={{width: Metrics.screenWidth, height: Metrics.screenHeight}}>
+        style={{ width: Metrics.screenWidth, height: Metrics.screenHeight }}>
         <View style={[styles.containerView]}>
           <Header
             headerTitle={'موقع العقار'}
-            containerStyle={{marginTop: 0}}
+            containerStyle={{ marginTop: 0 }}
             onBackPress={props.onBackPress}
           />
 
@@ -69,7 +69,7 @@ const NearAqarFeatures = props => {
                 alignItems: 'flex-end'
             }}
         >
-            <FlatList 
+            <FlatList
                 horizontal
                 data={(props.types || [{_id: 0, nameAr: 'مدارس'}, {_id: 1, nameAr: 'مستشفيات'}, {_id: 2, nameAr: 'مساجد'}, {_id: 3, nameAr: 'مدينة العاب'}])}
                 showsHorizontalScrollIndicator={false}
@@ -110,7 +110,7 @@ const NearAqarFeatures = props => {
                 latitude: props.address.coordinates[0],
                 longitude: props.address.coordinates[1],
               }}
-              onPress={() => alert('hello')}
+              onPress={() => ({})}
             />
             {/* {
                 realestate.map(item => (

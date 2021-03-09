@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Animated,
@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 
 import Header from '../../../Component/Header';
 import MainTypes from '../../../Component/MainFilterTypes';
-import {Fonts, Colors, Metrics, Images} from '../../../Themes';
+import { Fonts, Colors, Metrics, Images } from '../../../Themes';
 
 import RealestateType from '../../../Component/realestateType';
 import CountWithTitle from '../../../Component/CountWithTitle';
@@ -23,7 +23,7 @@ import Button from '../../../Component/Button';
 import ProgressBar from '../../../Component/ProgressBar';
 import RealEstateTypesList from '../../../Component/RealestateTypeList';
 import RadioButton from '../../../Component/RadioButtonList';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Input from '../../../Component/Input';
 
@@ -31,15 +31,16 @@ import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
 
 import * as Progress from 'react-native-progress';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import MapModal from '../../../Component/MapModal';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import RealEstateAction from '../../../Redux/RealEstateRedux';
-import {ActivityIndicator, Switch} from 'react-native-paper';
+import { ActivityIndicator, Switch } from 'react-native-paper';
+import { onError } from '../../../utils/commonFunctions';
 
 class firstStepAddAqar extends React.Component {
   state = {
@@ -65,22 +66,24 @@ class firstStepAddAqar extends React.Component {
     console.log('props', this.props.navigation.getParam('realEstate'));
     this.props.getInfo();
 
-    if (!this.props.user || !this.props.user.token)
+    if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
         alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
       });
+    }
 
     if (
       this.props.user &&
       this.props.user.userType &&
       this.props.user.userType.nameEn === 'normal'
-    )
+    ) {
       return this.setState({
         showAlert: true,
         alertMessage:
           'حتى تتمكن من اضافة عقار يجب ان لا يكون نوع الحساب باحث عن عقار',
       });
+    }
   }
 
   componentWillMount() {
@@ -92,12 +95,13 @@ class firstStepAddAqar extends React.Component {
           this.props.user &&
           this.props.user.userType &&
           this.props.user.userType.nameEn === 'normal'
-        )
+        ) {
           return this.setState({
             showAlert: true,
             alertMessage:
               'حتى تتمكن من اضافة عقار يجب ان لا يكون نوع الحساب باحث عن عقار',
           });
+        }
       },
     );
   }
@@ -123,7 +127,7 @@ class firstStepAddAqar extends React.Component {
       this.props.navigation.dispatch(
         StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({routeName: 'bottomTab'})],
+          actions: [NavigationActions.navigate({ routeName: 'bottomTab' })],
         }),
       )
     );
@@ -132,7 +136,7 @@ class firstStepAddAqar extends React.Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.info !== this.props.info) {
       console.log('heelo');
-      this.setState({loading: false, info: nextProps.info});
+      this.setState({ loading: false, info: nextProps.info });
       if (this.state.forEditing) {
         this.setState(s => ({
           selectedStatus: s.realEstate.status && s.realEstate.status,
@@ -146,18 +150,19 @@ class firstStepAddAqar extends React.Component {
             city: s.realEstate.address.city && s.realEstate.address.city,
           },
           selectedPurpose: s.realEstate.purpose && s.realEstate.purpose,
-          payType: s.realEstate.payType && {_id: s.realEstate.payType},
+          payType: s.realEstate.payType && { _id: s.realEstate.payType },
           populationType:
             s.realEstate.populationType && s.realEstate.populationType,
           isSwitchOn:
             s.realEstate.type.nameEn === 'land' &&
             (!s.realEstate.price || s.realEstate.price === 0),
         }));
-        if (!this.props.user.token)
+        if (!this.props.user.token) {
           return this.setState({
             showAlert: true,
             alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
           });
+        }
         // return alert("يجب تسجيل الدخول لاضافة عقارك")
       }
       // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
@@ -182,9 +187,10 @@ class firstStepAddAqar extends React.Component {
   }
 
   handleLogin = () => {
-    this.setState({showAlert: false});
-    if (!this.props.user || !this.props.user.token)
+    this.setState({ showAlert: false });
+    if (!this.props.user || !this.props.user.token) {
       return this.props.navigation.navigate('LoginPage');
+    }
 
     this.props.navigation.navigate('Profile');
   };
@@ -231,67 +237,76 @@ class firstStepAddAqar extends React.Component {
       this.props.user.token,
     );
 
-    if (!this.props.user.token) return alert('يجب تسجيل الدخول لاضافة عقارك');
+    if (!this.props.user.token) {
+      return onError('يجب تسجيل الدخول لاضافة عقارك');
+    }
 
-    if (!selectedStatus)
+    if (!selectedStatus) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار حالة العقار',
       });
-    if (!selectedType)
+    }
+    if (!selectedType) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار نوع العقار',
       });
-    if (!porposeDismas && !selectedPurpose)
+    }
+    if (!porposeDismas && !selectedPurpose) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار الغرض من العقار',
       });
+    }
 
-    if (populationFlag && !populationType)
+    if (populationFlag && !populationType) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار نوع الساكنين',
       });
+    }
 
-    if (paymentFlag && !payType)
+    if (paymentFlag && !payType) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اختيار مدة الايجار  ',
       });
+    }
 
     if (
       (!price && selectedType.nameEn !== 'land') ||
       (!this.state.isSwitchOn && !price && selectedType.nameEn === 'land')
-    )
+    ) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء كتابة السعر',
       });
+    }
 
-    if (!selectedLocation)
+    if (!selectedLocation) {
       return this.setState({
         showErrorMessage: true,
         errorMessage: 'الرجاء اضافة موقع العقار',
       });
+    }
 
-    let s = {...this.state.realEstate};
+    let s = { ...this.state.realEstate };
     // selectedSides.length > 0 && _.merge(s, {selectedSides})
     // {realEstate: { , purpose: selectedPurpose._id, price, address:{ lat: this.state.selectedLocation.latitude, long: this.state.selectedLocation.longitude}
-    selectedStatus && _.merge(s, {status: selectedStatus});
+    selectedStatus && _.merge(s, { status: selectedStatus });
     // if( selectedSides.length > 0 )
     //     s.selectedSides = selectedSides
-    selectedType && _.merge(s, {type: selectedType});
-    price && _.merge(s, {price: this.convertNumbers2English(price)});
+    selectedType && _.merge(s, { type: selectedType });
+    price && _.merge(s, { price: this.convertNumbers2English(price) });
     _.merge(s, {
       purpose: selectedPurpose
         ? selectedPurpose
         : this.props.info && this.state.info.realEstatePurpose[1],
     });
-    populationType && _.merge(s, {populationType: populationType});
+    populationType && _.merge(s, { populationType: populationType });
 
-    payType && _.merge(s, {payType: payType._id});
+    payType && _.merge(s, { payType: payType._id });
 
     selectedLocation &&
       _.merge(s, {
@@ -335,14 +350,14 @@ class firstStepAddAqar extends React.Component {
 
     if (this.state.loading) {
       return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Header
             headerTitle={'معلومات أساسية'}
             noBackButton={statusPage === 0}
             onBackPress={this.onBackPress}
           />
           <ActivityIndicator
-            style={{alignSelf: 'center', marginTop: 120}}
+            style={{ alignSelf: 'center', marginTop: 120 }}
             color={Colors.darkSeafoamGreen}
           />
         </View>
@@ -377,7 +392,7 @@ class firstStepAddAqar extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Header
             headerTitle={'معلومات أساسية'}
             noBackButton={false}
@@ -387,27 +402,27 @@ class firstStepAddAqar extends React.Component {
           <ProgressBar
             progress={statusPage * 0.25}
             persentageNumber={statusPage * 25}
-            containerStyle={{marginTop: 30}}
+            containerStyle={{ marginTop: 30 }}
           />
 
-          <KeyboardAwareScrollView style={{marginBottom: 100}}>
+          <KeyboardAwareScrollView style={{ marginBottom: 100 }}>
             <TouchableWithoutFeedback>
               <View>
                 {/* <Text style={[Fonts.style.mainTitle, {marginTop: 40, alignSelf: 'flex-end', marginEnd: 16 }]}> أختر نوع العقار </Text> */}
 
                 <RealEstateTypesList
-                  selectedType={i => this.setState({selectedType: i})}
+                  selectedType={i => this.setState({ selectedType: i })}
                   selectedTypeByProps={
                     this.state.forEditing && this.state.selectedType
                   }
-                  containerStyle={{marginEnd: 20}}
+                  containerStyle={{ marginEnd: 20 }}
                   types={this.state.info && this.state.info.realEstateTypes}
                 />
 
                 <MainTypes
                   status={this.state.info && this.state.info.realEstateStatus}
                   doAnimation={true}
-                  statusPress={i => this.setState({selectedStatus: i})}
+                  statusPress={i => this.setState({ selectedStatus: i })}
                   selectedType={this.state.selectedStatus}
                 />
 
@@ -415,9 +430,9 @@ class firstStepAddAqar extends React.Component {
 
                 {populationFlag && (
                   <RealEstateTypesList
-                    selectedType={i => this.setState({populationType: i})}
+                    selectedType={i => this.setState({ populationType: i })}
                     selectedTypeByProps={this.state.populationType}
-                    containerStyle={{marginEnd: 20, marginTop: 20}}
+                    containerStyle={{ marginEnd: 20, marginTop: 20 }}
                     types={
                       this.props.info &&
                       this.props.info.realEstatePopulationType
@@ -429,7 +444,7 @@ class firstStepAddAqar extends React.Component {
                   <MainTypes
                     // selectedPourposeByProps={this.state.forEditing && this.state.realEstate.purpose && this.state.realEstate.purpose}
                     selectedType={this.state.selectedPurpose}
-                    statusPress={i => this.setState({selectedPurpose: i})}
+                    statusPress={i => this.setState({ selectedPurpose: i })}
                     status={
                       this.state.info && this.state.info.realEstatePurpose
                     }
@@ -441,7 +456,7 @@ class firstStepAddAqar extends React.Component {
 
                 {paymentFlag && (
                   <RealEstateTypesList
-                    selectedType={i => this.setState({payType: i})}
+                    selectedType={i => this.setState({ payType: i })}
                     selectedTypeByProps={this.state.payType}
                     containerStyle={{
                       marginEnd: 20,
@@ -451,11 +466,14 @@ class firstStepAddAqar extends React.Component {
                     types={
                       daily
                         ? [
-                            {_id: 0, nameAr: 'سنوي'},
-                            {_id: 1, nameAr: 'شهري'},
-                            {_id: 2, nameAr: 'يومي'},
+                            { _id: 0, nameAr: 'سنوي' },
+                            { _id: 1, nameAr: 'شهري' },
+                            { _id: 2, nameAr: 'يومي' },
                           ]
-                        : [{_id: 0, nameAr: 'سنوي'}, {_id: 1, nameAr: 'شهري'}]
+                        : [
+                            { _id: 0, nameAr: 'سنوي' },
+                            { _id: 1, nameAr: 'شهري' },
+                          ]
                     }
                   />
                 )}
@@ -472,13 +490,13 @@ class firstStepAddAqar extends React.Component {
                     <Switch
                       value={this.state.isSwitchOn}
                       onValueChange={() =>
-                        this.setState(s => ({isSwitchOn: !s.isSwitchOn}))
+                        this.setState(s => ({ isSwitchOn: !s.isSwitchOn }))
                       }
                       color={Colors.darkSeafoamGreen}
-                      style={{direction: 'ltr'}}
+                      style={{ direction: 'ltr' }}
                     />
 
-                    <Text style={[Fonts.style.normal, {marginEnd: 10}]}>
+                    <Text style={[Fonts.style.normal, { marginEnd: 10 }]}>
                       {' '}
                       {' السعر غير محدد'}{' '}
                     </Text>
@@ -489,9 +507,9 @@ class firstStepAddAqar extends React.Component {
                   <Input
                     withButton={true}
                     number={true}
-                    onChangeText={val => this.setState({price: val})}
+                    onChangeText={val => this.setState({ price: val })}
                     inputValue={this.state.price}
-                    containerStyle={{marginTop: land ? 15 : 35}}
+                    containerStyle={{ marginTop: land ? 15 : 35 }}
                     withDesc
                     desc={'ريال سعودي'}
                     InputPlaceHolder={'السعر'}
@@ -500,7 +518,7 @@ class firstStepAddAqar extends React.Component {
 
                 <InputButton
                   onPress={() => {
-                    this.setState({mapModalVisabl: true});
+                    this.setState({ mapModalVisabl: true });
                     Keyboard.dismiss();
                   }}
                   InputPlaceHolder={
@@ -513,7 +531,7 @@ class firstStepAddAqar extends React.Component {
                     'حدد موقع العقار'
                   }
                   Icon={Images.userLocationIcon}
-                  containerStyle={{marginTop: 18}}
+                  containerStyle={{ marginTop: 18 }}
                 />
                 <View
                   style={{
@@ -527,7 +545,7 @@ class firstStepAddAqar extends React.Component {
                     containerStyle={{
                       maxWidth: 200,
                       flexWrap: 'wrap',
-                      transform: [{rotate: '180deg'}],
+                      transform: [{ rotate: '180deg' }],
                     }}
                     dotStyle={{
                       backgroundColor: Colors.darkSeafoamGreen,
@@ -546,7 +564,7 @@ class firstStepAddAqar extends React.Component {
                     {this.state.btnLoading ? (
                       <ActivityIndicator color={Colors.darkSeafoamGreen} />
                     ) : (
-                      <View style={{flexDirection: 'row'}}>
+                      <View style={{ flexDirection: 'row' }}>
                         <Text style={[Fonts.style.normal]}> {'<'} </Text>
                         <Text style={[Fonts.style.normal]}>
                           {this.state.mapModalVisabl || 'التالي'}
@@ -570,7 +588,7 @@ class firstStepAddAqar extends React.Component {
           {this.state.showErrorMessage && (
             <ErroAlert
               errorMessage={this.state.errorMessage}
-              setAnimation={() => this.setState({showErrorMessage: false})}
+              setAnimation={() => this.setState({ showErrorMessage: false })}
               doAnimation={this.state.showErrorMessage}
             />
           )}
@@ -580,25 +598,25 @@ class firstStepAddAqar extends React.Component {
               selectedLocation={(x, y, z) => {
                 this.setState({
                   mapModalVisabl: false,
-                  selectedLocation: {...x, address: y, city: z},
+                  selectedLocation: { ...x, address: y, city: z },
                 });
               }}
-              onClosePress={() => this.setState({mapModalVisabl: false})}
+              onClosePress={() => this.setState({ mapModalVisabl: false })}
             />
           )}
 
-          {/* <Modal 
+          {/* <Modal
                         isVisible={showSucessModal}
                         style={{backgroundColor: '#fff', flex:1, backgroundColor:'#fff', justifyContent:'center', alignItems:'center'}}
                         backdropOpacity={1}
                         backdropColor={'#fff'}
                     >
-                    
+
                         <Image source={Images.registrationFinishImage}  />
-    
+
                         <Text style={[Fonts.style.boldText, {fontSize: 18, marginTop: 25}]}>تم إضافة العقار بنجاح</Text>
                         <Text style={[Fonts.style.normal, {fontSize: 14, marginTop: 19, marginBottom: 50, color: Colors.darkSlateBlue, textAlign: 'center' , fontWeight: 'normal' }]}>رائع ! يمكنك الاطلاع على قائمة العقارات الخاصة بك من خلال الذهاب الي قسم عقاراتي</Text>
-    
+
                         <Button  buttonText={'قائمة عقاراتي'} onPress={()=>this.nav('myRealEstate')} />
                         <Button textPropsStyle={{color:'#000'}} containerStyle={{backgroundColor: '#fff', marginTop: 29}} buttonText={'الرئيسية'} onPress={()=>this.nav('home')} />
                     </Modal> */}
