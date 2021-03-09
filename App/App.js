@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
-
-import {I18nManager, Linking} from 'react-native';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/lib/integration/react';
-import {persistor, store} from './store';
+import React, { Component } from 'react';
+import FlashMessage from 'react-native-flash-message';
+import { I18nManager, Linking } from 'react-native';
 import CodePush from 'react-native-code-push';
-import {NavigationActions, StackActions} from 'react-navigation';
-import Navigator from './Navigation/Navigtor';
 import analytics from '@react-native-firebase/analytics';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { Provider } from 'react-redux';
+import Navigator from './Navigation/Navigtor';
+import { persistor, store } from './store';
 
 console.disableYellowBox = true;
 class App extends Component {
@@ -15,11 +14,6 @@ class App extends Component {
     super();
 
     CodePush.sync({
-      //
-      // updateDialog: {
-      //   title: 'يوجد تحديث جديد',
-      //   optionalUpdateMessage: 'هنالك تحديث جديد نرجو تحميله للاطلاع على الجديد'
-      // },
       installMode: CodePush.InstallMode.IMMEDIATE,
       checkFrequency: CodePush.CheckFrequency.ON_APP_START,
     });
@@ -84,14 +78,20 @@ class App extends Component {
     return (
       <Provider store={store}>
         <PersistGate loading={false} persistor={persistor}>
-          <Navigator  theme={'light'}
-            onNavigationStateChange={async (prevState, currentState, action) => {
-                await analytics().logScreenView({
-                  screen_name: action.routeName,
-                })
+          <Navigator
+            theme={'light'}
+            onNavigationStateChange={async (
+              prevState,
+              currentState,
+              action,
+            ) => {
+              await analytics().logScreenView({
+                screen_name: action.routeName,
+              });
             }}
           />
         </PersistGate>
+        <FlashMessage position='top' />
       </Provider>
     );
   }
