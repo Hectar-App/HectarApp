@@ -132,7 +132,13 @@ class RegistrationUserInfo extends React.Component {
         );
       }
 
-      this.props.registerUser(name, phoneNumber, password, selected._id, email);
+      this.props.registerUser(
+        name,
+        phoneNumber.replace('+996', ''),
+        password,
+        selected._id,
+        email,
+      );
     } else {
       onError('الرجاء اكمال البيانات لاتمام عملية التسجيل');
     }

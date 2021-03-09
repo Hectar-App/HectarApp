@@ -121,7 +121,6 @@ class EdietProfile extends React.Component {
             containerStyle={{ marginTop: 14 }}
             InputPlaceHolder={'moath@example.com'}
           />
-          {console.log('Badawey: ', this.state)}
           <Input
             onChangeText={val => this.handleStorInput('phone', val)}
             InputPlaceHolder={'رقم الهاتف'}

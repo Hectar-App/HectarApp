@@ -90,8 +90,8 @@ class firstStepAddAqar extends React.Component {
       'didFocus',
       () => {
         if (
-          pathOr('', ['props', 'user', 'userType', 'nameEn'], this) ===
-          'realestate seaker'
+          pathOr('', ['props', 'user', 'userType', 'userTypeName'], this) ===
+          'باحث عن عقار'
         ) {
           onError(
             'نوع حسابك باحث عن عقار, يجب تغييره لتستطيع اضافة عقار جديد.',
