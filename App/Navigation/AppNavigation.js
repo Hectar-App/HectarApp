@@ -103,7 +103,7 @@ const transConfig = () => {
   };
 };
 
-let x = {
+let AddAqarSteps = {
   FirstStepAddAqar: { screen: FirstStepAddAqar },
   SecondStepAddAqar: { screen: SecondStepAddAqar },
   ThirdStepAddAqar: { screen: ThirdStepAddAqar },
@@ -118,7 +118,7 @@ const HomeStackNav = createStackNavigator(
     FilterPage: { screen: FilterPage },
     RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
     OwnerRealEstates: { screen: OwnerRealEstates },
-    ...x,
+    ...AddAqarSteps,
   },
   {
     headerMode: 'none',
@@ -143,7 +143,7 @@ const OfficesStackNav = createStackNavigator(
   {
     OfficesPage: { screen: OfficesPage },
     officeDetails: { screen: OfficeDetails },
-    ...x,
+    ...AddAqarSteps,
   },
   {
     headerMode: 'none',
@@ -172,7 +172,7 @@ const AddAqarStackNav = createStackNavigator(
     // ForthStepAddAqar: { screen: ForthStepAddAqar },
     // EarthThirdStepAddAqar: { screen: EarthThirdStepAddAqar },
     // FifthStepAddAqar: { screen: FifthStepAddAqar },
-    ...x,
+    ...AddAqarSteps,
     RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
   },
   {
@@ -195,7 +195,7 @@ const NotificationStackNav = createStackNavigator(
   {
     NotificationPage: { screen: NotificationPage },
     RealEstateDetail: { screen: RealEstateDetail, path: 'property/:property' },
-    ...x,
+    ...AddAqarSteps,
   },
   {
     headerMode: 'none',
@@ -223,7 +223,7 @@ const ProfileStackNav = createStackNavigator(
     OwnerRealEstates: { screen: OwnerRealEstates },
     Request: { screen: Request },
     FavoratePage: { screen: FavoratePage },
-    ...x,
+    ...AddAqarSteps,
   },
   {
     headerMode: 'none',
