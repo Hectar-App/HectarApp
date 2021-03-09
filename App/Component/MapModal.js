@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,13 +13,13 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {IconButton, ActivityIndicator} from 'react-native-paper';
-import {useAnimation} from '../assets/Animation/animation';
-import {Fonts, Metrics, Colors, Images, CustomIcon} from '../Themes';
-import MapView, {PROVIDER_GOOGLE, Polygon} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import { IconButton, ActivityIndicator } from 'react-native-paper';
+import { useAnimation } from '../assets/Animation/animation';
+import { Fonts, Metrics, Colors, Images, CustomIcon } from '../Themes';
+import MapView, { PROVIDER_GOOGLE, Polygon } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
-import {DotIndicator, BallIndicator} from 'react-native-indicators';
-const {width} = Dimensions.get('window');
+import { DotIndicator, BallIndicator } from 'react-native-indicators';
+const { width } = Dimensions.get('window');
 const MapModal = props => {
   const [x, setX] = useState({
     latitude: 24.78825,
@@ -198,19 +198,17 @@ const MapModal = props => {
           },
         ]}
         onPress={() => {
-          console.log(Math.log2(360 * (width / 256 / r.longitudeDelta)) + 1);
           if (Math.log2(360 * (width / 256 / r.longitudeDelta)) + 1 < 16) {
             return alert('الرجاء اختيار المكان باكثر دقة يجب التقريب اكثر');
           }
           setLoading(true);
-
           fetch(
             'https://maps.googleapis.com/maps/api/geocode/json?address=' +
               x.latitude +
               ',' +
               x.longitude +
               '&key=' +
-              'AIzaSyBNAPLVcqs6_wajjZSULUC7Z1sA9-fdcvU&&language=ar',
+              'AIzaSyDLDBsRAjpSHIQ_oQlxhrnWVejpPwjA9V0&&language=ar',
           )
             .then(response => response.json())
             .then(responseJson => {
@@ -239,7 +237,7 @@ const MapModal = props => {
                             .long_name,
                       ),
                   },
-                  {text: 'الغاء', onPress: () => null},
+                  { text: 'الغاء', onPress: () => null },
                 ]);
               }
             })

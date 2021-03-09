@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Animated,
@@ -12,11 +12,11 @@ import {
   Image,
   Linking,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
-import MapView, {PROVIDER_GOOGLE, Polygon, Circle} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import { StackActions, NavigationActions } from 'react-navigation';
+import MapView, { PROVIDER_GOOGLE, Polygon, Circle } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
 
-import NetInfo, {useNetInfo} from '@react-native-community/netinfo';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import SugestionComp from '../../../Component/sugestionComp';
 
 import HomeHeader from '../../../Component/HomeHeader';
@@ -31,17 +31,17 @@ import {
 import Marker from '../../../Component/Marker';
 import MarkerSmall from '../../../Component/Marker.1';
 import RealEstatList from '../../../Component/realEstateList';
-import {useAnimation} from '../../../assets/Animation/animation';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { useAnimation } from '../../../assets/Animation/animation';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import MapStyle from '../../../Themes/mapStyle.json';
 import MapStyleDark from '../../../Themes/mapStyleDark.json';
 import CodePush from 'react-native-code-push';
 
-import {ThemeContext} from 'react-navigation';
+import { ThemeContext } from 'react-navigation';
 
 import UserAction from '../../../Redux/UserRedux';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import RealEstateAction from '../../../Redux/RealEstateRedux';
 import FavoriteAction from '../../../Redux/FavourteRedux';
 
@@ -54,9 +54,9 @@ import ErroAlert from '../../../Component/ErrorAlert';
 
 import ListFilter from '../../../Component/listFilter';
 
-import {DotIndicator} from 'react-native-indicators';
+import { DotIndicator } from 'react-native-indicators';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 class HomePage extends React.Component {
   static contextType = ThemeContext;
@@ -93,7 +93,7 @@ class HomePage extends React.Component {
       selectedType:
         this.props.filterData && this.props.filterData.type
           ? this.props.filterData.type
-          : {_id: 1, nameAr: 'كل العقارات'},
+          : { _id: 1, nameAr: 'كل العقارات' },
       selectedStatus:
         this.props.filterData && this.props.filterData.status
           ? this.props.filterData.status
@@ -118,7 +118,7 @@ class HomePage extends React.Component {
   }
 
   startFilterAnimation = () => {
-    this.setState({filterActive: true});
+    this.setState({ filterActive: true });
     this.state.Animation.filterAnimation.setValue(0);
     Animated.timing(this.state.Animation.filterAnimation, {
       duration: 950,
@@ -129,32 +129,32 @@ class HomePage extends React.Component {
         selectedType: this.state.selectedType,
       });
       setTimeout(() => {
-        this.setState({filterActive: false});
+        this.setState({ filterActive: false });
       }, 750);
     });
   };
 
   handleSearch = val => {
     console.log('hh');
-    this.setState({searchValue: val});
+    this.setState({ searchValue: val });
     //  _.debounce(() => {
-    this.setState({sugesstionLoading: true});
+    this.setState({ sugesstionLoading: true });
     fetch(
       'https://maps.googleapis.com/maps/api/place/textsearch/json?' +
         'query=' +
         this.state.searchValue +
         '&type=address' +
         '&country=SA' +
-        '&key=AIzaSyBNAPLVcqs6_wajjZSULUC7Z1sA9-fdcvU&&language=ar',
+        '&key=AIzaSyDLDBsRAjpSHIQ_oQlxhrnWVejpPwjA9V0&&language=ar',
     )
       .then(response => response.json())
       .then(responseJson => {
-        this.setState({sugesstionLoading: false});
+        this.setState({ sugesstionLoading: false });
         // console.log('response GOOGLE => ', responseJson)
         //     setLoading(false)
         if ((responseJson.results || []).length > 0) {
           console.log('response of google maps => ', responseJson.results);
-          this.setState({sugesstionData: responseJson.results});
+          this.setState({ sugesstionData: responseJson.results });
         }
       })
       .catch(err => console.log('err GOOGLE => ', err));
@@ -180,7 +180,7 @@ class HomePage extends React.Component {
         toValue: 1,
         useNativeDriver: true,
       }).start(() => {
-        this.setState({mapView: false, cardView: false});
+        this.setState({ mapView: false, cardView: false });
         Animated.timing(this.state.Animation.test2, {
           toValue: 1,
           duration: 600,
@@ -192,7 +192,7 @@ class HomePage extends React.Component {
               toValue: 1,
               useNativeDriver: true,
             }).start(() => {
-              this.setState({numberOfRealEstateShow: true});
+              this.setState({ numberOfRealEstateShow: true });
               Animated.timing(this.state.Animation.listLabel2, {
                 duration: 600,
                 toValue: 1,
@@ -209,7 +209,7 @@ class HomePage extends React.Component {
       toValue: 0,
       useNativeDriver: true,
     }).start(() => {
-      this.setState({mapView: true, numberOfRealEstateShow: false});
+      this.setState({ mapView: true, numberOfRealEstateShow: false });
       this.goToUserLocation();
       Animated.timing(this.state.Animation.test, {
         toValue: 0,
@@ -220,7 +220,7 @@ class HomePage extends React.Component {
   };
 
   handleViewPress = () => {
-    this.setState({realEstateListData: this.state.realestate});
+    this.setState({ realEstateListData: this.state.realestate });
 
     this.startTestAnimatio();
     // this.setState( s => ({mapView: !s.mapView}))
@@ -269,7 +269,7 @@ class HomePage extends React.Component {
             selectedType:
               this.props.filterData && this.props.filterData.type
                 ? this.props.filterData.type
-                : {_id: 1},
+                : { _id: 1 },
             status:
               this.props.filterData && this.props.filterData.status
                 ? this.props.filterData.status
@@ -330,7 +330,7 @@ class HomePage extends React.Component {
     });
 
     if (i !== 3) {
-      this.setState({realEstateListData: this.state.realestate});
+      this.setState({ realEstateListData: this.state.realestate });
     }
   };
 
@@ -339,8 +339,8 @@ class HomePage extends React.Component {
       Geolocation.getCurrentPosition(
         res => {
           console.log('res', res);
-          this.setState({userLocation: res.coords});
-          this.setState({loading: true});
+          this.setState({ userLocation: res.coords });
+          this.setState({ loading: true });
           this.mapRef.animateToRegion({
             latitude: res.coords.latitude,
             longitude: res.coords.longitude,
@@ -413,19 +413,19 @@ class HomePage extends React.Component {
             this.state.realEstateListData,
             nextProps.realEstateList.realEstate,
           );
-          this.setState({realEstateListData: arr2});
+          this.setState({ realEstateListData: arr2 });
         }
       }
     }
 
     if (nextProps.checker !== this.props.checker) {
       console.log('checker', nextProps.checker);
-      this.setState({fav: nextProps.checker, tracksViewChanges: true});
+      this.setState({ fav: nextProps.checker, tracksViewChanges: true });
     }
 
     if (nextProps.info !== this.props.info) {
       // console.log('Hellop Info', nextProps.info)
-      this.setState({loading: false, info: nextProps.info});
+      this.setState({ loading: false, info: nextProps.info });
       // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
     }
   }
@@ -468,15 +468,15 @@ class HomePage extends React.Component {
 
   handleCardPress = v => {
     // console.log('Item', v)
-    this.props.navigation.navigate('RealEstateDetail', {realEstate: v});
+    this.props.navigation.navigate('RealEstateDetail', { realEstate: v });
   };
 
   mapUpdate = v => {
-    this.setState({sugesstionData: null});
+    this.setState({ sugesstionData: null });
     if (Math.log2(360 * (width / 256 / v.longitudeDelta)) + 1 < 11.5) {
-      this.setState({smallIcon: true});
+      this.setState({ smallIcon: true });
     } else {
-      this.setState({smallIcon: false});
+      this.setState({ smallIcon: false });
     }
     console.log(
       'this.map',
@@ -560,7 +560,7 @@ class HomePage extends React.Component {
 
   handleTypeFilter(item) {
     // console.log(item)
-    this.setState({selectedType: item});
+    this.setState({ selectedType: item });
     // if (!this.state.mapView)
     //   return this.checkNet().then(res => {
     //     if (!res.isConnected) {
@@ -603,7 +603,7 @@ class HomePage extends React.Component {
 
   handlePurposeFilter(item) {
     console.log(item);
-    this.setState({selectedPurpose: item});
+    this.setState({ selectedPurpose: item });
 
     // if(!this.state.mapView)
     //     return this.checkNet().then(res => {
@@ -615,7 +615,7 @@ class HomePage extends React.Component {
 
     //             switch (item._id) {
     //                 case 1:
-    this.setState({selectedStatus: item._id === 1 ? null : item._id});
+    this.setState({ selectedStatus: item._id === 1 ? null : item._id });
     //                     break;
 
     //                 default:
@@ -653,7 +653,7 @@ class HomePage extends React.Component {
 
   typeListPress = () => {
     if (this.state.showTypesList) {
-      this.setState({showTypesList: false});
+      this.setState({ showTypesList: false });
       Animated.timing(this.state.Animation.typesList, {
         toValue: 0,
         duration: 550,
@@ -663,7 +663,7 @@ class HomePage extends React.Component {
         toValue: 1,
         duration: 550,
       }).start(() => {
-        this.setState({showTypesList: true});
+        this.setState({ showTypesList: true });
       });
     }
   };
@@ -674,7 +674,7 @@ class HomePage extends React.Component {
     //     // this.doReq();
     //     // return
     // }else{
-    this.setState({selectedStatus: item._id === 1 ? null : item});
+    this.setState({ selectedStatus: item._id === 1 ? null : item });
     // }
     if (!this.state.mapView) {
       return this.checkNet().then(res => {
@@ -715,7 +715,7 @@ class HomePage extends React.Component {
   };
 
   handleSugesstionPress = i => {
-    this.setState({sugesstionData: null, searchValue: ''});
+    this.setState({ sugesstionData: null, searchValue: '' });
     this.mapRef.animateToRegion({
       latitude: i.geometry.location.lat,
       longitude: i.geometry.location.lng,
@@ -831,7 +831,7 @@ class HomePage extends React.Component {
               {this.state.showTypesList &&
                 _.map(
                   _.concat(
-                    [{_id: 1, nameAr: 'كل العقارات'}],
+                    [{ _id: 1, nameAr: 'كل العقارات' }],
                     (this.state.info &&
                       this.state.info.realEstateTypes &&
                       this.state.info.realEstateTypes) ||
@@ -851,7 +851,7 @@ class HomePage extends React.Component {
                                 : '#ffffff',
                           },
                           Platform.OS === 'sdfsdf' && {
-                            transform: [{rotate: '180deg'}],
+                            transform: [{ rotate: '180deg' }],
                           },
                         ]}
                         // onPress={() => {props.selectedTypePressed(item); setDoAnimation(false)}}
@@ -885,7 +885,7 @@ class HomePage extends React.Component {
             filterSelected={this.handleFilterList}
             selectedTypeFilter={this.state.selecedFilter}
             mapView={true}
-            showTypesList={() => this.setState({showTypesList: true})}
+            showTypesList={() => this.setState({ showTypesList: true })}
             filterData={this.props.filterData}
             selectedType={this.state.selectedType && this.state.selectedType}
             selectedTypePressed={item => this.handleTypeFilter(item)}
@@ -917,7 +917,7 @@ class HomePage extends React.Component {
                     errorMessage:
                       'للاستفادة الكبرى من ترتيب القائمة الرجاء الانتقال للقائمة',
                   })
-                : this.setState({showFilterList: true})
+                : this.setState({ showFilterList: true })
             }
           />
 
@@ -934,7 +934,7 @@ class HomePage extends React.Component {
                 left: 10,
                 backgroundColor: '#fff',
                 borderRadius: 20,
-                transform: [{scale: filterScale}],
+                transform: [{ scale: filterScale }],
               }}
             />
           )}
@@ -950,7 +950,7 @@ class HomePage extends React.Component {
                 bottom: 85,
                 borderRadius: 5,
                 shadowColor: '#ccc',
-                shadowOffset: {width: 0, height: 0},
+                shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 2,
                 shadowRadius: 4,
                 elevation: 2,
@@ -963,7 +963,7 @@ class HomePage extends React.Component {
             selectMethod={this.handleFilterMethod}
             selectedTypeFilter={this.state.selecedFilter}
             isVisible={this.state.showFilterList}
-            onSwipe={() => this.setState({showFilterList: false})}
+            onSwipe={() => this.setState({ showFilterList: false })}
             filterType={'الاسعار'}
             selectMethodValue={this.state.selectedMethod}
           />
@@ -1007,7 +1007,7 @@ class HomePage extends React.Component {
 
           <AlertModal
             contentMessage={this.state.alertMessage}
-            closeErrorModel={() => this.setState({showAlert: false})}
+            closeErrorModel={() => this.setState({ showAlert: false })}
             isVisible={this.state.showAlert}
           />
 
@@ -1015,7 +1015,7 @@ class HomePage extends React.Component {
             <ErroAlert
               green={this.state.green}
               moreSecond={this.state.moreSecond}
-              setAnimation={() => this.setState({showErrorMessage: false})}
+              setAnimation={() => this.setState({ showErrorMessage: false })}
               errorMessage={this.state.errorMessage}
               doAnimation={this.state.showErrorMessage}
             />
@@ -1041,7 +1041,7 @@ class HomePage extends React.Component {
                             </TouchableOpacity> */}
 
               <TouchableOpacity
-                style={[styles.circleButton, {marginTop: 5}]}
+                style={[styles.circleButton, { marginTop: 5 }]}
                 onPress={() => this.goToUserLocation()}>
                 <Image source={Images.gbsIcon} />
               </TouchableOpacity>
@@ -1053,7 +1053,7 @@ class HomePage extends React.Component {
               {
                 ...StyleSheet.absoluteFillObject,
                 zIndex: -1,
-                transform: [{rotateY: testRotate}],
+                transform: [{ rotateY: testRotate }],
               },
             ]}>
             <MapView
@@ -1062,7 +1062,7 @@ class HomePage extends React.Component {
               style={[styles.map]}
               customMapStyle={theme === 'dark' ? MapStyleDark : MapStyle}
               minZoomLevel={10}
-              onMapReady={() => this.setState({mapReady: true})}
+              onMapReady={() => this.setState({ mapReady: true })}
               followsUserLocation
               onRegionChangeComplete={v => this.mapUpdate(v)}
               moveOnMarkerPress={false}
@@ -1113,7 +1113,7 @@ class HomePage extends React.Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginTop: ifIphoneX(120, 92),
-                  transform: [{rotateY: testRotate2}],
+                  transform: [{ rotateY: testRotate2 }],
                 },
               ]}>
               <View
@@ -1136,7 +1136,7 @@ class HomePage extends React.Component {
                       marginTop: 50,
                       marginEnd: 16,
                       padding: 10,
-                      transform: [{rotateX: rotateListLabel2}],
+                      transform: [{ rotateX: rotateListLabel2 }],
                     }}>
                     <Text
                       style={[
@@ -1166,7 +1166,7 @@ class HomePage extends React.Component {
                       marginTop: 50,
                       marginEnd: 16,
                       padding: 10,
-                      transform: [{rotateX: rotateListLabel}],
+                      transform: [{ rotateX: rotateListLabel }],
                     }}>
                     <Text
                       style={[

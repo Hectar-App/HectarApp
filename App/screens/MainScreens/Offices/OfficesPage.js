@@ -121,7 +121,7 @@ class OfficesPage extends React.Component {
         this.state.searchValue +
         '&type=address' +
         '&country=SA' +
-        '&key=AIzaSyBNAPLVcqs6_wajjZSULUC7Z1sA9-fdcvU&&language=ar',
+        '&key=AIzaSyDLDBsRAjpSHIQ_oQlxhrnWVejpPwjA9V0&&language=ar',
     )
       .then(response => response.json())
       .then(responseJson => {
