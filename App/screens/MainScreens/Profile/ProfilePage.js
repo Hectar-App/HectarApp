@@ -344,7 +344,7 @@ PeofilePage = props => {
                 buttonText={'عقاراتي'}
               />
               <ProfileButton
-                iconName={'heart'}
+                iconName={'bookmark2'}
                 onPress={() =>
                   !props.user || !props.user.token
                     ? handleSiginingAlert('لتسطيع مشاهدة عقاراتك')

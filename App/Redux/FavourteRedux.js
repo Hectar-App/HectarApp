@@ -4,6 +4,7 @@ import {
   Types as ReduxSauceTypes,
 } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
+import { pathOr, prop, path } from 'ramda';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -27,12 +28,18 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const addToFav = (state, { realEstate }) => {
-  // return
-  let arr = [...state.realEstates];
-  arr.push({ ...realEstate });
-  console.log(arr);
-  return { ...state, realEstates: arr };
+export const addToFav = (state, payload) => {
+  const arr = [
+    ...pathOr([], ['realEstates', 'fav'], state),
+    prop('realEstate', payload),
+  ];
+  return {
+    ...state,
+    realEstates: {
+      realEstatesCount: path(['realEstates', 'realEstatesCount'], state),
+      fav: arr,
+    },
+  };
 };
 
 export const checkFav = (state, { realEstateId }) => {
@@ -52,8 +59,7 @@ export const removeItem = (state, { realEstateId }) => {
   let index = estates.findIndex(
     i => (i._id || (i.realEstate && i.realEstate._id)) === realEstateId,
   );
-
-  let newRealEstates = [...state.realEstates];
+  let newRealEstates = [...state.realEstates.fav];
   if (index === 0 && newRealEstates.length === 1) {
     return { ...state, realEstates: [], checker: false };
   }

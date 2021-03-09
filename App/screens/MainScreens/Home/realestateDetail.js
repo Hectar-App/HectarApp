@@ -778,11 +778,7 @@ class RealEstateDetail extends React.Component {
                 ]}
                 onPress={this.favProccess}>
                 <CustomIcon
-                  name={
-                    (this.props.checker || fav) && !this.state.toPreview
-                      ? 'bookmark2'
-                      : 'bookmark2'
-                  }
+                  name={'bookmark2'}
                   size={15}
                   color={
                     (this.props.checker || fav) && !this.state.toPreview
