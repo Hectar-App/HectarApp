@@ -554,6 +554,7 @@ class OfficesPage extends React.Component {
             onSearch={this.handleSearch}
             searchValue={searchValue}
             sugesstionLoading={this.state.sugesstionLoading}
+            navigation={this.props.navigation}
           />
           {(sugesstionData || []).length > 0 && (
             <SugestionComp

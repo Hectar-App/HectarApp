@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Platform,
@@ -9,15 +9,15 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {Fonts, Metrics, Colors, Images} from '../Themes';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import {useTheme} from 'react-navigation';
-import {ActivityIndicator} from 'react-native-paper';
+import { Fonts, Metrics, Colors, Images } from '../Themes';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { useTheme } from 'react-navigation';
+import { ActivityIndicator } from 'react-native-paper';
 import Header from './Header';
-import {copilot} from 'react-native-copilot';
-import {prop} from 'ramda';
+import { copilot } from 'react-native-copilot';
+import { prop } from 'ramda';
 
-const HomeHeader = props => {
+const OfficesHeader = props => {
   const theme = useTheme();
   const [doAnimation, setDoAnimation] = useState(false);
   const inputRef = React.createRef();
@@ -25,10 +25,11 @@ const HomeHeader = props => {
   return (
     <>
       <Header
-        noBackButton
-        headerTitle="المكاتب العقارية"
-        withSearch
-        openSearch={openSearch}
+        headerTitle='المكاتب العقارية'
+        onBackPress={() => {
+          console.log({ props });
+          props.navigation.navigate('HomeStackNav');
+        }}
       />
       <Animated.View
         style={[
@@ -39,7 +40,7 @@ const HomeHeader = props => {
           },
         ]}>
         <TouchableOpacity
-          style={[{width: '100%', height: '100%'}]}
+          style={[{ width: '100%', height: '100%' }]}
           onPress={() => {
             doAnimation ? Keyboard.dismiss() : inputRef.current.focus();
             doAnimation && setDoAnimation(s => (s = !s));
@@ -58,7 +59,7 @@ const HomeHeader = props => {
 
           {props.sugesstionLoading && (
             <ActivityIndicator
-              style={{position: 'absolute', left: 50, top: 7}}
+              style={{ position: 'absolute', left: 50, top: 7 }}
               color={Colors.primaryGreen}
             />
           )}
@@ -67,7 +68,7 @@ const HomeHeader = props => {
             source={Images.searchIcon}
             style={
               !doAnimation && false
-                ? {alignSelf: 'center', position: 'absolute', top: 12}
+                ? { alignSelf: 'center', position: 'absolute', top: 12 }
                 : {
                     position: 'absolute',
                     right: 9,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     paddingEnd: 35,
     textAlign: 'right',
     fontSize: 12,
-    borderRadius: 4
+    borderRadius: 4,
   },
   itemText: {
     fontSize: 12,
@@ -216,4 +217,4 @@ export default copilot({
     next: 'sdflkjd',
     finish: 'انتهاء',
   },
-})(HomeHeader);
+})(OfficesHeader);
