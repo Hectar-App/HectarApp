@@ -41,6 +41,7 @@ import { connect } from 'react-redux';
 import RealEstateAction from '../../../Redux/RealEstateRedux';
 import { ActivityIndicator, Switch } from 'react-native-paper';
 import { onError } from '../../../utils/commonFunctions';
+import { path, pathOr } from 'ramda';
 
 class firstStepAddAqar extends React.Component {
   state = {
@@ -63,9 +64,7 @@ class firstStepAddAqar extends React.Component {
   };
 
   componentDidMount() {
-    console.log('props', this.props.navigation.getParam('realEstate'));
     this.props.getInfo();
-
     if (!this.props.user || !this.props.user.token) {
       return this.setState({
         showAlert: true,
@@ -90,17 +89,14 @@ class firstStepAddAqar extends React.Component {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        console.log('focouse');
         if (
-          this.props.user &&
-          this.props.user.userType &&
-          this.props.user.userType.nameEn === 'normal'
+          pathOr('', ['props', 'user', 'userType', 'nameEn'], this) ===
+          'realestate seaker'
         ) {
-          return this.setState({
-            showAlert: true,
-            alertMessage:
-              'حتى تتمكن من اضافة عقار يجب ان لا يكون نوع الحساب باحث عن عقار',
-          });
+          onError(
+            'نوع حسابك باحث عن عقار, يجب تغييره لتستطيع اضافة عقار جديد.',
+          );
+          this.props.navigation.navigate('HomeStackNav');
         }
       },
     );
@@ -135,7 +131,6 @@ class firstStepAddAqar extends React.Component {
 
   componentWillReceiveProps = nextProps => {
     if (nextProps.info !== this.props.info) {
-      console.log('heelo');
       this.setState({ loading: false, info: nextProps.info });
       if (this.state.forEditing) {
         this.setState(s => ({
@@ -163,17 +158,8 @@ class firstStepAddAqar extends React.Component {
             alertMessage: 'يجب تسجيل الدخول لاضافة عقارك',
           });
         }
-        // return alert("يجب تسجيل الدخول لاضافة عقارك")
       }
-      // this.props.navigation.navigate('SecondStepAddAqar', { realEstate: nextProps.info })
     }
-    // if( nextProps.realEstate !== this.props.realEstate ){
-    //     // console.log('realEstate', nextProps.realEstate)
-    //     // alert('hello')
-    //     this.setState({btnLoading: false})
-    //     // this.props.nextLevel(nextProps.realEstate)
-    //     this.props.navigation.navigate('SecondStepAddAqar', {realEstate: nextProps.realEstate})
-    // }
   };
 
   convertNumbers2English(string) {
@@ -225,17 +211,6 @@ class firstStepAddAqar extends React.Component {
       (selectedType.nameEn === 'flat' || selectedType.nameEn === 'floor') &&
       selectedStatus &&
       selectedStatus.nameEn === 'rent';
-
-    console.log(
-      'hello',
-      selectedType,
-      price,
-      selectedLocation,
-      selectedStatus,
-      selectedPurpose,
-      payType,
-      this.props.user.token,
-    );
 
     if (!this.props.user.token) {
       return onError('يجب تسجيل الدخول لاضافة عقارك');
@@ -322,31 +297,14 @@ class firstStepAddAqar extends React.Component {
       completePercentage:
         Object.keys(s).length > 4 ? 33 : Object.keys(s).length * 10,
     });
-    // this.setState({realEstate: s})
-    // let form = new FormData()
-    // if( selectedType && price && selectedLocation && selectedStatus && selectedPurpose ){
-    // this.setState({btnLoading: true})
-    // this.props.navigation.navigate('SecondStepAddAqar', forEditing? {forEditing: true, realEstate: s}: {realEstate: { status: selectedStatus._id, type: selectedType._id, purpose: selectedPurpose._id, price, address:{ lat: this.state.selectedLocation.latitude, long: this.state.selectedLocation.longitude}}})
-    console.log('sdfklsdflk', s);
     this.props.navigation.navigate('SecondStepAddAqar', {
       forEditing: forEditing,
       realEstate: s,
     });
-    // this.props.addRealEstate(selectedStatus._id, selectedType._id, selectedPurpose._id, price, this.state.selectedLocation.latitude, this.state.selectedLocation.longitude, this.props.user.token)
-    // }else{
-    //     alert('الرجاء اكمال البيانات ')
-    // }
   };
 
   render() {
-    // const testValue = new Intl.NumberFormat('ja-JP').format(parseInt(this.state.price))
-    // console.log(testValue)
-    const {
-      statusPage,
-      showSucessModal,
-      selectedType,
-      selectedStatus,
-    } = this.state;
+    const { statusPage, selectedType, selectedStatus } = this.state;
 
     if (this.state.loading) {
       return (

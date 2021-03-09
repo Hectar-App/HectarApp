@@ -253,7 +253,6 @@ class RegistrationUserInfo extends React.Component {
             }}>
             <LinkButton
               containerStyle={{
-                alignSelf: 'flex-end',
                 paddingEnd: 0,
                 alignSelf: 'center',
               }}
