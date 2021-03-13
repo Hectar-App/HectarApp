@@ -55,7 +55,7 @@ import NotificationPage from '../screens/MainScreens/Profile/Notification';
 //Profile
 import Profile from '../screens/MainScreens/Profile/ProfilePage';
 import HelpCenter from '../screens/MainScreens/Profile/HelpCenter';
-import EdietProfile from '../screens/MainScreens/Profile/EdietProfile';
+import EditProfile from '../screens/MainScreens/Profile/EditProfile';
 import FAQs from '../screens/MainScreens/Profile/FAQs';
 import AboutApp from '../screens/MainScreens/Profile/AboutHectar';
 import MyRealEstate from '../screens/MainScreens/Profile/MyRealEstate';
@@ -215,7 +215,7 @@ const ProfileStackNav = createStackNavigator(
   {
     Profile: { screen: Profile },
     HelpCenter: { screen: HelpCenter },
-    EdietProfile: { screen: EdietProfile },
+    EdietProfile: { screen: EditProfile },
     FAQs: { screen: FAQs },
     AboutApp: { screen: AboutApp },
     MyRealEstate: { screen: MyRealEstate },
@@ -227,7 +227,7 @@ const ProfileStackNav = createStackNavigator(
   },
   {
     headerMode: 'none',
-    // initialRouteName: 'EdietProfile'
+    // initialRouteName: 'EditProfile'
   },
 );
 
@@ -238,7 +238,7 @@ ProfileStackNav.navigationOptions = ({ navigation }) => {
     routeName === 'HelpCenter' ||
     routeName === 'OwnerRealEstates' ||
     routeName === 'RealEstateDetail' ||
-    routeName === 'EdietProfile' ||
+    routeName === 'EditProfile' ||
     routeName === 'FAQs' ||
     routeName === 'AboutApp'
   ) {

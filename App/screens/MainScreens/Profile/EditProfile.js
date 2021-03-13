@@ -1,25 +1,32 @@
 import React from 'react';
+import R from 'ramda';
+
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import Header from '../../../Component/Header';
-
 import Button from '../../../Component/Button';
 import InputButton from '../../../Component/InputButton';
+
 import InputModal from '../../../Component/PasswordModal';
 
 import Input from '../../../Component/Input';
-
 import { connect } from 'react-redux';
 import UserAction from '../../../Redux/UserRedux';
-import { onError, onSuccess } from '../../../utils/commonFunctions';
+import {
+  onError,
+  onSuccess,
+  perfectHeight,
+} from '../../../utils/commonFunctions';
+import RadioButtonModal from '../../../Component/RadioButtonModal';
 
-class EdietProfile extends React.Component {
+class EditProfile extends React.Component {
   state = {
     name: this.props.user.name || '',
     email: this.props.user.email || '',
     password: '',
     phoneNumber: this.props.user.phoneNumber + '',
     passwordModalVisable: false,
+    userType: R.pathOr({}, ['props', 'user', 'userType'], this),
   };
 
   componentDidMount() {
@@ -40,6 +47,9 @@ class EdietProfile extends React.Component {
       case 'phone':
         this.setState({ phoneNumber: val });
         break;
+      case 'userType':
+        this.setState({ userType: val });
+        break;
       default:
         break;
     }
@@ -48,7 +58,14 @@ class EdietProfile extends React.Component {
   handleRegister() {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const { name, email, password, phoneNumber, prevPassword } = this.state;
+    const {
+      name,
+      email,
+      password,
+      phoneNumber,
+      prevPassword,
+      userType,
+    } = this.state;
     if (name && name.replace(/\s/g, '').length >= 1 && phoneNumber) {
       if (email && !re.test(email)) {
         return onError('الرجاء كتابة الايميل بالصيغة الصحيحة');
@@ -64,6 +81,7 @@ class EdietProfile extends React.Component {
         phoneNumber,
         prevPassword,
         password,
+        userType: R.prop('_id', userType),
         email: (email || '').length > 0 ? email : '',
         token: this.props.user.token,
       });
@@ -100,6 +118,7 @@ class EdietProfile extends React.Component {
   }
 
   render() {
+    console.log('BADAWEY 2: ', { state: this.state.user, props: this.props });
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1 }}>
@@ -134,6 +153,12 @@ class EdietProfile extends React.Component {
               this.state.password ? this.state.password : '*******'
             }
           />
+          <InputButton
+            width={150}
+            InputPlaceHolder={this.state.userType.userTypeName}
+            containerStyle={{ marginTop: perfectHeight(12) }}
+            onPress={() => this.setState({ RadioButtonModal: true })}
+          />
 
           {this.state.passwordModalVisable && (
             <InputModal
@@ -148,7 +173,18 @@ class EdietProfile extends React.Component {
               ]}
             />
           )}
-
+          {this.state.RadioButtonModal && (
+            <RadioButtonModal
+              onPress={item => {
+                console.log('BADAWEY 1: ', item);
+                this.setState({ userType: item, RadioButtonModal: false });
+              }}
+              selectedOption={this.state.userType}
+              doAnimation={true}
+              data={this.state.userTypes}
+              isVisible={this.state.RadioButtonModal}
+            />
+          )}
           <Button
             textPropsStyle={{ paddingEnd: 0 }}
             loading={this.state.loading}
@@ -197,4 +233,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EdietProfile);
+)(EditProfile);
