@@ -21,7 +21,6 @@ const OfficesHeader = props => {
   const theme = useTheme();
   const [doAnimation, setDoAnimation] = useState(false);
   const inputRef = React.createRef();
-  const openSearch = () => prop.setSearch(!props.search);
   return (
     <>
       <Header

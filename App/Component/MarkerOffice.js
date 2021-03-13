@@ -1,41 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Platform,
-  Animated,
   TouchableOpacity,
-  FlatList,
-  TouchableHighlight,
 } from 'react-native';
-import { useAnimation } from '../assets/Animation/animation';
-import { Fonts, Metrics, Colors } from '../Themes';
-import BackButton from './BackButton';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { Fonts, Colors } from '../Themes';
 import { Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import MarkerAction from '../Redux/mapMarkerRedux';
 import { connect } from 'react-redux';
 import { useTheme } from 'react-navigation';
-import realEstateItemSmall from './realEstateItemSmall';
-function kFormatter(num) {
-  return Math.abs(num) > 999 && Math.abs(num) < 999999
-    ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + ' الف'
-    : Math.abs(num) > 999999
-    ? Math.sign(num) * (Math.abs(num) / 1000000).toFixed(1) + ' مليون'
-    : Math.sign(num) * Math.abs(num);
-}
 
 const MarkerItem = props => {
   const theme = useTheme();
-
-  const animtion = useAnimation({
-    doAnimation: props.doAnimation,
-    duration: 550,
-  });
-  // const scaleAnimatio = animtion.interpolate({inputRange: [0, 1], outputRange: [ .3, 1]})
-  // console.log('props.smallIcon', props.smallIcon)
   let colorCheck = false;
   colorCheck =
     (props.realEstates || []).findIndex(i => i === props.item._id) === -1;
@@ -64,19 +42,15 @@ const MarkerItem = props => {
         >
           <TouchableOpacity
             style={{
-              backgroundColor:
-                props.focusMarker === props.item._id
-                  ? Colors.darkSeafoamGreen
-                  : colorCheck
-                  ? Colors.darkSlateBlue
-                  : Colors.grey,
+              backgroundColor: props.viewedOffices.includes(props.item.place_id)
+                ? Colors.grey
+                : Colors.darkSeafoamGreen,
               // width: 60,
               // height: 25,
               borderRadius: 6,
               justifyContent: 'center',
               alignItems: 'center',
               // shadowColor: 'rgba(0,0,0,0.3)',
-              elevation: 1,
               paddingHorizontal: 8,
               paddingVertical: 8,
               shadowColor: theme === 'dark' ? '#2f2f31' : '#ccc',
@@ -84,8 +58,9 @@ const MarkerItem = props => {
               shadowOpacity: 8,
               shadowRadius: 2,
               elevation: 5,
-              zIndex:
-                props.focusMarker === props.item._id ? 100000000000000000 : 10,
+              zIndex: props.viewedOffices.includes(props.item.place_id)
+                ? 100000000000000000
+                : 10,
               borderWidth: 1,
               borderColor: '#fff',
             }}>
@@ -107,12 +82,11 @@ const MarkerItem = props => {
                     height: 0,
                     alignSelf: 'flex-start',
                     borderWidth: 5,
-                    borderColor:
-                      props.focusMarker === props.item._id
-                        ? Colors.darkSeafoamGreen
-                        : colorCheck
-                        ? Colors.darkSlateBlue
-                        : Colors.grey,
+                    borderColor: props.viewedOffices.includes(
+                      props.item.place_id,
+                    )
+                      ? Colors.grey
+                      : Colors.darkSeafoamGreen,
                     borderLeftColor: 'transparent',
                     borderRightColor: 'transparent',
                     borderBottomColor: 'transparent',
@@ -133,12 +107,11 @@ const MarkerItem = props => {
                     borderBottomWidth: 10,
                     borderLeftColor: 'transparent',
                     borderRightColor: 'transparent',
-                    borderBottomColor:
-                      props.focusMarker === props.item._id
-                        ? Colors.darkSeafoamGreen
-                        : colorCheck
-                        ? Colors.darkSlateBlue
-                        : Colors.grey,
+                    borderBottomColor: props.viewedOffices.includes(
+                      props.item.place_id,
+                    )
+                      ? Colors.grey
+                      : Colors.darkSeafoamGreen,
                     transform: [{ rotate: '180deg' }],
                   },
             ]}
@@ -167,12 +140,11 @@ const MarkerItem = props => {
               style={{ position: 'absolute', width: 100, top: -35, left: -5 }}>
               <TouchableOpacity
                 style={{
-                  backgroundColor:
-                    props.focusMarker === props.item._id
-                      ? Colors.darkSeafoamGreen
-                      : colorCheck
-                      ? Colors.darkSlateBlue
-                      : Colors.grey,
+                  backgroundColor: props.viewedOffices.includes(
+                    props.item.place_id,
+                  )
+                    ? Colors.grey
+                    : Colors.darkSeafoamGreen,
                   // width: 60,
                   // height: 25,
                   borderRadius: 6,
@@ -201,12 +173,9 @@ const MarkerItem = props => {
                   height: 0,
                   alignSelf: 'flex-start',
                   borderWidth: 5,
-                  borderColor:
-                    props.focusMarker === props.item._id
-                      ? Colors.darkSeafoamGreen
-                      : colorCheck
-                      ? Colors.darkSlateBlue
-                      : Colors.grey,
+                  borderColor: props.viewedOffices.includes(props.item.place_id)
+                    ? Colors.grey
+                    : Colors.darkSeafoamGreen,
                   borderLeftColor: 'transparent',
                   borderRightColor: 'transparent',
                   borderBottomColor: 'transparent',
@@ -222,12 +191,11 @@ const MarkerItem = props => {
                 width: 10,
                 height: 10,
                 // backgroundColor: "transparent",
-                backgroundColor:
-                  props.focusMarker === props.item._id
-                    ? Colors.darkSeafoamGreen
-                    : colorCheck
-                    ? Colors.darkSlateBlue
-                    : Colors.grey,
+                backgroundColor: props.viewedOffices.includes(
+                  props.item.place_id,
+                )
+                  ? Colors.grey
+                  : Colors.darkSeafoamGreen,
                 borderStyle: 'solid',
                 borderWidth: 1,
                 borderColor: '#fff',
@@ -249,23 +217,15 @@ const MarkerItem = props => {
 
 const styles = StyleSheet.create({});
 
-// export default (MarkerItem)
-
 const mapDispatchToProps = dispatch => ({
   addToMarkers: _id => dispatch(MarkerAction.addToMarkers(_id)),
   checkMarker: _id => dispatch(MarkerAction.checkMarker(_id)),
 });
 
 const mapStateToProps = state => {
-  // console.log('state', state.Marker)
   return {
     checker: state.Marker.checker,
     realEstates: state.Marker.realEstates,
-    //   user: state.user.user && state.user.user.user && state.user.user.user,
-    //   realEstateList: state.realEstate.realEstateList,
-    //   checker: state.Favourte.checker && state.Favourte.checker,
-    //   info: state.realEstate.AddingAqarInfo,
-    //   filterData: state.user.filterData
   };
 };
 

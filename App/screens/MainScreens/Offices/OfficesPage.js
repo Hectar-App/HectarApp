@@ -26,7 +26,6 @@ import {
   Metrics,
 } from '../../../Themes';
 import Marker from '../../../Component/MarkerOffice';
-import MarkerSmall from '../../../Component/Marker.1';
 import OfficeList from '../../../Component/OfficeList';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import MapStyle from '../../../Themes/mapStyle.json';
@@ -59,6 +58,7 @@ class OfficesPage extends React.Component {
     this.mapRef = null;
     this.state = {
       offices: [],
+      viewedOffices: [],
       searchValue: '',
       showFilterList: false,
       mapView: true,
@@ -138,6 +138,10 @@ class OfficesPage extends React.Component {
     this.setState({
       cardView: true,
       selectedOffice: item,
+      viewedOffices: [
+        ...this.state.viewedOffices.filter(office => office !== item.place_id),
+        item.place_id,
+      ],
       tracksViewChanges: true,
     });
   };
@@ -775,31 +779,11 @@ class OfficesPage extends React.Component {
               showsUserLocation={true}>
               {this.state.mapReady &&
                 this.props.offices.map(item => {
-                  if (this.state.smallIcon) {
-                    return (
-                      <MarkerSmall
-                        smallIcon={true}
-                        focusMarker={
-                          this.state.cardView
-                            ? this.state.selectedOffice.place_id
-                            : null
-                        }
-                        tracksViewChanges={this.state.tracksViewChanges}
-                        key={item.place_id}
-                        item={item}
-                        onPress={() => this.handleMarkerPress(item)}
-                        showDetailForSmallIcon={false}
-                      />
-                    );
-                  }
                   return (
                     <Marker
-                      smallIcon={false && this.state.smallIcon}
-                      focusMarker={
-                        this.state.cardView
-                          ? this.state.selectedOffice.place_id
-                          : null
-                      }
+                      smallIcon={this.state.smallIcon}
+                      viewedOffices={this.state.viewedOffices}
+                      focusMarker={this.state?.selectedOffice?.place_id}
                       tracksViewChanges={this.state.tracksViewChanges}
                       key={item.place_id}
                       item={item}
@@ -832,63 +816,6 @@ class OfficesPage extends React.Component {
                   marginTop: 35,
                   marginBottom: 55,
                 }}>
-                {/* {this.state.numberOfOfficesShow ? (
-                  <Animated.View
-                    style={{
-                      borderRadius: 12,
-                      backgroundColor: Colors.darkSlateBlue,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      marginTop: 50,
-                      marginEnd: 16,
-                      padding: 10,
-                      transform: [{ rotateX: rotateListLabel2 }],
-                    }}>
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 10,
-                          color: '#fff',
-                          fontWeight: 'normal',
-                        },
-                      ]}>
-                      {(this.props.offices || []).length > 0
-                        ? `${this.props.offices.length} /////  ${
-                            (this.props.offices || []).length
-                          } `
-                        : 'لا يوجد مكاتب عقارية في هذه المنطقة'}
-                    </Text>
-                  </Animated.View>
-                ) : (
-                  <Animated.View
-                    style={{
-                      borderRadius: 12,
-                      backgroundColor: Colors.darkSeafoamGreen,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf: 'flex-end',
-                      marginTop: 50,
-                      marginEnd: 16,
-                      padding: 10,
-                      transform: [{ rotateX: rotateListLabel }],
-                    }}>
-                    <Text
-                      style={[
-                        Fonts.style.normal,
-                        {
-                          fontSize: 10,
-                          color: '#fff',
-                          fontWeight: 'normal',
-                        },
-                      ]}>
-                      {
-                        'عرض المكاتب العقارية بناءا علي حدود الخريطة الظاهرة في الخريطة'
-                      }
-                    </Text>
-                  </Animated.View>
-                )} */}
                 <OfficeList
                   handleGetMoreDatat={this.handleGetMoreDatat}
                   numberOfOffices={this.state.numberOfOffices}
