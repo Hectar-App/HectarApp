@@ -68,7 +68,12 @@ const InputCo = props => {
         <TextInput
           placeholder={props.InputPlaceHolder}
           value={props.inputValue}
-          style={[Fonts.style.normal, styles.inputStyle, props.InputStyle]}
+          style={[
+            Fonts.style.normal,
+            styles.inputStyle,
+            props.InputStyle,
+            props.disabled && { backgroundColor: '#cccccc' },
+          ]}
           placeholderTextColor={Colors.brownGrey}
           onChange={props.onChange}
           multiline={props.multiline}
@@ -80,6 +85,7 @@ const InputCo = props => {
           autoFocus={process.autoFocus}
           onFocus={props.onFocus}
           onBlur={props.onBlur}
+          editable={!props.disabled}
         />
       </View>
     </Animated.View>

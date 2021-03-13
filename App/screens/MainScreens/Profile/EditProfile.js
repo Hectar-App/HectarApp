@@ -145,6 +145,7 @@ class EditProfile extends React.Component {
             InputPlaceHolder={'رقم الهاتف'}
             inputValue={this.state.phoneNumber}
             containerStyle={{ marginTop: 14 }}
+            disabled={true}
           />
           <InputButton
             containerStyle={{ marginTop: 14 }}
