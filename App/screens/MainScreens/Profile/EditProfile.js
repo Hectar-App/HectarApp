@@ -71,8 +71,8 @@ class EditProfile extends React.Component {
         return onError('الرجاء كتابة الايميل بالصيغة الصحيحة');
       }
 
-      if (password && (password || '').length < 7) {
-        return onError('يجب ان تكون كلمة المرور اكثر من ٧ حروف وارقام');
+      if (!password) {
+        return onError('كلمة المرور مطلوبة');
       }
 
       this.setState({ loading: true });
@@ -107,10 +107,10 @@ class EditProfile extends React.Component {
     }
   }
 
-  getPassword(prev, password) {
+  getPassword(prevPassword, password) {
     if (password) {
       this.setState({
-        prevPassword: prev,
+        prevPassword,
         password,
         passwordModalVisable: false,
       });
@@ -118,7 +118,6 @@ class EditProfile extends React.Component {
   }
 
   render() {
-    console.log('BADAWEY 2: ', { state: this.state.user, props: this.props });
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1 }}>
@@ -176,10 +175,12 @@ class EditProfile extends React.Component {
           )}
           {this.state.RadioButtonModal && (
             <RadioButtonModal
-              onPress={item => {
-                console.log('BADAWEY 1: ', item);
-                this.setState({ userType: item, RadioButtonModal: false });
-              }}
+              onPress={item =>
+                this.setState({
+                  userType: item,
+                  RadioButtonModal: false,
+                })
+              }
               selectedOption={this.state.userType}
               doAnimation={true}
               data={this.state.userTypes}

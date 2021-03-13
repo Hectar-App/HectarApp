@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   Platform,
-  TextInput,
   StyleSheet,
   Animated,
   TouchableOpacity,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { useAnimation } from '../assets/Animation/animation';
-import { Fonts, Metrics, Colors } from '../Themes';
+import { Metrics, Colors } from '../Themes';
 
 import Input from './Input';
 import Button from './Button';
@@ -20,21 +16,13 @@ import { IconButton } from 'react-native-paper';
 import { onError } from '../utils/commonFunctions';
 
 const InputCo = props => {
-  const animtion = useAnimation({
-    doAnimation: props.doAnimation,
-    duration: 550,
-  });
   const [password, setPassword] = useState('');
   const [cPassword, setCPassword] = useState('');
   const [prevPassword, setPrevPassword] = useState('');
 
   const handlePress = () => {
-    console.log('list after editeng', password, cPassword);
-    if (password !== cPassword || (password || '').length < 7) {
+    if (password !== cPassword) {
       return onError('كلمة المرور لا تتطابق مع تأكيد كلمة المرور');
-    }
-    if (prevPassword.length < 7) {
-      return onError('الرجاء ادخال كلمة المرور السابقة');
     }
 
     props.getPassword(prevPassword, password);
@@ -42,10 +30,7 @@ const InputCo = props => {
 
   return (
     <Animated.View style={[styles.container]}>
-      <Modal
-        isVisible={props.isVisible}
-        // avoidKeyboard
-      >
+      <Modal isVisible={props.isVisible}>
         <View
           style={{
             justifyContent: 'center',
