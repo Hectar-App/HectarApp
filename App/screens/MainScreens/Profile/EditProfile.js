@@ -71,10 +71,6 @@ class EditProfile extends React.Component {
         return onError('الرجاء كتابة الايميل بالصيغة الصحيحة');
       }
 
-      if (!password) {
-        return onError('كلمة المرور مطلوبة');
-      }
-
       this.setState({ loading: true });
       this.props.editProfile({
         name,
