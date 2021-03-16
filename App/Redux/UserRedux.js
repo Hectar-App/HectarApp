@@ -1,9 +1,9 @@
-import {createReducer, createActions} from 'reduxsauce';
+import { createReducer, createActions } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
 
 /* ------------- Types and Action Creators ------------- */
 
-const {Types, Creators} = createActions({
+const { Types, Creators } = createActions({
   loginRequest: ['phone', 'password', 'uuid'],
   loginSuccess: ['user'],
   loginFailed: ['userLoginError'],
@@ -62,155 +62,155 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 export const logoutF = state => {
-  return {...state, user: null};
+  return { ...state, user: null };
 };
 
 export const loginRequestF = (state, action) => {
-  const {phone, password, uuid} = action;
-  return {...state, phone, password, uuid};
+  const { phone, password, uuid } = action;
+  return { ...state, phone, password, uuid };
 };
 
 export const loginSuccessF = (state, action) => {
-  const {user} = action;
-  return {...state, user};
+  const { user } = action;
+  return { ...state, user };
 };
 
 export const loginFailedF = (state, action) => {
-  const {userLoginError} = action;
-  return {...state, userLoginError};
+  const { userLoginError } = action;
+  return { ...state, userLoginError };
 };
 
 export const loginCancleF = state => INITIAL_STATE;
 
 export const checkNumberF = (state, action) => {
-  const {phone} = action;
-  return {...state, phone};
+  const { phone } = action;
+  return { ...state, phone };
 };
 
 export const checkNumberSuccessF = (state, action) => {
-  const {checkNuberSucess} = action;
-  return {...state, checkNuberSucess};
+  const { checkNuberSucess } = action;
+  return { ...state, checkNuberSucess };
 };
 
 export const checkNumberFaildF = (state, action) => {
-  const {checkNuberError} = action;
-  return {...state, checkNuberError};
+  const { checkNuberError } = action;
+  return { ...state, checkNuberError };
 };
 
 export const verfyNumberF = (state, action) => {
-  const {phone, code} = action;
-  return {...state, phone, code};
+  const { phone, code } = action;
+  return { ...state, phone, code };
 };
 
 export const verfyNumberSuccessF = (state, action) => {
-  const {verfyNumberSucess} = action;
-  return {...state, verfyNumberSucess};
+  const { verfyNumberSucess } = action;
+  return { ...state, verfyNumberSucess };
 };
 
 export const verfyNumberFaildF = (state, action) => {
-  const {verfyNumberError} = action;
-  return {...state, verfyNumberError};
+  const { verfyNumberError } = action;
+  return { ...state, verfyNumberError };
 };
 
 export const getUserTypeF = (state, action) => state;
 
 export const getUserSuccessF = (state, action) => {
-  const {userTypes} = action;
-  return {...state, userTypes};
+  const { userTypes } = action;
+  return { ...state, userTypes };
 };
 
 export const getUserFaildF = (state, action) => {
-  const {userTypesError} = action;
-  return {...state, userTypesError};
+  const { userTypesError } = action;
+  return { ...state, userTypesError };
 };
 
 export const registerF = (state, action) => {
-  const {name, phone, password, userType, email} = action;
-  return {...state, name, phone, password, userType, email};
+  const { name, phone, password, userType, email } = action;
+  return { ...state, name, phone, password, userType, email };
 };
 
 export const registerSuccessF = (state, action) => {
-  const {user} = action;
-  return {...state, user};
+  const { user } = action;
+  return { ...state, user };
 };
 
 export const registerFaildF = (state, action) => {
-  const {registerError} = action;
-  return {...state, registerError};
+  const { registerError } = action;
+  return { ...state, registerError };
 };
 
 export const editProfileF = (state, action) => {
   // const { name, phone, prevPassword, password, userType, email, token } = action;
   // 'name', 'phone', 'prevPassword', 'password', 'userType', 'email', "token"
-  return {...state};
+  return { ...state };
 };
 
 export const editProfileSuccessF = (state, action) => {
-  const {user} = action;
-  return {...state, user};
+  const { user } = action;
+  return { ...state, user };
 };
 
 export const editProfileFaildF = (state, action) => {
-  const {edietProfileError} = action;
-  return {...state, edietProfileError};
+  const { edietProfileError } = action;
+  return { ...state, edietProfileError };
 };
 
 export const forgetPasswordF = (state, action) => {
-  const {phone} = action;
-  return {...state, phone};
+  const { phone } = action;
+  return { ...state, phone };
 };
 
 export const forgetPasswordSuccessF = (state, action) => {
-  const {forgetPasswordSucess} = action;
-  return {...state, forgetPasswordSucess};
+  const { forgetPasswordSucess } = action;
+  return { ...state, forgetPasswordSucess };
 };
 
 export const forgetPasswordFaildF = (state, action) => {
-  const {forgetPasswordError} = action;
-  return {...state, forgetPasswordError};
+  const { forgetPasswordError } = action;
+  return { ...state, forgetPasswordError };
 };
 
 export const forgetPasswordVerfyNumberF = (state, action) => {
-  const {phone, code} = action;
-  return {...state, phone, code};
+  const { phone, code } = action;
+  return { ...state, phone, code };
 };
 
 export const forgetPasswordVerfyNumberSuccessF = (state, action) => {
-  const {forgetPasswordVerfyNumberSucess} = action;
-  return {...state, forgetPasswordVerfyNumberSucess};
+  const { forgetPasswordVerfyNumberSucess } = action;
+  return { ...state, forgetPasswordVerfyNumberSucess };
 };
 
 export const forgetPasswordVerfyNumberFaildF = (state, action) => {
-  const {forgetPasswordVerfyNumberError} = action;
-  return {...state, forgetPasswordVerfyNumberError};
+  const { forgetPasswordVerfyNumberError } = action;
+  return { ...state, forgetPasswordVerfyNumberError };
 };
 
 export const resetPasswrdF = (state, action) => {
-  const {phone, code, password} = action;
-  return {...state, phone, code, password};
+  const { phone, code, password } = action;
+  return { ...state, phone, code, password };
 };
 
 export const resetPasswrdSuccessF = (state, action) => {
-  const {resetPasswordSucess} = action;
-  return {...state, resetPasswordSucess};
+  const { resetPasswordSucess } = action;
+  return { ...state, resetPasswordSucess };
 };
 
 export const resetPasswrdFaildF = (state, action) => {
-  const {resetPasswordError} = action;
-  return {...state, resetPasswordError};
+  const { resetPasswordError } = action;
+  return { ...state, resetPasswordError };
 };
 
 export const changeFilterF = (state, action) => {
-  const {filterData} = action;
-  return {...state, filterData: filterData};
+  const { filterData } = action;
+  return { ...state, filterData: filterData };
 };
 
-export const getDeviceInfoF = (state, {data}) => {
-  return {...state, deviceInfo: data};
+export const getDeviceInfoF = (state, { data }) => {
+  return { ...state, deviceInfo: data };
 };
 
 export const firstTimeDoneF = state => {
-  return {...state, firstTime: false};
+  return { ...state, firstTime: false };
 };
 
 export const defaultHandler = state => state;

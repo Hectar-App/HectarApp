@@ -70,6 +70,10 @@ class EditProfile extends React.Component {
       if (email && !re.test(email)) {
         return onError('الرجاء كتابة الايميل بالصيغة الصحيحة');
       }
+      console.log('BADAWEY: ', password.length);
+      if (password && !(password || '').length >= 6) {
+        return onError('يجب ان تكون كلمة المرور علي الأقل 6 حروف وارقام');
+      }
 
       this.setState({ loading: true });
       this.props.editProfile({
@@ -145,12 +149,11 @@ class EditProfile extends React.Component {
           <InputButton
             containerStyle={{ marginTop: 14 }}
             onPress={() => this.setState({ passwordModalVisable: true })}
-            InputPlaceHolder={
-              this.state.password ? this.state.password : '*******'
-            }
+            InputPlaceHolder={'*******'}
           />
           <InputButton
             width={150}
+            S
             InputPlaceHolder={this.state.userType.userTypeName}
             containerStyle={{ marginTop: perfectHeight(12) }}
             onPress={() => this.setState({ RadioButtonModal: true })}
