@@ -153,14 +153,11 @@ class RegistrationUserInfo extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
-          {/* <BackButton doAnimation={true} containerStyle={{marginTop: 50}} onPress={()=> this.props.navigation.goBack()} /> */}
           <Header
             withoutUnderLine={true}
             headerTitle={'إنشاء حساب جديد'}
-            onBackPress={() => this.props.navigation.goBack()}
+            onBackPress={() => this.props.navigation.navigate('LoginPage')}
           />
-
-          {/* // <TitleDesc title={'إنشاء حساب جديد'} containerStyle={{marginTop: 50}} desc={''} noDesc={true} /> */}
 
           <View
             style={{
