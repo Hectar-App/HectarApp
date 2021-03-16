@@ -55,11 +55,11 @@ class LoginPage extends React.Component {
       );
     }
     if (this.props.userError !== nextProps.userError) {
-      if (nextProps.userError.error) {
+      if (nextProps.userError?.error) {
         this.setState({
           showErrorMessage: true,
           errorMessage:
-            nextProps.userError?.error.toString() || 'Something went wrong',
+            nextProps.userError?.error?.toString() || 'Something went wrong',
         });
       }
 
