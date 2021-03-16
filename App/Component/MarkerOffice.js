@@ -44,7 +44,7 @@ const MarkerItem = props => {
             style={{
               backgroundColor: props.viewedOffices.includes(props.item.place_id)
                 ? Colors.grey
-                : Colors.darkSeafoamGreen,
+                : Colors.darkSlateBlue,
               // width: 60,
               // height: 25,
               borderRadius: 6,
@@ -144,7 +144,7 @@ const MarkerItem = props => {
                     props.item.place_id,
                   )
                     ? Colors.grey
-                    : Colors.darkSeafoamGreen,
+                    : Colors.darkSlateBlue,
                   // width: 60,
                   // height: 25,
                   borderRadius: 6,
@@ -190,12 +190,11 @@ const MarkerItem = props => {
               style={{
                 width: 10,
                 height: 10,
-                // backgroundColor: "transparent",
                 backgroundColor: props.viewedOffices.includes(
                   props.item.place_id,
                 )
                   ? Colors.grey
-                  : Colors.darkSeafoamGreen,
+                  : Colors.darkSlateBlue,
                 borderStyle: 'solid',
                 borderWidth: 1,
                 borderColor: '#fff',
