@@ -55,17 +55,18 @@ export const checkFav = (state, { realEstateId }) => {
 };
 
 export const removeItem = (state, { realEstateId }) => {
-  const estates = state.realEstates?.fav || [];
-  let index = estates.findIndex(
-    i => (i._id || (i.realEstate && i.realEstate._id)) === realEstateId,
+  const newRealEstates = state.realEstates?.fav.filter(
+    property => property._id !== realEstateId,
   );
-  let newRealEstates = [...state.realEstates.fav];
-  if (index === 0 && newRealEstates.length === 1) {
-    return { ...state, realEstates: [], checker: false };
-  }
-
-  index === 0 ? newRealEstates.splice(0, 1) : newRealEstates.splice(index, 1);
-  return { ...state, realEstates: newRealEstates, checker: false };
+  return {
+    ...state,
+    realEstates: {
+      ...state.realEstates,
+      fav: newRealEstates,
+      realEstatesCount: newRealEstates.length,
+    },
+    checker: false,
+  };
 };
 
 export const defaultHandler = state => state;

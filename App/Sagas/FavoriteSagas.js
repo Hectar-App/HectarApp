@@ -5,21 +5,14 @@ import { path } from 'ramda';
 export function* addToFavorite(api, action) {
   const { realEstate, token } = action;
   // make the call to the api
-  let response = null;
 
-  response = yield call(api.addToFav, realEstate._id, token);
-
-  console.log(response);
+  return yield call(api.addToFav, realEstate._id, token);
 }
 
 export function* removeFromFavorite(api, action) {
   const { realEstateId, token } = action;
   // make the call to the api
-  let response = null;
-
-  response = yield call(api.removeFromFav, realEstateId, token);
-
-  console.log(response, realEstateId);
+  return yield call(api.removeFromFav, realEstateId, token);
 }
 
 export function* getUserFav(api, action) {

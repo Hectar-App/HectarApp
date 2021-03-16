@@ -58,7 +58,8 @@ class LoginPage extends React.Component {
       if (nextProps.userError.error) {
         this.setState({
           showErrorMessage: true,
-          errorMessage: nextProps.userError.error.toString(),
+          errorMessage:
+            nextProps.userError?.error.toString() || 'Something went wrong',
         });
       }
 
