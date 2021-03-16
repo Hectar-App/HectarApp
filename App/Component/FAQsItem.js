@@ -52,9 +52,6 @@ const FAQsItem = props => {
                       ? setSelectedMap({ _id: 0 })
                       : setSelectedMap(item);
                   }}>
-                  <Text style={[Fonts.style.normal, styles.textStyle]}>
-                    {item.question}
-                  </Text>
                   <IconButton icon={'triangle'} size={8} color={'#fff'} />
                   <Text
                     style={[
