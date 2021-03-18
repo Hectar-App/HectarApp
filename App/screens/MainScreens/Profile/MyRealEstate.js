@@ -1,33 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Animated,
-  Text,
-  Keyboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import React from 'react';
+import { View, Text, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import Header from '../../../Component/Header';
-import MainTypes from '../../../Component/MainFilterTypes';
-import { Fonts, Colors, Metrics, Images } from '../../../Themes';
+import { Fonts, Colors } from '../../../Themes';
 
-import RealestateType from '../../../Component/realestateType';
-import CountWithTitle from '../../../Component/CountWithTitle';
-import RangeItem from '../../../Component/rangeItem';
-import Button from '../../../Component/Button';
-import ProgressBar from '../../../Component/ProgressBar';
-import RealEstateTypesList from '../../../Component/RealestateTypeList';
 import RealEstateList from '../../../Component/realEstateList';
-import ImageViewr from 'react-native-image-zoom-viewer';
-
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import _ from 'lodash';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
-import Input from '../../../Component/Input';
 
 import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
@@ -36,7 +15,6 @@ import CardPlaceHolder from '../../../Component/cardPlaceHolder';
 
 import { connect } from 'react-redux';
 import RealEstateAction from '../../../Redux/RealEstateRedux';
-import { ActivityIndicator } from 'react-native-paper';
 
 import api from '../../../Services/API';
 
@@ -44,156 +22,9 @@ const API = api.create();
 
 class MyRealEstate extends React.Component {
   state = {
-    finishedRealEstate: [
-      {
-        _id: 3,
-        nameAr: 'شقق سكنية',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78827, long: 46.0005 },
-      },
-      {
-        _id: 2,
-        nameAr: 'فيلا للبيع',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78826, long: 46.882281 },
-      },
-      {
-        _id: 1,
-        nameAr: 'بيت للايجار',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78825, long: 46.622831 },
-      },
-      {
-        _id: 4,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78828, long: 47.122831 },
-      },
-      {
-        _id: 5,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78829, long: 46.922831 },
-      },
-      {
-        _id: 6,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.7882, long: 46.222831 },
-      },
-    ],
-    activeRealEstate: [
-      {
-        _id: 3,
-        nameAr: 'شقق233 سكنية',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78827, long: 46.0005 },
-      },
-      {
-        _id: 2,
-        nameAr: 'فيلا للبيع',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78826, long: 46.882281 },
-      },
-      {
-        _id: 1,
-        nameAr: 'بيت للايجار',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78825, long: 46.622831 },
-      },
-      {
-        _id: 4,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78828, long: 47.122831 },
-      },
-      {
-        _id: 5,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78829, long: 46.922831 },
-      },
-      {
-        _id: 6,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.7882, long: 46.222831 },
-      },
-    ],
-    disActiveRealEstate: [
-      {
-        _id: 3,
-        nameAr: 'شقق3434 سكنية',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78827, long: 46.0005 },
-      },
-      {
-        _id: 2,
-        nameAr: 'فيلا للبيع',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78826, long: 46.882281 },
-      },
-      {
-        _id: 1,
-        nameAr: 'بيت للايجار',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78825, long: 46.622831 },
-      },
-      {
-        _id: 4,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.78828, long: 47.122831 },
-      },
-      {
-        _id: 5,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: true,
-        showDetail: false,
-        coordinates: { lat: 24.78829, long: 46.922831 },
-      },
-      {
-        _id: 6,
-        nameAr: 'قطعة أرض',
-        nameEn: 'area',
-        smallIcon: false,
-        showDetail: false,
-        coordinates: { lat: 24.7882, long: 46.222831 },
-      },
-    ],
+    finishedRealEstate: [],
+    activeRealEstate: [],
+    disActiveRealEstate: [],
     selectedRealestateType: '',
     selctedTap: 'active',
     showAlert: false,
@@ -201,7 +32,6 @@ class MyRealEstate extends React.Component {
     imageFullScreen: false,
     pageNumber: 1,
     numberOfRealEstate: 0,
-    // realestateData: []
   };
 
   componentWillMount() {
@@ -217,11 +47,6 @@ class MyRealEstate extends React.Component {
         this.state.pageNumber > 1
       ) {
         let arr2 = _.concat(
-          this.state.realestateData,
-          nextProps.userRealEstate.realEstates,
-        );
-        console.log(
-          'arra  after merge',
           this.state.realestateData,
           nextProps.userRealEstate.realEstates,
         );
@@ -249,16 +74,13 @@ class MyRealEstate extends React.Component {
         showAlert: true,
         alertMessage: 'تم تحديث العقار',
       });
-      // alert('تم')
       this.setState({ loading: true });
       this.props.getUserRealEstate(this.props.user._id);
-      // this.props.navigation.goBack()
     }
   };
 
   handleDeleteItem = async () => {
     let item = this.state.deleteItem;
-    // return this.setState({showAlert: true, alertMessage: 'هل انت متأكد من حذف هذا العقار ؟'})
     this.setState({
       dismassLoading: item._id,
       optionsSelected: null,
@@ -273,7 +95,6 @@ class MyRealEstate extends React.Component {
         alertMessage: 'تم حذف العقار بنجاح',
         showAlert: true,
       });
-      // alert('تم')
       this.setState({ loading: true });
       this.props.getUserRealEstate(this.props.user._id);
     }
@@ -300,8 +121,6 @@ class MyRealEstate extends React.Component {
   };
 
   render() {
-    // const imagess = [{ url: Images.testCardImage}]
-    const imagess = [{ url: '', props: { source: Images.QRImage } }];
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1 }}>
@@ -311,7 +130,6 @@ class MyRealEstate extends React.Component {
             headerTitle={'عقاراتي'}
             doAnimation={true}
             onBackPress={() => this.props.navigation.goBack()}
-            containerStyle={{ borderBottomWidth: 0 }}
           />
 
           <AlertModal
@@ -361,7 +179,6 @@ class MyRealEstate extends React.Component {
               </View>
             )}
 
-          {/* {this.state.loading && <ActivityIndicator color={Colors.darkSeafoamGreen} />} */}
           <RealEstateList
             onScroll={() => this.setState({ optionsSelected: null })}
             deletePress={i =>
