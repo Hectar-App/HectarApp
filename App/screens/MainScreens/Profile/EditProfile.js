@@ -66,15 +66,14 @@ class EditProfile extends React.Component {
       prevPassword,
       userType,
     } = this.state;
+    if (password && !(password.length >= 6)) {
+      return onError('يجب ان تكون كلمة المرور علي الأقل 6 حروف وارقام');
+    }
+
     if (name && name.replace(/\s/g, '').length >= 1 && phoneNumber) {
       if (email && !re.test(email)) {
         return onError('الرجاء كتابة الايميل بالصيغة الصحيحة');
       }
-      console.log('BADAWEY: ', password.length);
-      if (password && !(password || '').length >= 6) {
-        return onError('يجب ان تكون كلمة المرور علي الأقل 6 حروف وارقام');
-      }
-
       this.setState({ loading: true });
       this.props.editProfile({
         name,

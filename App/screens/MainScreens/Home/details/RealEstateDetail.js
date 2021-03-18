@@ -746,10 +746,6 @@ class RealEstateDetail extends React.Component {
               </TouchableOpacity>
             </Animated.View>
 
-            {console.log('BADAWEY: ', {
-              props: this.props,
-              item: this.state,
-            })}
             <Animated.View
               style={[
                 styles.ballView,
