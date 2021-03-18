@@ -51,10 +51,11 @@ class RegisterMobileStep extends React.Component {
     ) {
       return onError('الرجاء ادخال رقم الجوال بدون صفر في البداية');
     }
-    // console.log('HHH', this.state.phoneNumber)
+    if (!this.state.phoneNumber.startsWith('5')) {
+      return onError('الرجاء ادخال رقم جوال سعودي صحيح');
+    }
     this.props.checkNumber(`966${this.parseArabic(this.state.phoneNumber)}`);
     this.setState({ loading: true });
-    // props.navigation.navigate('RegistrationConfirmationPhone')
   };
 
   componentWillReceiveProps(nextProps) {
