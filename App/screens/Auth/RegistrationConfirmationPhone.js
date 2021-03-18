@@ -56,7 +56,7 @@ class RegistrationConfirmationPhone extends React.Component {
     this.setState({ loading: true });
     if (this.state.fromForget) {
       this.props.forgetPasswordVerfyNumber(
-        this.convertNumbers2English(this.state.phoneNumber),
+        this.convertNumbers2English(`966${this.state.phoneNumber}`),
         this.convertNumbers2English(code),
       );
     } else {

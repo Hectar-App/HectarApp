@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Animated,
-  Text,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import React from 'react';
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 //Animation
-import { useAnimation } from '../../assets/Animation/animation';
 
 import Input from '../../Component/Input';
 import TitleDesc from '../../Component/TitleDesc';
-import BackButton from '../../Component/BackButton';
 import Button from '../../Component/Button';
-import Checkbox from '../../Component/CheckBox';
-import LinkButton from '../../Component/linkButton';
 import Header from '../../Component/Header';
 
-import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes';
 import { connect } from 'react-redux';
 import UserAction from '../../Redux/UserRedux';
 import { onError, onSuccess } from '../../utils/commonFunctions';
@@ -69,13 +58,12 @@ class ForgetPasswordResetPass extends React.Component {
     if (password !== cPassword) {
       return onError('كلمة المرور لا تتطابق مع تأكيد كلمة المرور');
     }
-    //    || (password || '').length < 7
-    if ((password || '').length < 7) {
-      return onError('يجب ان تكون كلمة المرور اكثر من ٧ خانات');
+    if ((password || '').length < 6) {
+      return onError('يجب ان تكون كلمة المرور اكثر من 6 خانات');
     }
 
     this.setState({ loading: true });
-    this.props.resetPassword(phoneNumber, code, password);
+    this.props.resetPassword(`966${phoneNumber}`, code, password);
   }
 
   render() {
