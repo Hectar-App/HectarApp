@@ -52,7 +52,7 @@ class RegisterMobileStep extends React.Component {
       return onError('الرجاء ادخال رقم الجوال بدون صفر في البداية');
     }
     // console.log('HHH', this.state.phoneNumber)
-    this.props.checkNumber(`+996${this.parseArabic(this.state.phoneNumber)}`);
+    this.props.checkNumber(`966${this.parseArabic(this.state.phoneNumber)}`);
     this.setState({ loading: true });
     // props.navigation.navigate('RegistrationConfirmationPhone')
   };
@@ -62,7 +62,7 @@ class RegisterMobileStep extends React.Component {
       console.log('Hello Sucess', nextProps.checkNuberSucess);
       this.setState({ loading: false });
       this.props.navigation.navigate('RegistrationConfirmationPhone', {
-        phoneNumber: `+996${this.parseArabic(this.state.phoneNumber)}`,
+        phoneNumber: `+966${this.parseArabic(this.state.phoneNumber)}`,
         code: nextProps.checkNuberSucess.confirmationCode,
       });
     }

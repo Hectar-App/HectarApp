@@ -1,29 +1,17 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
-import {useAnimation} from '../assets/Animation/animation';
-import {Fonts, Metrics, Colors, CustomIcon} from '../Themes';
+import { Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { Fonts, Metrics, Colors, CustomIcon } from '../Themes';
 import BackButton from './BackButton';
 import Button from './Button';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const Header = props => {
-  const animtion = useAnimation({
-    doAnimation: props.doAnimation,
-    duration: 550,
-  });
   return (
     <Animated.View
       style={[
         styles.container,
         props.containerStyle,
-        props.withoutUnderLinev || (false && {borderBottomWidth: 0}),
+        props.withoutUnderLinev || (false && { borderBottomWidth: 0 }),
       ]}>
       {!props.noBackButton && (
         <BackButton
@@ -42,7 +30,7 @@ const Header = props => {
       {props.forEditing && (
         <Button
           loading={props.loading}
-          textPropsStyle={{position: 'absolute', width: 'auto', left: 8}}
+          textPropsStyle={{ position: 'absolute', width: 'auto', left: 8 }}
           halfButton={true}
           buttonText={'حفظ '}
           containerStyle={{
@@ -57,7 +45,7 @@ const Header = props => {
       )}
       {props.preview && (
         <Button
-          textPropsStyle={{position: 'absolute', width: 'auto', left: 4}}
+          textPropsStyle={{ position: 'absolute', width: 'auto', left: 4 }}
           halfButton={true}
           buttonText={'معاينة'}
           containerStyle={{
@@ -73,14 +61,14 @@ const Header = props => {
       {props.withQR && (
         <TouchableOpacity
           onPress={props.onQRCodePress}
-          style={{position: 'absolute', bottom: 12, left: 20}}>
+          style={{ position: 'absolute', bottom: 12, left: 20 }}>
           <CustomIcon name={'QRcode'} size={20} />
         </TouchableOpacity>
       )}
       {props.withSearch && (
         <TouchableOpacity
           onPress={props.openSearch}
-          style={{position: 'absolute', bottom: 12, left: 20}}>
+          style={{ position: 'absolute', bottom: 12, left: 20 }}>
           <CustomIcon name={'QRcode'} size={20} />
         </TouchableOpacity>
       )}
@@ -92,9 +80,6 @@ const styles = StyleSheet.create({
   container: {
     width: Metrics.screenWidth,
     height: ifIphoneX(100, 60),
-    // backgroundColor: Colors.darkSeafoamGreen,
-    // shadowColor: "rgba(61, 186, 126, 0.25)",
-
     alignItems: 'flex-end',
     justifyContent: 'center',
     alignSelf: 'center',

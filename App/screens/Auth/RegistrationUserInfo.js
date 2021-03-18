@@ -131,10 +131,9 @@ class RegistrationUserInfo extends React.Component {
           'الرجاء الموافقة على الشروط والاحكام لاكمال عملية التسجيل ',
         );
       }
-
       this.props.registerUser(
         name,
-        phoneNumber.replace('+996', ''),
+        phoneNumber.replace('+', ''),
         password,
         selected._id,
         email,

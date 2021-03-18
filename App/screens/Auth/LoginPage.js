@@ -101,7 +101,7 @@ class LoginPage extends React.Component {
       this.state.password
     ) {
       this.props.logIn(
-        this.convertNumbers2English(this.state.phone),
+        this.convertNumbers2English(`966${this.state.phone}`),
         this.state.password,
         this.props.deviceInfo && this.props.deviceInfo.userId
           ? this.props.deviceInfo.userId
@@ -168,7 +168,7 @@ class LoginPage extends React.Component {
               value={this.state.phone}
               width={150}
               doAnimation={this.state.inputAnimation}
-              InputPlaceHolder={'البريد الالكتروني , رقم الجوال'}
+              InputPlaceHolder={'رقم الجوال'}
               onFocus={() =>
                 this.setState({
                   inputFocused: {

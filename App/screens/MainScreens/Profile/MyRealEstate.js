@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Animated,
@@ -8,11 +8,11 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import Header from '../../../Component/Header';
 import MainTypes from '../../../Component/MainFilterTypes';
-import {Fonts, Colors, Metrics, Images} from '../../../Themes';
+import { Fonts, Colors, Metrics, Images } from '../../../Themes';
 
 import RealestateType from '../../../Component/realestateType';
 import CountWithTitle from '../../../Component/CountWithTitle';
@@ -26,7 +26,7 @@ import ImageViewr from 'react-native-image-zoom-viewer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import _ from 'lodash';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import Input from '../../../Component/Input';
 
 import AlertModal from '../../../Component/Alert';
@@ -34,9 +34,9 @@ import ErroAlert from '../../../Component/ErrorAlert';
 
 import CardPlaceHolder from '../../../Component/cardPlaceHolder';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import RealEstateAction from '../../../Redux/RealEstateRedux';
-import {ActivityIndicator} from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 
 import api from '../../../Services/API';
 
@@ -51,7 +51,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78827, long: 46.0005},
+        coordinates: { lat: 24.78827, long: 46.0005 },
       },
       {
         _id: 2,
@@ -59,7 +59,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78826, long: 46.882281},
+        coordinates: { lat: 24.78826, long: 46.882281 },
       },
       {
         _id: 1,
@@ -67,7 +67,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78825, long: 46.622831},
+        coordinates: { lat: 24.78825, long: 46.622831 },
       },
       {
         _id: 4,
@@ -75,7 +75,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78828, long: 47.122831},
+        coordinates: { lat: 24.78828, long: 47.122831 },
       },
       {
         _id: 5,
@@ -83,7 +83,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78829, long: 46.922831},
+        coordinates: { lat: 24.78829, long: 46.922831 },
       },
       {
         _id: 6,
@@ -91,7 +91,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.7882, long: 46.222831},
+        coordinates: { lat: 24.7882, long: 46.222831 },
       },
     ],
     activeRealEstate: [
@@ -101,7 +101,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78827, long: 46.0005},
+        coordinates: { lat: 24.78827, long: 46.0005 },
       },
       {
         _id: 2,
@@ -109,7 +109,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78826, long: 46.882281},
+        coordinates: { lat: 24.78826, long: 46.882281 },
       },
       {
         _id: 1,
@@ -117,7 +117,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78825, long: 46.622831},
+        coordinates: { lat: 24.78825, long: 46.622831 },
       },
       {
         _id: 4,
@@ -125,7 +125,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78828, long: 47.122831},
+        coordinates: { lat: 24.78828, long: 47.122831 },
       },
       {
         _id: 5,
@@ -133,7 +133,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78829, long: 46.922831},
+        coordinates: { lat: 24.78829, long: 46.922831 },
       },
       {
         _id: 6,
@@ -141,7 +141,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.7882, long: 46.222831},
+        coordinates: { lat: 24.7882, long: 46.222831 },
       },
     ],
     disActiveRealEstate: [
@@ -151,7 +151,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78827, long: 46.0005},
+        coordinates: { lat: 24.78827, long: 46.0005 },
       },
       {
         _id: 2,
@@ -159,7 +159,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78826, long: 46.882281},
+        coordinates: { lat: 24.78826, long: 46.882281 },
       },
       {
         _id: 1,
@@ -167,7 +167,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78825, long: 46.622831},
+        coordinates: { lat: 24.78825, long: 46.622831 },
       },
       {
         _id: 4,
@@ -175,7 +175,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.78828, long: 47.122831},
+        coordinates: { lat: 24.78828, long: 47.122831 },
       },
       {
         _id: 5,
@@ -183,7 +183,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: true,
         showDetail: false,
-        coordinates: {lat: 24.78829, long: 46.922831},
+        coordinates: { lat: 24.78829, long: 46.922831 },
       },
       {
         _id: 6,
@@ -191,7 +191,7 @@ class MyRealEstate extends React.Component {
         nameEn: 'area',
         smallIcon: false,
         showDetail: false,
-        coordinates: {lat: 24.7882, long: 46.222831},
+        coordinates: { lat: 24.7882, long: 46.222831 },
       },
     ],
     selectedRealestateType: '',
@@ -205,7 +205,7 @@ class MyRealEstate extends React.Component {
   };
 
   componentWillMount() {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     this.props.getUserRealEstate(this.props.user._id, this.state.pageNumber);
   }
 
@@ -225,21 +225,22 @@ class MyRealEstate extends React.Component {
           this.state.realestateData,
           nextProps.userRealEstate.realEstates,
         );
-        this.setState({realestateData: arr2, moreDataLoading: false});
+        this.setState({ realestateData: arr2, moreDataLoading: false });
       } else if (
         nextProps.userRealEstate &&
         nextProps.userRealEstate.realEstates
-      )
+      ) {
         this.setState({
           realestateData: nextProps.userRealEstate.realEstates,
           realestateCount: nextProps.userRealEstate.realEstatesCount,
           loading: false,
         });
+      }
     }
   }
 
   handleRefreshItem = async item => {
-    this.setState({dismassLoading: item._id, optionsSelected: null});
+    this.setState({ dismassLoading: item._id, optionsSelected: null });
     const res = await API.refreshRealEstate(item._id, this.props.user.token);
     console.log('res', res);
     if (res && res.ok) {
@@ -249,7 +250,7 @@ class MyRealEstate extends React.Component {
         alertMessage: 'تم تحديث العقار',
       });
       // alert('تم')
-      this.setState({loading: true});
+      this.setState({ loading: true });
       this.props.getUserRealEstate(this.props.user._id);
       // this.props.navigation.goBack()
     }
@@ -273,7 +274,7 @@ class MyRealEstate extends React.Component {
         showAlert: true,
       });
       // alert('تم')
-      this.setState({loading: true});
+      this.setState({ loading: true });
       this.props.getUserRealEstate(this.props.user._id);
     }
   };
@@ -284,7 +285,7 @@ class MyRealEstate extends React.Component {
   }
 
   onQRCodePress = () => {
-    this.setState({imageFullScreen: true});
+    this.setState({ imageFullScreen: true });
   };
 
   handleGetMoreDatat = () => {
@@ -300,32 +301,32 @@ class MyRealEstate extends React.Component {
 
   render() {
     // const imagess = [{ url: Images.testCardImage}]
-    const imagess = [{url: '', props: {source: Images.QRImage}}];
+    const imagess = [{ url: '', props: { source: Images.QRImage } }];
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Header
             withQR={false}
             onQRCodePress={this.onQRCodePress}
             headerTitle={'عقاراتي'}
             doAnimation={true}
             onBackPress={() => this.props.navigation.goBack()}
-            containerStyle={{borderBottomWidth: 0}}
+            containerStyle={{ borderBottomWidth: 0 }}
           />
 
           <AlertModal
             onOkPress={this.handleDeleteItem}
-            okTextStyle={{color: Colors.redWhite}}
+            okTextStyle={{ color: Colors.redWhite }}
             okButtonText={'حذف'}
             twoButtons={this.state.twoButtons}
             contentMessage={this.state.alertMessage}
-            closeErrorModel={() => this.setState({showAlert: false})}
+            closeErrorModel={() => this.setState({ showAlert: false })}
             isVisible={this.state.showAlert}
           />
 
           {this.state.showErrorMessage && (
             <ErroAlert
-              setAnimation={() => this.setState({showErrorMessage: false})}
+              setAnimation={() => this.setState({ showErrorMessage: false })}
               doAnimation={this.state.showErrorMessage}
             />
           )}
@@ -362,7 +363,7 @@ class MyRealEstate extends React.Component {
 
           {/* {this.state.loading && <ActivityIndicator color={Colors.darkSeafoamGreen} />} */}
           <RealEstateList
-            onScroll={() => this.setState({optionsSelected: null})}
+            onScroll={() => this.setState({ optionsSelected: null })}
             deletePress={i =>
               this.setState({
                 showAlert: true,
@@ -381,8 +382,8 @@ class MyRealEstate extends React.Component {
             popupOf={this.state.optionsSelected}
             onOptionsPress={i =>
               this.state.optionsSelected
-                ? this.setState({optionsSelected: null})
-                : this.setState({optionsSelected: i._id})
+                ? this.setState({ optionsSelected: null })
+                : this.setState({ optionsSelected: i._id })
             }
             listType={'small'}
             dismassLoading={this.state.dismassLoading}
@@ -392,7 +393,7 @@ class MyRealEstate extends React.Component {
             onItemPress={x => {
               //  alert(1);
               this.state.optionsSelected
-                ? this.setState({optionsSelected: null})
+                ? this.setState({ optionsSelected: null })
                 : this.props.navigation.navigate('RealEstateDetail', {
                     realEstate: x,
                   });
@@ -401,7 +402,7 @@ class MyRealEstate extends React.Component {
             handleGetMoreDatat={this.handleGetMoreDatat}
             moreDataLoading={this.state.moreDataLoading}
             realestateData={this.state.realestateData}
-            containerStyle={{paddingTop: 20}}
+            containerStyle={{ paddingTop: 20 }}
           />
         </View>
       </TouchableWithoutFeedback>
