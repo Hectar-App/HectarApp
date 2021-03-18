@@ -31,7 +31,7 @@ import FinishRegistration from '../screens/Auth/FinishRegistration';
 //Home
 import HomePage from '../screens/MainScreens/Home/HomePage';
 import FilterPage from '../screens/MainScreens/Home/FilterPage';
-import RealEstateDetail from '../screens/MainScreens/Home/realestateDetail';
+import RealEstateDetail from '../screens/MainScreens/Home/details/RealEstateDetail';
 import OwnerRealEstates from '../screens/MainScreens/Home/ownerRealEstate';
 
 // Offices
