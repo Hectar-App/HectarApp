@@ -746,6 +746,10 @@ class RealEstateDetail extends React.Component {
               </TouchableOpacity>
             </Animated.View>
 
+            {console.log('BADAWEY: ', {
+              props: this.props,
+              item: this.state,
+            })}
             <Animated.View
               style={[
                 styles.ballView,
@@ -759,30 +763,32 @@ class RealEstateDetail extends React.Component {
                   zIndex: 99999,
                 },
               ]}>
-              <TouchableOpacity
-                style={[
-                  styles.ballView,
-                  {
-                    width: 34,
-                    height: 34,
-                    borderRadius: 17,
-                    backgroundColor: 'rgb(255,255,255)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 99999,
-                  },
-                ]}
-                onPress={this.favProccess}>
-                <CustomIcon
-                  name={'bookmark2'}
-                  size={15}
-                  color={
-                    (this.props.checker || fav) && !this.state.toPreview
-                      ? Colors.darkSeafoamGreen
-                      : Colors.grey
-                  }
-                />
-              </TouchableOpacity>
+              {!owner && (
+                <TouchableOpacity
+                  style={[
+                    styles.ballView,
+                    {
+                      width: 34,
+                      height: 34,
+                      borderRadius: 17,
+                      backgroundColor: 'rgb(255,255,255)',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 99999,
+                    },
+                  ]}
+                  onPress={this.favProccess}>
+                  <CustomIcon
+                    name={'bookmark2'}
+                    size={15}
+                    color={
+                      (this.props.checker || fav) && !this.state.toPreview
+                        ? Colors.darkSeafoamGreen
+                        : Colors.grey
+                    }
+                  />
+                </TouchableOpacity>
+              )}
 
               {owner && (
                 <TouchableOpacity

@@ -713,7 +713,6 @@ class HomePage extends React.Component {
 
     this.doReq();
   };
-
   handleSugesstionPress = i => {
     this.setState({ sugesstionData: null, searchValue: '' });
     this.mapRef.animateToRegion({
@@ -726,7 +725,6 @@ class HomePage extends React.Component {
 
   render() {
     const theme = this.context;
-
     const testStyle = this.state.Animation.mapButtonAnimation.interpolate({
       inputRange: [0, 1],
       outputRange: [201, Metrics.screenHeight - 160],
@@ -1201,6 +1199,7 @@ class HomePage extends React.Component {
               doAnimation={true}
               onFavPress={this.handleFavPress}
               fav={this.props.checker || this.state.fav}
+              user={this.props.user._id}
             />
           )}
         </View>
