@@ -201,14 +201,14 @@ class RealEstateDetail extends React.Component {
           this.setState({
             owner:
               this.props.user &&
-              this.props.user._id === this.state.realEstateItem.owner._id,
+              this.props.user?._id === this.state.realEstateItem.owner._id,
           });
         }
 
         if (!this.props.user && !this.state.toPreview) {
           this.setState({ rate: false });
         }
-        const { imagesSmall, images } = this.state.realEstateItem;
+        const { imagesSmall } = this.state.realEstateItem;
         if (imagesSmall) {
           this.setState({
             images:

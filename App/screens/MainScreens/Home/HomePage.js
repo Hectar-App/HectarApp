@@ -1199,7 +1199,7 @@ class HomePage extends React.Component {
               doAnimation={true}
               onFavPress={this.handleFavPress}
               fav={this.props.checker || this.state.fav}
-              user={this.props.user._id}
+              user={this.props?.user?._id}
             />
           )}
         </View>
