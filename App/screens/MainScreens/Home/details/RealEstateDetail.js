@@ -1411,7 +1411,7 @@ class RealEstateDetail extends React.Component {
 
                     {realEstateItem.populationType && populationShow && (
                       <PropertyInfoItem
-                        value={realEstateItem.populationType}
+                        value={realEstateItem.populationType?.nameAr}
                         label={'الساكن: '}
                         icon={'user'}
                       />
