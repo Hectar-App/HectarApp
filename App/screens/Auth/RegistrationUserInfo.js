@@ -6,6 +6,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import R from 'ramda';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 //Animation
@@ -20,13 +21,20 @@ import Checkbox from '../../Component/CheckBox';
 import LinkButton from '../../Component/linkButton';
 import RadioButtonModal from '../../Component/RadioButtonModal';
 
-import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes';
+import {
+  Metrics,
+  ApplicationStyles,
+  Colors,
+  Fonts,
+  Images,
+} from '../../Themes';
 
 import Header from '../../Component/Header';
 
 import { connect } from 'react-redux';
 import UserAction from '../../Redux/UserRedux';
 import { onError } from '../../utils/commonFunctions';
+import MapModal from '../../Component/MapModal';
 
 class RegistrationUserInfo extends React.Component {
   constructor(props) {
@@ -41,8 +49,9 @@ class RegistrationUserInfo extends React.Component {
       userTypesModal: false,
       footerAnimation: new Animated.Value(0),
       selected: {},
+      mapModalVisible: false,
+      selectedLocation: null,
     };
-    // const animation = useAnimation({ doAnimation: footerAnimation , duration: 550 })
   }
 
   componentWillMount() {
@@ -55,20 +64,15 @@ class RegistrationUserInfo extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps.usertypes', nextProps);
     if (this.props.userTypes !== nextProps.userTypes) {
       this.setState({ userTypes: nextProps.userTypes });
-      console.log(this.props.userTypes);
     }
 
     if (this.props.user !== nextProps.user) {
-      //TODO Sucess
-      console.log(nextProps.user);
       this.props.navigation.navigate('FinishRegistration');
     }
 
     if (this.props.registerFaild !== nextProps.registerFaild) {
-      //TODO faild
       onError(nextProps.registerFaild.errmsg);
     }
   }
@@ -106,7 +110,6 @@ class RegistrationUserInfo extends React.Component {
   }
 
   handleRegister() {
-    console.log('this.state', this.state);
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const {
@@ -116,6 +119,7 @@ class RegistrationUserInfo extends React.Component {
       password,
       cPassword,
       phoneNumber,
+      selectedLocation,
     } = this.state;
     if (name && selected && password && cPassword) {
       if (email && !re.test(email)) {
@@ -131,16 +135,40 @@ class RegistrationUserInfo extends React.Component {
           'الرجاء الموافقة على الشروط والاحكام لاكمال عملية التسجيل ',
         );
       }
+
+      if (this.isCompanyOrOffice() && !selectedLocation) {
+        return onError('برجاء ادخال موقع المكتب أو الشركة');
+      }
       this.props.registerUser(
         name,
         phoneNumber.replace('+', ''),
         password,
         selected._id,
         email,
+        {
+          lat: R.prop('latitude', selectedLocation),
+          lng: R.prop('longitude', selectedLocation),
+          address: R.prop('address', selectedLocation),
+        },
       );
     } else {
       onError('الرجاء اكمال البيانات لاتمام عملية التسجيل');
     }
+  }
+
+  isCompanyOrOffice() {
+    return (
+      R.propEq(
+        'nameEn',
+        'realestate company',
+        R.path(['state', 'selected'], this),
+      ) ||
+      R.propEq(
+        'nameEn',
+        'realestate office',
+        R.path(['state', 'selected'], this),
+      )
+    );
   }
 
   render() {
@@ -213,6 +241,21 @@ class RegistrationUserInfo extends React.Component {
                 * نوع المستخدم الباحث عن عقار لا يمكنه اضافة عقارات
               </Text>
             )}
+            {this.isCompanyOrOffice() && (
+              <InputButton
+                onPress={() => {
+                  this.setState({ mapModalVisible: true });
+                  Keyboard.dismiss();
+                }}
+                InputPlaceHolder={R.pathOr(
+                  'حدد موقعك بدقة',
+                  ['state', 'selectedLocation', 'address'],
+                  this,
+                )}
+                Icon={Images.userLocationIcon}
+                containerStyle={{ marginTop: 18 }}
+              />
+            )}
           </View>
 
           <View>
@@ -225,12 +268,13 @@ class RegistrationUserInfo extends React.Component {
               onPrivacyPress={() => this.nav('RolesAndCondation')}
             />
           </View>
-
-          <Button
-            containerStyle={{ marginTop: 86 }}
-            buttonText={'التالي'}
-            onPress={() => this.handleRegister()}
-          />
+          {!this.state.mapModalVisible && (
+            <Button
+              containerStyle={{ marginTop: 86 }}
+              buttonText={'التالي'}
+              onPress={() => this.handleRegister()}
+            />
+          )}
 
           {this.state.RadioButtonModal && (
             <RadioButtonModal
@@ -241,6 +285,18 @@ class RegistrationUserInfo extends React.Component {
               doAnimation={true}
               data={this.state.userTypes}
               isVisible={this.state.RadioButtonModal}
+            />
+          )}
+
+          {this.state.mapModalVisible && (
+            <MapModal
+              selectedLocation={(x, y, z) => {
+                this.setState({
+                  mapModalVisible: false,
+                  selectedLocation: { ...x, address: y, city: z },
+                });
+              }}
+              onClosePress={() => this.setState({ mapModalVisible: false })}
             />
           )}
 
@@ -279,14 +335,20 @@ class RegistrationUserInfo extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   getUserTypes: () => dispatch(UserAction.getUserTypes()),
-  registerUser: (name, phone, password, userType, email) =>
+  registerUser: (name, phone, password, userType, email, location) =>
     dispatch(
-      UserAction.registerRequest(name, phone, password, userType, email),
+      UserAction.registerRequest(
+        name,
+        phone,
+        password,
+        userType,
+        email,
+        location,
+      ),
     ),
 });
 
 const mapStateToProps = state => {
-  console.log('state', state);
   return {
     userTypes: state.user.userTypes,
     user: state.user.user,
