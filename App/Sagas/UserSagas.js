@@ -81,7 +81,7 @@ export function* getUserTypes(api, action) {
 }
 
 export function* registerUser(api, action) {
-  const { name, phone, password, userType, email } = action;
+  const { name, phone, password, userType, email, location } = action;
   // make the call to the api
   let response = null;
 
@@ -92,6 +92,7 @@ export function* registerUser(api, action) {
     password,
     userType,
     email,
+    location,
   );
 
   console.log('register res', response);

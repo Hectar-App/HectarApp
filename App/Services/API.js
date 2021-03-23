@@ -1,5 +1,6 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce';
+import R from 'ramda';
 const apiURL = 'https://devbackend.devstagging.online:9090/api';
 
 //const apiURL = 'https://devbackend.devstagging.online:9090/api';
@@ -31,16 +32,21 @@ const create = (baseURL = apiURL) => {
   const checkPhone = phoneNumber => api.post('checkUser', { phoneNumber });
   const verifyPhone = (phoneNumber, confirmationCode) =>
     api.post('confirmRegister', { phoneNumber, confirmationCode });
-  const registerUser = (name, phone, password, userType, email) =>
-    api.post(
-      'addUser',
-      email
-        ? { name, phoneNumber: phone, password, userType, email }
-        : { name, phoneNumber: phone, password, userType },
-    );
+  const registerUser = (name, phone, password, userType, email, location) => {
+    const cleanObject = R.reject(R.isNil);
+    const data = {
+      name,
+      phoneNumber: phone,
+      password,
+      userType,
+      location,
+      email,
+      address: R.propOr(null, 'address', location),
+    };
+    return api.post('addUser', cleanObject(data));
+  };
   const userTypes = () => api.get('userTypes/getUserTypes');
   const editUser = user => {
-    // name, phone, prevPassword, password, userType, email, token
     api.setHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${user.token}`,

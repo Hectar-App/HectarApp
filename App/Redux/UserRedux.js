@@ -21,7 +21,14 @@ const { Types, Creators } = createActions({
   getUserTypesSucess: ['userTypes'],
   getUserTypesFaild: ['userTypesError'],
 
-  registerRequest: ['name', 'phone', 'password', 'userType', 'email'],
+  registerRequest: [
+    'name',
+    'phone',
+    'password',
+    'userType',
+    'email',
+    'location',
+  ],
   registerSuccess: ['user'],
   registerFaild: ['registerError'],
 
