@@ -1,13 +1,12 @@
 import React from 'react';
+import { Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import Header from '../../../Component/Header';
 import Button from '../../../Component/Button';
-import InputButton from '../../../Component/InputButton';
-
-import InputModal from '../../../Component/PasswordModal';
+import InputButton, { InputWithAction } from '../../../Component/InputButton';
 
 import Input from '../../../Component/Input';
 import { connect } from 'react-redux';
@@ -15,17 +14,17 @@ import UserAction from '../../../Redux/UserRedux';
 import {
   onError,
   onSuccess,
-  perfectHeight,
+  perfectFont,
+  perfectWidth,
 } from '../../../utils/commonFunctions';
 import RadioButtonModal from '../../../Component/RadioButtonModal';
+import VerticalSpace from '../../../Component/core/layouts/VerticalSpace';
 
 class EditProfile extends React.Component {
   state = {
     name: this.props.user.name || '',
     email: this.props.user.email || '',
-    password: '',
     phoneNumber: this.props.user.phoneNumber + '',
-    passwordModalVisable: false,
     userType: R.pathOr({}, ['props', 'user', 'userType'], this),
   };
 
@@ -41,9 +40,6 @@ class EditProfile extends React.Component {
       case 'email':
         this.setState({ email: val });
         break;
-      case 'password':
-        this.setState({ password: val });
-        break;
       case 'phone':
         this.setState({ phoneNumber: val });
         break;
@@ -58,17 +54,7 @@ class EditProfile extends React.Component {
   handleRegister() {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const {
-      name,
-      email,
-      password,
-      phoneNumber,
-      prevPassword,
-      userType,
-    } = this.state;
-    if (password && !(password.length >= 6)) {
-      return onError('يجب ان تكون كلمة المرور علي الأقل 6 حروف وارقام');
-    }
+    const { name, email, phoneNumber, userType } = this.state;
 
     if (name && name.replace(/\s/g, '').length >= 1 && phoneNumber) {
       if (email && !re.test(email)) {
@@ -78,8 +64,6 @@ class EditProfile extends React.Component {
       this.props.editProfile({
         name,
         phoneNumber,
-        prevPassword,
-        password,
         userType: R.prop('_id', userType),
         email: (email || '').length > 0 ? email : '',
         token: this.props.user.token,
@@ -92,10 +76,8 @@ class EditProfile extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.userTypes !== nextProps.userTypes) {
       this.setState({ userTypes: nextProps.userTypes });
-      console.log(this.props.userTypes);
     }
     if (this.props.user !== nextProps.user) {
-      console.log('newUser', nextProps.user);
       this.setState({ loading: false });
       onSuccess('تم تعديل بياناتك بنجاح ');
     }
@@ -103,16 +85,6 @@ class EditProfile extends React.Component {
     if (this.props.edietProfileError !== nextProps.edietProfileError) {
       this.setState({ loading: false });
       onError(nextProps.edietProfileError.error);
-    }
-  }
-
-  getPassword(prevPassword, password) {
-    if (password) {
-      this.setState({
-        prevPassword,
-        password,
-        passwordModalVisable: false,
-      });
     }
   }
 
@@ -125,52 +97,51 @@ class EditProfile extends React.Component {
             doAnimation={true}
             onBackPress={() => this.props.navigation.goBack()}
           />
-
+          <VerticalSpace height={30} />
+          <Text style={styles.label}>الاسم</Text>
+          <VerticalSpace height={8} />
           <Input
             onChangeText={val => this.handleStorInput('name', val)}
             inputValue={this.state.name}
-            containerStyle={{ marginTop: 37 }}
             InputPlaceHolder={'معاذ الأمين'}
           />
+          <VerticalSpace height={14} />
+          <Text style={styles.label}>البريد الالكتروني</Text>
+          <VerticalSpace height={8} />
           <Input
             onChangeText={val => this.handleStorInput('email', val)}
             inputValue={this.state.email}
-            containerStyle={{ marginTop: 14 }}
             InputPlaceHolder={'moath@example.com'}
           />
+          <VerticalSpace height={14} />
+          <Text style={styles.label}>نوع الحساب</Text>
+          <VerticalSpace height={8} />
+          <InputButton
+            width={150}
+            InputPlaceHolder={this.state.userType.userTypeName}
+            onPress={() => this.setState({ RadioButtonModal: true })}
+          />
+          <VerticalSpace height={14} />
+          <Text style={styles.label}>رقم الجوال</Text>
+          <VerticalSpace height={8} />
           <Input
             onChangeText={val => this.handleStorInput('phone', val)}
             InputPlaceHolder={'رقم الهاتف'}
             inputValue={this.state.phoneNumber}
-            containerStyle={{ marginTop: 14 }}
             disabled={true}
           />
-          <InputButton
-            containerStyle={{ marginTop: 14 }}
-            onPress={() => this.setState({ passwordModalVisable: true })}
-            InputPlaceHolder={'*******'}
+          <VerticalSpace height={14} />
+          <Text style={styles.label}>الرقم السري</Text>
+          <VerticalSpace height={8} />
+          <InputWithAction
+            label={'*******'}
+            onAction={() =>
+              this.props.navigation.navigate('changePassword', {
+                onFinish: this.props.editProfile,
+                token: this.props?.user?.token,
+              })
+            }
           />
-          <InputButton
-            width={150}
-            S
-            InputPlaceHolder={this.state.userType.userTypeName}
-            containerStyle={{ marginTop: perfectHeight(12) }}
-            onPress={() => this.setState({ RadioButtonModal: true })}
-          />
-
-          {this.state.passwordModalVisable && (
-            <InputModal
-              getPassword={(prev, password) => this.getPassword(prev, password)}
-              onClosePress={() =>
-                this.setState({ passwordModalVisable: false })
-              }
-              isVisible={this.state.passwordModalVisable}
-              data={[
-                { _id: 0, placeHolder: 'hello' },
-                { _id: 0, placeHolder: 'hello2' },
-              ]}
-            />
-          )}
           {this.state.RadioButtonModal && (
             <RadioButtonModal
               onPress={item =>
@@ -234,3 +205,13 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(EditProfile);
+
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: 'TheMixArab',
+    fontWeight: '400',
+    fontSize: perfectFont(12),
+    marginRight: perfectWidth(32),
+    color: '#3D3D3D',
+  },
+});

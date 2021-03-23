@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useAnimation } from '../assets/Animation/animation';
 import { Fonts, Metrics, Colors } from '../Themes';
+import { perfectFont } from '../utils/commonFunctions';
 
 const InputCo = props => {
   const animtion = useAnimation({
@@ -16,79 +17,84 @@ const InputCo = props => {
     duration: 550,
   });
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        props.containerStyle,
-        {
-          width: props.doAnimation
-            ? animtion.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, Metrics.screenWidth * 0.84],
-              })
-            : Metrics.screenWidth * 0.84,
-        },
-        props.styleAfterAnimation,
-      ]}>
-      <View style={styles.row}>
-        {props.passView && (
-          <TouchableOpacity
-            style={styles.passShowView}
-            onPress={props.onShowPassPress}>
-            <Text style={[Fonts.style.normal, styles.text]}>عرض</Text>
-          </TouchableOpacity>
-        )}
-        {props.registerPhone && (
-          <View style={styles.passShowView} onPress={props.onShowPassPress}>
-            <Text
-              style={[
-                Fonts.style.normal,
-                styles.textPhone,
-                { color: Colors.darkSlateBlue },
-              ]}>
-              +966 |{' '}
-            </Text>
-          </View>
-        )}
-        {props.withDesc && (
-          <View style={[styles.descStyle, props.propsDescStyleCont]}>
-            <Text
-              style={[
-                Fonts.style.normal,
-                styles.descTextStyle,
-                { color: Colors.darkSlateBlue },
-                props.descTextStyle,
-              ]}>
-              {' '}
-              {props.desc}{' '}
-            </Text>
-          </View>
-        )}
-        {props.withButton && <TouchableOpacity sty />}
-        <TextInput
-          placeholder={props.InputPlaceHolder}
-          value={props.inputValue}
-          style={[
-            Fonts.style.normal,
-            styles.inputStyle,
-            props.InputStyle,
-            props.disabled && { backgroundColor: '#cccccc' },
-          ]}
-          placeholderTextColor={Colors.brownGrey}
-          onChange={props.onChange}
-          multiline={props.multiline}
-          ref={props.ref}
-          onChangeText={props.onChangeText}
-          keyboardType={props.number ? 'numeric' : 'default'}
-          secureTextEntry={props.passShow}
-          onSubmitEditing={props.onSubmitEditing}
-          autoFocus={process.autoFocus}
-          onFocus={props.onFocus}
-          onBlur={props.onBlur}
-          editable={!props.disabled}
-        />
-      </View>
-    </Animated.View>
+    <>
+      <Animated.View
+        style={[
+          styles.container,
+          props.containerStyle,
+          {
+            width: props.doAnimation
+              ? animtion.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, Metrics.screenWidth * 0.84],
+                })
+              : Metrics.screenWidth * 0.84,
+          },
+          props.styleAfterAnimation,
+        ]}>
+        <View style={styles.row}>
+          {props.passView && (
+            <TouchableOpacity
+              style={styles.passShowView}
+              onPress={props.onShowPassPress}>
+              <Text style={[Fonts.style.normal, styles.text]}>عرض</Text>
+            </TouchableOpacity>
+          )}
+          {props.registerPhone && (
+            <View style={styles.passShowView} onPress={props.onShowPassPress}>
+              <Text
+                style={[
+                  Fonts.style.normal,
+                  styles.textPhone,
+                  { color: Colors.darkSlateBlue },
+                ]}>
+                +966 |{' '}
+              </Text>
+            </View>
+          )}
+          {props.withDesc && (
+            <View style={[styles.descStyle, props.propsDescStyleCont]}>
+              <Text
+                style={[
+                  Fonts.style.normal,
+                  styles.descTextStyle,
+                  { color: Colors.darkSlateBlue },
+                  props.descTextStyle,
+                ]}>
+                {' '}
+                {props.desc}{' '}
+              </Text>
+            </View>
+          )}
+          {props.withButton && <TouchableOpacity sty />}
+          <TextInput
+            placeholder={props.InputPlaceHolder}
+            value={props.inputValue}
+            style={[
+              Fonts.style.normal,
+              styles.inputStyle,
+              props.InputStyle,
+              props.disabled && {
+                backgroundColor: '#F7F7F7',
+                borderColor: '#F7F7F7',
+              },
+            ]}
+            placeholderTextColor={Colors.brownGrey}
+            onChange={props.onChange}
+            multiline={props.multiline}
+            ref={props.ref}
+            onChangeText={props.onChangeText}
+            keyboardType={props.number ? 'numeric' : 'default'}
+            secureTextEntry={props.passShow}
+            onSubmitEditing={props.onSubmitEditing}
+            autoFocus={process.autoFocus}
+            onFocus={props.onFocus}
+            onBlur={props.onBlur}
+            editable={!props.disabled}
+          />
+        </View>
+      </Animated.View>
+    </>
   );
 };
 

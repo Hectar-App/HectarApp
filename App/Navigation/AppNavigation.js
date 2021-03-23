@@ -61,6 +61,7 @@ import AboutApp from '../screens/MainScreens/Profile/AboutHectar';
 import MyRealEstate from '../screens/MainScreens/Profile/MyRealEstate';
 import Request from '../screens/MainScreens/Profile/Requests';
 import QRScan from '../screens/MainScreens/QRScan/QRScan';
+import ChangePassword from '../screens/Auth/ChangePassword';
 
 const verticalTransitionsScreens = [];
 const noAnimation = [
@@ -216,6 +217,7 @@ const ProfileStackNav = createStackNavigator(
     Profile: { screen: Profile },
     HelpCenter: { screen: HelpCenter },
     EdietProfile: { screen: EditProfile },
+    changePassword: { screen: ChangePassword },
     FAQs: { screen: FAQs },
     AboutApp: { screen: AboutApp },
     MyRealEstate: { screen: MyRealEstate },
