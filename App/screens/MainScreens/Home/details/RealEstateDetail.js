@@ -501,7 +501,7 @@ class RealEstateDetail extends React.Component {
                       {(realEstateItem &&
                         realEstateItem.price &&
                         this.kFormatter(realEstateItem.price)) ||
-                        ' السعر غير محدد '}
+                        ' علي السوم '}
                     </Text>
                     {realEstateItem &&
                       realEstateItem.price &&

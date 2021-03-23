@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,10 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
-import {useAnimation} from '../assets/Animation/animation';
-import {Fonts, Metrics, Colors, Images, CustomIcon} from '../Themes';
+import { useAnimation } from '../assets/Animation/animation';
+import { Fonts, Metrics, Colors, Images, CustomIcon } from '../Themes';
 import BackButton from './BackButton';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 import FavIcon from '../assets/imgs/svgImagesComponents/favorateIcon';
 
@@ -36,7 +36,7 @@ const realEstateItemSmallFavorate = props => {
     extrapolate: 'clamp',
   });
 
-  const {address, type, status, price, images} = props.item.realEstate
+  const { address, type, status, price, images } = props.item.realEstate
     ? props.item.realEstate
     : props.item;
   // console.log('props.index', props.item)
@@ -49,13 +49,16 @@ const realEstateItemSmallFavorate = props => {
       : Math.sign(num) * Math.abs(num) + ' ريال';
   }
 
-  if (!type || !address) return <View />;
+  if (!type || !address) {
+    return <View />;
+  }
   return (
     <TouchableOpacity
       onPress={props.onItemPress}
       style={[styles.container, props.containerStyle]}>
       {/* 69.4 */}
-      <Animated.View style={[styles.cardView, {transform: [{translateX: 1}]}]}>
+      <Animated.View
+        style={[styles.cardView, { transform: [{ translateX: 1 }] }]}>
         {/* <View
                 style={{
                     width: 56,
@@ -99,9 +102,9 @@ const realEstateItemSmallFavorate = props => {
           }}>
           <Image
             source={
-              images && images[0] ? {uri: images[0]} : Images.testCardImage
+              images && images[0] ? { uri: images[0] } : Images.testCardImage
             }
-            style={{height: 90, width: 110, borderRadius: 10}}
+            style={{ height: 90, width: 110, borderRadius: 10 }}
           />
           <View
             style={{
@@ -186,7 +189,7 @@ const realEstateItemSmallFavorate = props => {
                         <Text style={[Fonts.style.normal, {fontSize: 12, alignSelf:'center', marginEnd: 2}]} >منذ ساعتين</Text>
                         <Image source={Images.watchFlagCardIcon} />
                     </View> */}
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   numberOfLines={1}
                   style={[
@@ -239,14 +242,14 @@ const realEstateItemSmallFavorate = props => {
                 />
               </TouchableOpacity>
 
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   style={[
                     Fonts.style.normal,
-                    {fontSize: 16, alignSelf: 'center', color: '#464646'},
+                    { fontSize: 16, alignSelf: 'center', color: '#464646' },
                   ]}>
                   {' '}
-                  {price && kFormatter(price) || 'السعر غير محدد'}{' '}
+                  {(price && kFormatter(price)) || 'علي السوم'}{' '}
                 </Text>
               </View>
 

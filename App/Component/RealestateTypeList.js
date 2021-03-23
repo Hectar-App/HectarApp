@@ -39,7 +39,7 @@ const Button = props => {
           }}>
           {(props.features && props.features).map((item, index) => {
             const selected1 = props.forEditeng
-              ? (props.selectedFeatures || []).findIndex(i => i === item)
+              ? (props.selectedFeatures || []).findIndex(i => i == item)
               : (props.selectedFeatures || []).findIndex(
                   i => i._id === item._id,
                 );

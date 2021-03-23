@@ -85,7 +85,7 @@ const itemCard = props => {
             </View>
             <Text
               style={[Fonts.style.normal, styles.textCard, { marginTop: 7 }]}>
-              {(price && kFormatter(price)) || 'السعر غير محدد'}
+              {(price && kFormatter(price)) || 'علي السوم'}
             </Text>
           </View>
           <View

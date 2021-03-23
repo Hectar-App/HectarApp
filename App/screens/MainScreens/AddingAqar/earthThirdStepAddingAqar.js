@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Animated,
@@ -8,16 +8,16 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 
 import Header from '../../../Component/Header';
 import MainTypes from '../../../Component/MainFilterTypes';
-import {Fonts, Colors, Metrics} from '../../../Themes';
+import { Fonts, Colors, Metrics } from '../../../Themes';
 
-import {Pagination} from 'react-native-snap-carousel';
+import { Pagination } from 'react-native-snap-carousel';
 import ProgressBar from '../../../Component/ProgressBar';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import RealestateType from '../../../Component/realestateType';
 import CountWithTitle from '../../../Component/CountWithTitle';
@@ -27,14 +27,14 @@ import Button from '../../../Component/Button';
 import RealEstateTypesList from '../../../Component/RealestateTypeList';
 import RadioButton from '../../../Component/RadioButtonList';
 
-import {useAnimation} from '../../../assets/Animation/animation';
+import { useAnimation } from '../../../assets/Animation/animation';
 
 import AlertModal from '../../../Component/Alert';
 import ErroAlert from '../../../Component/ErrorAlert';
 
 import * as Progress from 'react-native-progress';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import {connect} from 'react-redux';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { connect } from 'react-redux';
 
 import api from '../../../Services/API';
 
@@ -68,7 +68,7 @@ thirdStepAddingAqar = props => {
   const [number, setNumber] = useState(4);
 
   const onNextPress = () => {
-    let s = {...realEstate};
+    let s = { ...realEstate };
 
     if (selectedSides.length > 0) {
       s.selectedSides = selectedSides;
@@ -97,8 +97,10 @@ thirdStepAddingAqar = props => {
   };
 
   const saveUpdate = async () => {
-    let s = {...realEstate};
-    if (selectedSides.length > 0) s.selectedSides = selectedSides;
+    let s = { ...realEstate };
+    if (selectedSides.length > 0) {
+      s.selectedSides = selectedSides;
+    }
     setLoading(true);
     const res = await API.updateRealEstate(s, props.user.token);
     setLoading(false);
@@ -117,7 +119,7 @@ thirdStepAddingAqar = props => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Header
           loading={loading}
           forEditing={forEditing}
@@ -129,12 +131,12 @@ thirdStepAddingAqar = props => {
         <ProgressBar
           progress={realEstate.completePercentage / 100}
           persentageNumber={realEstate.completePercentage}
-          containerStyle={{marginTop: 30}}
+          containerStyle={{ marginTop: 30 }}
         />
 
         <KeyboardAwareScrollView>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={{flex: 1, paddingBottom: 200, paddingTop: 30}}>
+            <View style={{ flex: 1, paddingBottom: 200, paddingTop: 30 }}>
               {/* <CountWithTitle title={ 'عدد الشوارع'} number={number} onIncreasePress={()=>setNumber(s => s = s === 4 ? 4: ++s )}  onDecreasePress={()=>setNumber(s => s = --s )} /> */}
 
               <Text
@@ -157,7 +159,7 @@ thirdStepAddingAqar = props => {
                   forEditeng={true}
                   features={['0', '1', '2', '3']}
                   onItemPress={i => sideSelected(i)}
-                  containerStyle={{marginTop: 26}}
+                  containerStyle={{ marginTop: 26 }}
                 />
               }
 
@@ -182,7 +184,7 @@ thirdStepAddingAqar = props => {
           containerStyle={{
             maxWidth: 200,
             flexWrap: 'wrap',
-            transform: [{rotate: '180deg'}],
+            transform: [{ rotate: '180deg' }],
             position: 'absolute',
             bottom: 100,
             right: 10,
@@ -201,9 +203,9 @@ thirdStepAddingAqar = props => {
           inactiveDotScale={1}
         />
         <TouchableOpacity
-          style={{position: 'absolute', bottom: 125, left: 50, zIndex: 999}}
+          style={{ position: 'absolute', bottom: 125, left: 50, zIndex: 999 }}
           onPress={onNextPress}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Text style={[Fonts.style.normal]}> {'<'} </Text>
             <Text style={[Fonts.style.normal]}>التالي</Text>
           </View>

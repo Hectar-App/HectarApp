@@ -455,8 +455,7 @@ class firstStepAddAqar extends React.Component {
                     />
 
                     <Text style={[Fonts.style.normal, { marginEnd: 10 }]}>
-                      {' '}
-                      {' السعر غير محدد'}{' '}
+                      {' علي السوم'}
                     </Text>
                   </View>
                 )}

@@ -102,7 +102,7 @@ const MarkerItem = props => {
                 { color: Colors.white, fontSize: 11 },
               ]}>
               {(props.item.price && kFormatter(props.item.price) + ' ريال ') ||
-                'السعر غير محدد'}{' '}
+                'علي السوم'}
             </Text>
           </TouchableOpacity>
           <View

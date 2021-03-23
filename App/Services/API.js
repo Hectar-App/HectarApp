@@ -140,9 +140,8 @@ const create = (baseURL = apiURL) => {
         index++
       ) {
         form.append(
-          'selectedSides',
+          `selectedSides[${index}]`,
           realEstateToAdd.selectedSides[index],
-          realEstateToAdd.selectedSides[index].name,
         );
       }
     }
