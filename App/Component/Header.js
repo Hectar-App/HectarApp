@@ -12,7 +12,8 @@ const Header = props => {
         styles.container,
         props.containerStyle,
         props.withoutUnderLinev || (false && { borderBottomWidth: 0 }),
-      ]}>
+      ]}
+      {...props}>
       {!props.noBackButton && (
         <BackButton
           contcontainerStyle={{
