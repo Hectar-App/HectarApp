@@ -1,16 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
-    }
-    dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
-    }
-}
-
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-apply plugin: 'com.google.gms.google-services' // <- Add this line
-
-
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -206,18 +194,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-webview')
-    implementation project(':@react-native-community_netinfo')
-    implementation project(':react-native-fast-image')
-    implementation project(':react-native-onesignal')
-    implementation project(':react-native-code-push')
-    implementation project(':@react-native-community_art')
-    implementation project(':react-native-restart')
-    implementation project(':react-native-maps')
-    implementation project(':react-native-reanimated')
-    implementation project(':react-native-svg')
-    implementation project(':@react-native-community_async-storage')
-    implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ":react-native-interactable")
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -239,3 +215,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

@@ -80,34 +80,22 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = HectarApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = HectarApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = HectarApp/main.m; sourceTree = "<group>"; };
-		1D2A98A84CE649A293CF911D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		1E9C911F57DBB77EE7A191F9 /* libPods-HectarApp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HectarApp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21993E7CB02FA8D81CE53DC3 /* Pods-HectarApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-HectarApp-tvOS/Pods-HectarApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		25AEBF6C5DBC4DE1AB690666 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2BC481BD79B79856F0CDA47E /* libPods-HectarApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HectarApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* HectarApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HectarApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* HectarApp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "HectarApp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2E25605FD5544D5DAE2EFA2B /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		3DB856A31B93BB9D2225F2BD /* Pods-HectarApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-HectarApp-tvOSTests/Pods-HectarApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3F2C6F3D1C6E355E6F839F21 /* Pods-HectarApp-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-HectarApp-OneSignalNotificationServiceExtension/Pods-HectarApp-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		452DB6B9E4A64C54B0F8BB1B /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		49D2DDB2E7394DFDB984342F /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		4B703D35938676A35EB0CDC0 /* libPods-HectarApp-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HectarApp-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D8F62D0D7014AA7942DAEF2 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		4E8CB98E4E3250F9A4A84449 /* libPods-HectarAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HectarAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		59F671320FE045B0838866EF /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		5F134CB81539132478E2C9C1 /* Pods-HectarApp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-HectarApp-tvOS/Pods-HectarApp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		6203EF60CCC44BDA925D35DD /* TheMixArabic-Plain.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TheMixArabic-Plain.otf"; path = "../App/Themes/Fonts/TheMixArabic-Plain.otf"; sourceTree = "<group>"; };
-		69BF53F78D1D4214B64D9BF3 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		6BF1F7AC86F4407F9D4812BD /* hectar.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = hectar.ttf; path = ../App/Themes/Fonts/hectar.ttf; sourceTree = "<group>"; };
 		7205ABAB270D7D652D87AE63 /* libPods-HectarApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HectarApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		850F601B41FBB06BC89D8BB5 /* Pods-HectarApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp.debug.xcconfig"; path = "Target Support Files/Pods-HectarApp/Pods-HectarApp.debug.xcconfig"; sourceTree = "<group>"; };
 		8FDD4619429ADA1E13990110 /* Pods-HectarApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-HectarApp-tvOSTests/Pods-HectarApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		91430677BC3148209AA9C193 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		94198D9B0E4C4EA2A6228C6E /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		965B37A2B18070F1D3DCFA82 /* Pods-HectarApp-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-HectarApp-OneSignalNotificationServiceExtension/Pods-HectarApp-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		A13D46B5F0044F16AC25520F /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		AB90D588B5EE419EA099D55C /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		B728596ED40A4F01B7A388A1 /* TheMixArabic-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TheMixArabic-Bold.otf"; path = "../App/Themes/Fonts/TheMixArabic-Bold.otf"; sourceTree = "<group>"; };
 		B82FD1A8255C1C5B001D72AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B8450A992434F1A200D99844 /* hectar.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = hectar.ttf; sourceTree = "<group>"; };
@@ -121,11 +109,7 @@
 		D348ABEB05D5F50D2FA6B7E0 /* Pods-HectarApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarApp.release.xcconfig"; path = "Target Support Files/Pods-HectarApp/Pods-HectarApp.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F057B401F3E94FC69AA88EB2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		F2EC971697F03092B96ACE5C /* Pods-HectarAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HectarAppTests.debug.xcconfig"; path = "Target Support Files/Pods-HectarAppTests/Pods-HectarAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		F385095C6B004D98B58B1849 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		FDACD122625E4A4790390492 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		FE0A28999B9A4134A2595E70 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,23 +271,7 @@
 		DB9D207EC35E425BAA39E3EC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				69BF53F78D1D4214B64D9BF3 /* AntDesign.ttf */,
-				FDACD122625E4A4790390492 /* Entypo.ttf */,
-				4D8F62D0D7014AA7942DAEF2 /* EvilIcons.ttf */,
-				25AEBF6C5DBC4DE1AB690666 /* Feather.ttf */,
-				F057B401F3E94FC69AA88EB2 /* FontAwesome.ttf */,
-				49D2DDB2E7394DFDB984342F /* FontAwesome5_Brands.ttf */,
-				94198D9B0E4C4EA2A6228C6E /* FontAwesome5_Regular.ttf */,
-				91430677BC3148209AA9C193 /* FontAwesome5_Solid.ttf */,
-				AB90D588B5EE419EA099D55C /* Fontisto.ttf */,
-				F385095C6B004D98B58B1849 /* Foundation.ttf */,
 				B8450A992434F1A200D99844 /* hectar.ttf */,
-				A13D46B5F0044F16AC25520F /* Ionicons.ttf */,
-				59F671320FE045B0838866EF /* MaterialCommunityIcons.ttf */,
-				1D2A98A84CE649A293CF911D /* MaterialIcons.ttf */,
-				2E25605FD5544D5DAE2EFA2B /* Octicons.ttf */,
-				452DB6B9E4A64C54B0F8BB1B /* SimpleLineIcons.ttf */,
-				FE0A28999B9A4134A2595E70 /* Zocial.ttf */,
 				B728596ED40A4F01B7A388A1 /* TheMixArabic-Bold.otf */,
 				6203EF60CCC44BDA925D35DD /* TheMixArabic-Plain.otf */,
 				6BF1F7AC86F4407F9D4812BD /* hectar.ttf */,

@@ -34,41 +34,6 @@ target 'HectarApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
-
-  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
-
-  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
-
-
-  pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
-
-  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
-
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-
-  pod 'Interactable', :path => '../node_modules/react-native-interactable'
-
-  target 'OneSignalNotificationServiceExtension' do
-    pod 'OneSignal', '>= 2.9.3', '< 3.0'
-  end
-
-  # pod 'RCTRestart', :path => '../node_modules/react-native-restart'
-  pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
-
-  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
-
-  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
-
-  pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
-
-  pod 'CodePush', :path => '../node_modules/react-native-code-push'
-
-
   target 'HectarAppTests' do
     inherit! :search_paths
     # Pods for testing
@@ -81,13 +46,6 @@ target 'HectarApp' do
       end
     end
   end
-
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'GoogleMaps'
-  pod 'Google-Maps-iOS-Utils'
-
-  use_native_modules!
 end
 
 target 'HectarApp-tvOS' do
@@ -97,5 +55,4 @@ target 'HectarApp-tvOS' do
     inherit! :search_paths
     # Pods for testing
   end
-
 end

@@ -6,18 +6,6 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.reactnativecommunity.netinfo.NetInfoPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
-import com.microsoft.codepush.react.CodePush;
-import com.reactnativecommunity.art.ARTPackage;
-import com.avishayil.rnrestart.ReactNativeRestartPackage;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.swmansion.reanimated.ReanimatedPackage;
-import com.horcrux.svg.SvgPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -28,11 +16,6 @@ public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
-
-        @Override
-        protected String getJSBundleFile() {
-            return CodePush.getJSBundleFile();
-        }
 
         @Override
         public boolean getUseDeveloperSupport() {
