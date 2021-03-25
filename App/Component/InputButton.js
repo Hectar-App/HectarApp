@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Fonts, Metrics, Colors } from '../Themes';
-import { perfectFont, perfectWidth } from '../utils/commonFunctions';
+import { isIos, perfectFont, perfectWidth } from '../utils/commonFunctions';
 
 function formatPhoneNumber(phoneNumberString) {
   var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginLeft: perfectWidth(12),
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontWeight: '700',
     fontSize: perfectFont(12),
     color: '#3DBA7E',

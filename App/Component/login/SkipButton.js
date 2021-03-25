@@ -4,6 +4,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import { Colors } from '../../Themes';
 import {
+  isIos,
   perfectFont,
   perfectHeight,
   perfectWidth,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     zIndex: 990,
   },
   text: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontSize: perfectFont(14),
     color: Colors.darkSeafoamGreen,
     fontWeight: '400',

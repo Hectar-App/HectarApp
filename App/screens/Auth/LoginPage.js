@@ -18,7 +18,7 @@ import UserAction from '../../Redux/UserRedux';
 import FavoriteAction from '../../Redux/FavourteRedux';
 
 import SkipButton from '../../Component/login/SkipButton';
-import { perfectFont, perfectHeight } from '../../utils/commonFunctions';
+import { isIos, perfectFont, perfectHeight } from '../../utils/commonFunctions';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     marginTop: perfectHeight(15),
   },
   linkBtn: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontSize: perfectFont(14),
     color: Colors.darkSeafoamGreen,
     textDecorationLine: 'underline',
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     marginBottom: perfectHeight(18),
   },
   header: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontSize: perfectFont(18),
     fontWeight: '700',
   },

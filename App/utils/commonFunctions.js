@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -38,3 +38,5 @@ export const onSuccess = (message, description = '') => {
     duration: 4000,
   });
 };
+
+export const isIos = () => Platform.OS === 'ios';

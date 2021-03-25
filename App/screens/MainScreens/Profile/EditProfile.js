@@ -12,6 +12,7 @@ import Input from '../../../Component/Input';
 import { connect } from 'react-redux';
 import UserAction from '../../../Redux/UserRedux';
 import {
+  isIos,
   onError,
   onSuccess,
   perfectFont,
@@ -208,7 +209,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   label: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontWeight: '400',
     fontSize: perfectFont(12),
     marginRight: perfectWidth(32),

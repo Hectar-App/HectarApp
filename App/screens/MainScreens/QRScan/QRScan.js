@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {
+  isIos,
   perfectFont,
   perfectHeight,
   perfectWidth,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   scanText: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontWeight: '700',
     fontSize: perfectFont(24),
     color: '#3D3D3D',

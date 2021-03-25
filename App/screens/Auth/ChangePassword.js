@@ -5,6 +5,7 @@ import Input from '../../Component/Input';
 import Header from '../../Component/Header';
 import VerticalSpace from '../../Component/core/layouts/VerticalSpace';
 import {
+  isIos,
   onError,
   perfectFont,
   perfectHeight,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   label: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontWeight: '400',
     fontSize: perfectFont(12),
     marginRight: perfectWidth(32),
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3DBA7E',
   },
   btnText: {
-    fontFamily: 'TheMixArab',
+    fontFamily: isIos() ? 'TheMixArabic-Bold' : 'TheMixArab',
     fontWeight: '700',
     fontSize: perfectFont(14),
     color: '#FFFFFF',
