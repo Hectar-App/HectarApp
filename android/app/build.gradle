@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hectarapp"
+        applicationId "com.hectar.hectarapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 6
@@ -194,6 +194,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(path: ":react-native-interactable")
     implementation "com.facebook.react:react-native:+"  // From node_modules

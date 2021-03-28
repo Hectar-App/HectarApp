@@ -1,4 +1,4 @@
-package com.hectarapp;
+package com.hectar.hectarapp;
 
 import com.facebook.react.ReactActivity;
 
